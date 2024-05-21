@@ -29,6 +29,9 @@ READLINE_DIR		= /usr
 READLINE_LIB 		= -lreadline -lhistory -L $(READLINE_DIR)/lib
 
 # Build rules
+start:
+					@make all
+
 $(LIBFT):
 					@make -C ./libraries/libft
 
