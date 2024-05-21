@@ -10,7 +10,7 @@ OBJ_DIR				= ./build/objects/
 
 # Compiler and CFlags
 CC					= cc
-CFLAGS				= -Wall -Werror -Wextra -I
+CFLAGS				= -g -fsanitize=address -Wall -Werror -Wextra -I
 RM					= rm -f
 
 # Source Files
