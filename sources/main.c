@@ -6,11 +6,9 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/21 09:23:10 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/05/21 16:33:21 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/05/21 16:36:23 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
-
-// github collab testerrrrrrr 
 
 #include "../include/minishell.h"
 
