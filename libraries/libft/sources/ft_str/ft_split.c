@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/10/17 10:32:23 by mlubbers      #+#    #+#                 */
-/*   Updated: 2023/10/17 10:39:40 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/05/27 09:41:05 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ static char	**clearmem(char **strlist)
 		free(strlist[i]);
 		i++;
 	}
+	free(strlist);
 	return (NULL);
 }
 
