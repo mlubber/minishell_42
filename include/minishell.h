@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/22 06:12:53 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/05/27 12:12:34 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/05/27 13:38:49 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <limits.h>
 # include <fcntl.h>
 # include "../libraries/libft/include/libft.h"
 # include "../libraries/libft/include/get_next_line.h"
