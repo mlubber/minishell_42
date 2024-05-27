@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/22 06:12:53 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/05/21 11:54:02 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/05/27 09:57:25 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@
 
 typedef struct s_tools
 {
+	char	*args;
+	char	**paths;
 	char	**envp;
 	char	*pwd;
 	char	*old_pwd;
@@ -32,5 +34,7 @@ typedef struct s_tools
 void	ft_readline(char *line);
 void	ft_free_2d_arr(char **arr);
 char	**ft_copy_envp(char **envp);
+char	*find_path(char **envp);
+int		minishell_loop(t_tools *tools);
 
 #endif

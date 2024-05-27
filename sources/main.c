@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/21 09:23:10 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/05/21 16:36:23 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/05/27 09:16:51 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,12 @@ int	main(int argc, char **argv, char **envp)
 	}
 	tools.envp = ft_copy_envp(envp);
 	i = 0;
-	while (tools.envp[i] != NULL)
-	{
-		printf("%s\n", tools.envp[i]);
-		i++;
-	}
+	// while (tools.envp[i] != NULL)
+	// {
+	// 	printf("%s\n", tools.envp[i]);
+	// 	i++;
+	// }
+	minishell_loop(&tools);
 	ft_free_2d_arr(tools.envp);
 	return (0);
 }

@@ -16,7 +16,8 @@ RM					= rm -f
 # Source Files
 MAIN_DIR			=	$(SRC_DIR)main.c
 
-UTILS_DIR			=	$(SRC_DIR)utils/utils.c
+UTILS_DIR			=	$(SRC_DIR)utils/ft_utils.c \
+						$(SRC_DIR)utils/ft_minishell_loop.c
 
 # Concatenate all source files
 SRCS 				= $(UTILS_DIR) $(MAIN_DIR)
