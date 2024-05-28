@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/28 10:12:45 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/05/28 12:51:17 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/05/28 17:06:59 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,20 +112,18 @@ int	ft_add_node(char *str, t_lexer **lexer_list)
 
 int	ft_read_word(int i, char *str, t_lexer **lexer_list)
 {
-	int		j;
-	// char	*new_str;
+	size_t	j;
 
 	j = 0;
 	while (str[i + j])
 	{
-		if (ft_is_whitespace(str[i + j]))
+		j += ft_handle_quotes(i, str, 34);
+		if (ft_is_whitespace(str[i + j]) || i + j > ft_strlen(str) - 1)
 			break ;
 		else
 			j++;
 	}
 	ft_add_node(ft_substr(str, i, j), lexer_list);
-	// new_str = ft_substr(str, i, j);
-	// printf("[%s]\n", new_str);
 	return (j);
 }
 
