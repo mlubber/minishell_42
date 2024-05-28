@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/22 06:12:53 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/05/27 13:38:49 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/05/28 13:55:30 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,14 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
+typedef struct s_lexer
+{
+	char			*str;
+	int				node_nbr;
+	struct s_lexer	*prev;
+	struct s_lexer	*next;
+}	t_lexer;
+
 typedef struct s_tools
 {
 	char	*args;
@@ -30,6 +38,7 @@ typedef struct s_tools
 	char	**envp;
 	char	*pwd;
 	char	*old_pwd;
+	t_lexer	*lexer_list;
 }	t_tools;
 
 void	ft_readline(char *line);
@@ -38,9 +47,17 @@ char	**ft_copy_envp(char **envp);
 int		ft_find_pwd(t_tools *tools);
 char	*find_path(char **envp);
 int		ft_parse_envp(t_tools *tools);
+int		ft_init_tools(t_tools *tools);
 int		ft_reset_tools(t_tools *tools);
 int		ft_minishell_loop(t_tools *tools);
 int		ft_mini_env(t_tools *tools);
 int		ft_mini_pwd(t_tools *tools);
+int		ft_is_whitespace(char c);
+int		ft_skip_spaces(int i, char *str);
+int		ft_add_node(char *str, t_lexer **lexer_list);
+int		ft_read_word(int i, char *str, t_lexer **lexer_list);
+int		ft_reader(t_tools *tools);
+t_lexer	*ft_new_lexer_node(char *str);
+void	ft_lexer_add_back(t_lexer **lexer_list, t_lexer *new);
 
 #endif

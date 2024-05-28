@@ -6,11 +6,11 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/27 08:05:43 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/05/27 13:07:13 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/05/28 09:51:30 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "../../include/minishell.h"
 
 int	ft_find_pwd(t_tools *tools)
 {

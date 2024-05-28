@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_mini_envp.c                                     :+:    :+:            */
+/*   ft_mini_env.c                                      :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/27 10:57:13 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/05/27 12:11:48 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/05/28 09:51:36 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "../../include/minishell.h"
 
 int	ft_mini_env(t_tools *tools)
 {

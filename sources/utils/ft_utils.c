@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   utils.c                                            :+:    :+:            */
+/*   ft_utils.c                                         :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/09 08:55:50 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/05/27 09:30:20 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/05/28 09:51:15 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "../../include/minishell.h"
 
 void	ft_readline(char *line)
 {
