@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/28 10:12:45 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/05/28 17:06:59 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/05/30 17:56:56 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ int	ft_read_word(int i, char *str, t_lexer **lexer_list)
 		else
 			j++;
 	}
-	ft_add_node(ft_substr(str, i, j), lexer_list);
+	ft_add_node(ft_substr(str, i, j), lexer_list); // Add fail check
 	return (j);
 }
 

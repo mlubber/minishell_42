@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/22 06:12:53 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/05/28 16:00:10 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/05/30 15:32:12 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,5 +60,7 @@ int		ft_reader(t_tools *tools);
 t_lexer	*ft_new_lexer_node(char *str);
 void	ft_lexer_add_back(t_lexer **lexer_list, t_lexer *new);
 int		ft_handle_quotes(int i, char *str, char c);
+
+void	kill_program(t_tools *tools, char *msg, int i); // toegevoegd
 
 #endif
