@@ -16,10 +16,20 @@ RM					= rm -f
 # Source Files
 MAIN_DIR			=	$(SRC_DIR)main.c
 
-UTILS_DIR			=	$(SRC_DIR)utils/utils.c
+UTILS_DIR			=	$(SRC_DIR)utils/ft_utils.c \
+						$(SRC_DIR)utils/ft_parse_envp.c \
+						$(SRC_DIR)utils/ft_minishell_loop.c \
+						$(SRC_DIR)utils/ft_lexer_utils.c \
+						$(SRC_DIR)utils/kill_program.c
+
+LEXER_DIR			=	$(SRC_DIR)lexer/ft_reader.c \
+						$(SRC_DIR)lexer/ft_handle_quotes.c
+
+BUILTINS_DIR		=	$(SRC_DIR)builtins/ft_mini_env.c \
+						$(SRC_DIR)builtins/ft_mini_pwd.c
 
 # Concatenate all source files
-SRCS 				= $(UTILS_DIR) $(MAIN_DIR)
+SRCS 				= $(BUILTINS_DIR) $(LEXER_DIR) $(UTILS_DIR) $(MAIN_DIR)
 
 # Apply the pattern substitution to each source file in SRC and produce a corresponding list of object files in the OBJ_DIR
 OBJ 				= $(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRCS))

@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   utils.c                                            :+:    :+:            */
+/*   ft_utils.c                                         :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/09 08:55:50 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/05/21 11:52:25 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/05/30 17:55:01 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "../../include/minishell.h"
 
 void	ft_readline(char *line)
 {
@@ -58,7 +58,7 @@ char	**ft_copy_envp(char **envp)
 		if (envp_copy[i] == NULL)
 		{
 			ft_free_2d_arr(envp_copy);
-			return (envp_copy);
+			return (NULL); // Veranderd van 'return (envp_copy)'
 		}
 		i++;
 	}

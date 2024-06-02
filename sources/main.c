@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/21 09:23:10 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/05/21 16:36:23 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/05/30 17:58:04 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,15 @@
 int	main(int argc, char **argv, char **envp)
 {
 	t_tools	tools;
-	int		i;
 
 	if (argc != 1 || argv[1])
-	{
-		printf("Program does not take arguments >:(\n");
-		exit(EXIT_SUCCESS);
-	}
+		kill_program(&tools, "Program does not take arguments >:(\n", 1);
 	tools.envp = ft_copy_envp(envp);
-	i = 0;
-	while (tools.envp[i] != NULL)
-	{
-		printf("%s\n", tools.envp[i]);
-		i++;
-	}
+	if (tools.envp == NULL) 							// toegevoegd
+		kill_program(&tools, "envp not found!\n", 2);	// Toegevoegd
+	ft_find_pwd(&tools);
+	ft_init_tools(&tools);
+	ft_minishell_loop(&tools);
 	ft_free_2d_arr(tools.envp);
 	return (0);
 }
