@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/22 06:12:53 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/05/30 15:32:12 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/06/02 13:04:22 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ typedef struct s_lexer
 
 typedef struct s_tools
 {
-	char	*args;
+	char	*full_string;
 	char	**paths;
 	char	**envp;
 	char	*pwd;

@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/30 14:08:00 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/05/30 17:50:09 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/06/02 12:33:46 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	kill_program(t_tools *tools, char *msg, int i)
 		ft_free_2d_arr(tools->envp);
 	if (msg != NULL)
 	{
-		printf(msg);
+		printf("%s\n", msg);
 		exit(i);
 	}
 	exit(EXIT_SUCCESS);
