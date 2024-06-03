@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/28 15:50:52 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/05/28 16:53:40 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/06/03 13:01:09 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,17 @@ int	ft_handle_quotes(int i, char *str, char c)
 		j++;
 		while (str[i + j] != c && str[i + j])
 			j++;
-		j++;
+		if (str[i + j] == '\0')
+		{
+			j = 0;
+			if (str[i + j] == c)
+				j++;
+			while (str[i + j] && ft_is_whitespace(str[i + j]) == 0)
+				j++;
+			return (j);
+		}
+		else
+			j++;
 	}
 	return (j);
 }

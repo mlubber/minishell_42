@@ -6,7 +6,11 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/22 06:12:53 by mlubbers      #+#    #+#                 */
+<<<<<<< HEAD
 /*   Updated: 2024/06/02 13:04:22 by wsonepou      ########   odam.nl         */
+=======
+/*   Updated: 2024/06/03 11:07:55 by mlubbers      ########   odam.nl         */
+>>>>>>> branch_michel
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +56,7 @@ int		ft_reset_tools(t_tools *tools);
 int		ft_minishell_loop(t_tools *tools);
 int		ft_mini_env(t_tools *tools);
 int		ft_mini_pwd(t_tools *tools);
+int		ft_mini_export(t_tools *tools);
 int		ft_is_whitespace(char c);
 int		ft_skip_spaces(int i, char *str);
 int		ft_add_node(char *str, t_lexer **lexer_list);
@@ -60,6 +65,7 @@ int		ft_reader(t_tools *tools);
 t_lexer	*ft_new_lexer_node(char *str);
 void	ft_lexer_add_back(t_lexer **lexer_list, t_lexer *new);
 int		ft_handle_quotes(int i, char *str, char c);
+int		ft_count_env_lines(char **envp);
 
 void	kill_program(t_tools *tools, char *msg, int i); // toegevoegd
 
