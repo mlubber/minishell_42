@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/28 10:12:45 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/06/02 13:19:32 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/06/03 10:14:50 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,8 @@ int	ft_read_word(int i, char *str, t_lexer **lexer_list)
 	{
 		j += ft_handle_quotes(i, str, 34);
 		j += ft_handle_quotes(i, str, 39);
-		if (ft_is_whitespace(str[i + j]) || i + j > ft_strlen(str) - 1)
+		if (ft_is_whitespace(str[i + j]) || i + j > ft_strlen(str) - 1
+			|| str[i + j] == 34 || str[i + j] == 39)
 			break ;
 		else
 			j++;
