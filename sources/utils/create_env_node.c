@@ -1,0 +1,126 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   create_env_node.c                                  :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2024/06/03 14:38:18 by wsonepou      #+#    #+#                 */
+/*   Updated: 2024/06/03 19:01:11 by wsonepou      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/minishell.h"
+
+static char *set_var_name(char *str)
+{
+	int		i;
+	char	*var_name;
+
+	i = 0;
+	while (str[i] != '=' && str[i] != '\0')
+		i++;
+	var_name = malloc((i + 1) * sizeof(char));
+	if (var_name == NULL)
+		return (NULL);
+	i = 0;
+	while (str[i] != '=' && str[i] != '\0')
+	{
+		var_name[i] = str[i];
+		i++;
+	}
+	var_name[i] = '\0';
+	return (var_name);
+}
+
+
+static char	*set_var_value_quotes(char *str)
+{
+	int		i;
+	int		o;
+	char	*var_value;
+
+	i = 0;
+	o = 0;
+	while (str[i])
+		i++;
+	var_value = malloc((i + 3) * sizeof(char));
+	if (var_value == NULL)
+		return (NULL);
+	var_value[0] = '"';
+	var_value[i + 1] = '"';
+	var_value[i + 2] = '\0';
+	i = 1;
+	while (str[o] != '\0')
+	{
+		var_value[i] = str[o];
+		i++;
+		o++;
+	}
+	return (var_value);
+}
+
+static char	*set_var_value(char *str)
+{
+	int		i;
+	char	*var_value;
+
+	if (*str == '"')
+	{
+		i = 1;
+		while (str[i] != '"' && str[i] != '\0')
+			i++;
+		if (str[i] == '"')
+			var_value = malloc((i + 2) * sizeof(char));
+		else
+			return (NULL);
+		i = 0;
+		while (var_value != NULL && str[i] != '\0')
+		{
+			var_value[i] = str[i];
+			i++;
+		}
+	}
+	else
+		var_value = set_var_value_quotes(str);
+	if (var_value == NULL)
+			return (NULL);
+	return (var_value);
+}
+
+static void	init_node(t_tools *tools, t_env *node, char *str)
+{
+	node->var_name = set_var_name(str);
+	node->str = str;
+	node->printed = false;
+	node->node_num = tools->env_size;
+	node->next = NULL;
+}
+
+t_env	*create_node(t_tools *tools, char *str)
+{
+	t_env	*node;
+	char	*str_value;
+	int		i;
+
+	i = 0;
+	while (str[i] != '=' && str[i] != '\0')
+		i++;
+	if (str[i] == '=')
+	{
+		str_value = set_var_value(str + i + 1);
+		if (str_value == NULL)
+			return (NULL);
+	}
+	else
+		str_value = NULL;
+	node = malloc(sizeof(t_env));
+	if (!node)
+		return (NULL);
+	init_node(tools, node, str);
+	node->var_val = str_value;
+	if (node->var_name == NULL)
+		kill_program(tools, "Failed mallocing node!", 3);
+	tools->env_size++;
+	return (node);
+}

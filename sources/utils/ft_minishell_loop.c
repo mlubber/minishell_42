@@ -6,11 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/27 09:30:02 by mlubbers      #+#    #+#                 */
-<<<<<<< HEAD
-/*   Updated: 2024/06/02 13:05:25 by wsonepou      ########   odam.nl         */
-=======
-/*   Updated: 2024/06/03 11:04:52 by mlubbers      ########   odam.nl         */
->>>>>>> branch_michel
+/*   Updated: 2024/06/03 19:47:16 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,18 +32,18 @@ void	ft_print_list(t_lexer *ptr)
 	}
 }
 
-int	ft_init_tools(t_tools *tools)
-{
-	tools->lexer_list = NULL;
-	ft_parse_envp(tools);
-	return (1);
-}
+// int	ft_init_tools(t_tools *tools)
+// {
+// 	tools->lexer_list = NULL;
+// 	ft_parse_envp(tools);
+// 	return (1);
+// }
 
 int	ft_reset_tools(t_tools *tools)
 {
 	free(tools->full_string);
-	ft_free_2d_arr(tools->paths);
-	ft_init_tools(tools);
+	// ft_free_2d_arr(tools->paths);
+	// ft_init_tools(tools);
 	ft_minishell_loop(tools);
 	return (1);
 }
@@ -70,7 +66,10 @@ int	ft_minishell_loop(t_tools *tools)
 	else if (ft_strncmp(tools->full_string, "export", ft_strlen(tools->full_string)) == 0)
 		ft_mini_export(tools);
 	else if (ft_strncmp(tools->full_string, "exit", ft_strlen(tools->full_string)) == 0)
+	{
+		free(string);
 		exit(EXIT_SUCCESS);
+	}
 	else
 	{
 		printf("Full string: %s\n", tools->full_string);

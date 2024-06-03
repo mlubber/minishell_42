@@ -20,13 +20,13 @@ UTILS_DIR			=	$(SRC_DIR)utils/ft_utils.c \
 						$(SRC_DIR)utils/ft_parse_envp.c \
 						$(SRC_DIR)utils/ft_minishell_loop.c \
 						$(SRC_DIR)utils/ft_lexer_utils.c \
-						$(SRC_DIR)utils/kill_program.c
+						$(SRC_DIR)utils/kill_program.c \
+						$(SRC_DIR)utils/create_env_node.c
 
 LEXER_DIR			=	$(SRC_DIR)lexer/ft_reader.c \
 						$(SRC_DIR)lexer/ft_handle_quotes.c
 
 BUILTINS_DIR		=	$(SRC_DIR)builtins/ft_mini_env.c \
-						$(SRC_DIR)builtins/ft_mini_pwd.c \
 						$(SRC_DIR)builtins/ft_mini_pwd.c \
 						$(SRC_DIR)builtins/ft_mini_export.c
 

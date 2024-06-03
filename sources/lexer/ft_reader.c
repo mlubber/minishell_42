@@ -6,11 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/28 10:12:45 by mlubbers      #+#    #+#                 */
-<<<<<<< HEAD
-/*   Updated: 2024/06/03 09:02:24 by mlubbers      ########   odam.nl         */
-=======
-/*   Updated: 2024/06/03 10:14:50 by mlubbers      ########   odam.nl         */
->>>>>>> branch_michel
+/*   Updated: 2024/06/03 13:24:56 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 

@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/22 06:12:53 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/06/03 13:07:18 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/06/03 19:42:25 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <unistd.h>
 # include <limits.h>
 # include <fcntl.h>
+# include <stdbool.h>
 # include "../libraries/libft/include/libft.h"
 # include "../libraries/libft/include/get_next_line.h"
 # include <readline/readline.h>
@@ -31,6 +32,16 @@ typedef struct s_lexer
 	struct s_lexer	*next;
 }	t_lexer;
 
+typedef struct s_env
+{
+	char			*str;
+	char			*var_name;
+	char			*var_val;
+	bool			printed;
+	int				node_num;
+	struct s_env	*next;
+}	t_env;
+
 typedef struct s_tools
 {
 	char	*full_string;
@@ -38,6 +49,8 @@ typedef struct s_tools
 	char	**envp;
 	char	*pwd;
 	char	*old_pwd;
+	int		env_size;
+	t_env	*env_list;
 	t_lexer	*lexer_list;
 }	t_tools;
 
@@ -63,6 +76,9 @@ void	ft_lexer_add_back(t_lexer **lexer_list, t_lexer *new);
 int		ft_handle_quotes(int i, char *str, char c);
 int		ft_count_env_lines(char **envp);
 
+t_env	*create_node(t_tools *tools, char *str); // toegevoegd
+void	building_env(t_tools *tools, t_env **env_list, char **envp); // toegevoegd
 void	kill_program(t_tools *tools, char *msg, int i); // toegevoegd
+void	delete_list(t_env **head); // toegevoegd
 
 #endif
