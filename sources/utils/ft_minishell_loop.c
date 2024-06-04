@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/27 09:30:02 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/06/04 08:59:21 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/06/04 16:36:01 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,6 @@ void	ft_print_list(t_lexer *ptr)
 		count++;
 	}
 }
-
-// int	ft_init_tools(t_tools *tools)
-// {
-// 	tools->lexer_list = NULL;
-// 	ft_parse_envp(tools);
-// 	return (1);
-// }
 
 int	ft_reset_tools(t_tools *tools)
 {
@@ -77,8 +70,10 @@ int	ft_minishell_loop(t_tools *tools)
 		printf("Full string: %s\n", tools->full_string);
 	}
 	ft_reader(tools);
-	ft_print_list(tools->lexer_list);
+	// ft_print_list(tools->lexer_list);
 	ft_reset_tools(tools);
 	free(string);
 	return (1);
 }
+
+

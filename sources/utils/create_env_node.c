@@ -6,13 +6,13 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/03 14:38:18 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/06/03 19:01:11 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/06/04 16:32:45 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static char *set_var_name(char *str)
+static char	*set_var_name(char *str)
 {
 	int		i;
 	char	*var_name;
@@ -84,14 +84,16 @@ static char	*set_var_value(char *str)
 	else
 		var_value = set_var_value_quotes(str);
 	if (var_value == NULL)
-			return (NULL);
+		return (NULL);
 	return (var_value);
 }
 
 static void	init_node(t_tools *tools, t_env *node, char *str)
 {
 	node->var_name = set_var_name(str);
-	node->str = str;
+	node->str = ft_strdup(str);
+	if (node->str == NULL)
+		kill_program(tools, "Failed strdupping node!", 6);
 	node->printed = false;
 	node->node_num = tools->env_size;
 	node->next = NULL;

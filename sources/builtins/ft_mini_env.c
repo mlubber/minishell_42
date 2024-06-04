@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/27 10:57:13 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/06/03 19:38:59 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/06/04 16:30:22 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,3 @@ int	ft_mini_env(t_tools *tools)
 	return (EXIT_SUCCESS);
 }
 
-// int	ft_mini_env(t_tools *tools)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (tools->envp[i])
-// 	{
-// 		ft_putendl_fd(tools->envp[i], STDOUT_FILENO);
-// 		i++;
-// 	}
-// 	return (EXIT_SUCCESS);
-// }
