@@ -6,21 +6,12 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/03 11:01:03 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/06/03 11:29:45 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/06/04 07:27:00 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int	ft_count_env_lines(char **envp)
-{
-	int	i;
-
-	i = 0;
-	while (envp[i])
-		i++;
-	return (i);
-}
 
 void	ft_sort_env_lines(char **envp, int count)
 {
@@ -51,26 +42,25 @@ int	ft_mini_export(t_tools *tools)
 	int		i;
 	int		count;
 	char	**export_list;
+	t_env	*tmp;
 
-	count = ft_count_env_lines(tools->envp);
+	count = tools->env_size;
 	export_list = malloc((count + 1) * sizeof(char *));
 	if (export_list == NULL)
 		return (EXIT_FAILURE);
 	i = 0;
+	tmp = tools->env_list;
 	while (i < count)
 	{
-		export_list[i] = tools->envp[i];
+		export_list[i] = tmp->str;
 		i++;
+		tmp = tmp->next;
 	}
 	export_list[i] = NULL;
 	ft_sort_env_lines(export_list, count);
 	i = 0;
-	while (i < count)
-	{
-		printf("declare -x %s\n", export_list[i]);
-		// ft_putendl_fd(export_list[i], STDOUT_FILENO);
-		i++;
-	}
+	while (i < count - 1)
+		printf("declare -x %s\n", export_list[i++]);
 	free(export_list);
 	return (EXIT_SUCCESS);
 }

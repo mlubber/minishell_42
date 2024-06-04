@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/27 08:05:43 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/06/03 19:51:23 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/06/04 06:51:28 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void	building_env(t_tools *tools, t_env **env_list, char **envp)
 	t_env	*tmp;
 	t_env	*new;
 	int		i;
-	
+
 	*env_list = create_node(tools, envp[0]);
 	tmp = *env_list;
 	i = 1;

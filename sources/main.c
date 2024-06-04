@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/21 09:23:10 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/06/03 19:43:02 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/06/04 06:55:44 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	init_tools(t_tools *tools)
 	tools->envp = NULL;
 	tools->pwd = NULL;
 	tools->old_pwd = NULL;
-	tools->env_list = 0;
+	tools->env_size = 0;
 	tools->env_list = NULL;
 	tools->lexer_list = NULL;
 }
