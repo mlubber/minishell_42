@@ -28,7 +28,8 @@ LEXER_DIR			=	$(SRC_DIR)lexer/ft_reader.c \
 
 BUILTINS_DIR		=	$(SRC_DIR)builtins/ft_mini_env.c \
 						$(SRC_DIR)builtins/ft_mini_pwd.c \
-						$(SRC_DIR)builtins/ft_mini_export.c
+						$(SRC_DIR)builtins/ft_mini_export.c \
+						$(SRC_DIR)builtins/ft_mini_cd.c
 
 # Concatenate all source files
 SRCS 				= $(BUILTINS_DIR) $(LEXER_DIR) $(UTILS_DIR) $(MAIN_DIR)

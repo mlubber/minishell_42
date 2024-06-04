@@ -6,12 +6,11 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/03 11:01:03 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/06/04 10:18:36 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/06/04 16:43:02 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
 
 void	ft_sort_env_lines(char **envp, int count)
 {
@@ -62,6 +61,6 @@ int	ft_mini_export(t_tools *tools)
 	i = 0;
 	while (i < count - 1)
 		printf("declare -x %s\n", export_list[i++]);
-	free(export_list);
+	ft_free_2d_arr(export_list);
 	return (EXIT_SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/27 08:05:43 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/06/04 06:51:28 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/06/04 16:29:04 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,44 +29,6 @@ int	getting_pwd(t_tools *tools)
 	}
 	return (1);
 }
-
-// char	*find_path(char **envp)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (envp[i])
-// 	{
-// 		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
-// 			return (ft_substr(envp[i], 5, ft_strlen(envp[i]) - 5)); // Add fail check
-// 		i++;
-// 	}
-// 	return (ft_strdup("\0")); // Add fail check
-// }
-
-// int	ft_parse_envp(t_tools *tools)
-// {
-// 	char	*envp_path;
-// 	char	*temp;
-// 	int		i;
-
-// 	envp_path = find_path(tools->envp);
-// 	tools->paths = ft_split(envp_path, ':'); // Add fail check
-// 	free(envp_path);
-// 	i = 0;
-// 	while (tools->paths[i])
-// 	{
-// 		if (ft_strncmp(&tools->paths[i][ft_strlen(tools->paths[i]) - 1],
-// 			"/", 1) != 0)
-// 		{
-// 			temp = ft_strjoin(tools->paths[i], "/"); // Add fail check
-// 			free(tools->paths[i]);
-// 			tools->paths[i] = temp;
-// 		}
-// 		i++;
-// 	}
-// 	return (EXIT_SUCCESS);
-// }
 
 static void	getting_paths(t_tools *tools, char **envp)
 {

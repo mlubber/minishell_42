@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/22 06:12:53 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/06/03 19:42:25 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/06/04 16:35:22 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,18 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
+
+typedef struct s_token
+{
+	char	*pipe;
+	char	*bi_env;
+	char	*bi_cd;
+	char	*bi_exit;
+	char	*bi_export;
+	char	*bi_pwd;
+}	t_token;
+
+
 typedef struct s_tools
 {
 	char	*full_string;
@@ -64,8 +76,9 @@ int		ft_init_tools(t_tools *tools);
 int		ft_reset_tools(t_tools *tools);
 int		ft_minishell_loop(t_tools *tools);
 int		ft_mini_env(t_tools *tools);
-int		ft_mini_pwd(t_tools *tools);
+void	ft_mini_pwd(t_tools *tools);
 int		ft_mini_export(t_tools *tools);
+int		ft_mini_cd(t_tools *tools);
 int		ft_is_whitespace(char c);
 int		ft_skip_spaces(int i, char *str);
 int		ft_add_node(char *str, t_lexer **lexer_list);
@@ -80,5 +93,7 @@ t_env	*create_node(t_tools *tools, char *str); // toegevoegd
 void	building_env(t_tools *tools, t_env **env_list, char **envp); // toegevoegd
 void	kill_program(t_tools *tools, char *msg, int i); // toegevoegd
 void	delete_list(t_env **head); // toegevoegd
+void	add_node_middle(t_tools *tools, t_env **head, int position, char *str);
+void	free_env_node(t_env **node);
 
 #endif
