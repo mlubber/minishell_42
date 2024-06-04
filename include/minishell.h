@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/22 06:12:53 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/06/03 19:42:25 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/06/04 09:09:55 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ int		ft_minishell_loop(t_tools *tools);
 int		ft_mini_env(t_tools *tools);
 int		ft_mini_pwd(t_tools *tools);
 int		ft_mini_export(t_tools *tools);
+int		ft_mini_cd(t_tools *tools);
 int		ft_is_whitespace(char c);
 int		ft_skip_spaces(int i, char *str);
 int		ft_add_node(char *str, t_lexer **lexer_list);

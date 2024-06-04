@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/27 09:30:02 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/06/04 07:07:14 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/06/04 08:59:21 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ int	ft_minishell_loop(t_tools *tools)
 		ft_mini_pwd(tools);
 	else if (ft_strncmp(tools->full_string, "export", ft_strlen(tools->full_string)) == 0)
 		ft_mini_export(tools);
+	else if (ft_strncmp(tools->full_string, "cd", ft_strlen(tools->full_string)) == 0)
+		ft_mini_cd(tools);
 	else if (ft_strncmp(tools->full_string, "exit", ft_strlen(tools->full_string)) == 0)
 	{
 		free(string);

@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/03 11:01:03 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/06/04 07:27:00 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/06/04 09:29:15 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ int	ft_mini_export(t_tools *tools)
 	tmp = tools->env_list;
 	while (i < count)
 	{
-		export_list[i] = tmp->str;
+		export_list[i] = ft_strjoin(ft_strjoin(tmp->var_name, "="),
+				tmp->var_val);
 		i++;
 		tmp = tmp->next;
 	}
