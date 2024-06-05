@@ -27,35 +27,51 @@ void	ft_free_2d_arr(char **arr)
 
 void	free_env_node(t_env **node)
 {
-	free((*node)->str);
-	free((*node)->var_name);
-	free((*node)->var_val);
+	if ((*node)->str != NULL)
+		free((*node)->str);
+	if ((*node)->var_name != NULL)
+		free((*node)->var_name);
+	if ((*node)->var_val != NULL)
+		free((*node)->var_val);
 	free(*node);
 }
 
-
-void	delete_list(t_env **head)
+void	free_env(t_shell *shell, t_env **env_head)
 {
+	int		i;
 	t_env	*tmp;
 
-	tmp = *head;
-	if (*head == NULL)
-		return ;
-	else
+	i = 0;
+	if (shell->paths != NULL) // Freeing paths
 	{
-		while (tmp != NULL)
+		while (shell->paths[i] != NULL)
 		{
-			tmp = tmp->next;
-			free_env_node(head);
-			*head = tmp;
+			free(shell->paths[i]);
+			i++;
 		}
+		free(shell->paths);
 	}
+	tmp = *env_head;
+	while (env_head != NULL && tmp != NULL) // Freeing ENV linked list
+	{
+		tmp = tmp->next;
+		if (*env_head != NULL)
+			free_env_node(env_head);
+		*env_head = tmp;
+	}
+	if (shell->pwd != NULL) // Freeing PWD
+		free (shell->pwd);
+	if (shell->old_pwd != NULL) // Freeing OLD_PWD
+		free (shell->old_pwd);
 }
 
-void	kill_program(t_tools *tools, char *msg, int i)
+
+void	kill_program(t_shell *shell, char *msg, int i)
 {
-	if (tools->envp != NULL)
-		delete_list(&tools->env_list);
+	free_env(shell, &shell->env_list);
+	rl_clear_history();
+	if (shell->input != NULL)
+		free (shell->input);
 	if (msg != NULL)
 	{
 		printf("%s\n", msg);

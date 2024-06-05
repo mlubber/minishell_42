@@ -13,14 +13,12 @@
 #include "../../include/minishell.h"
 
 
-void	add_node_middle(t_tools *tools, t_env **head, int position, char *str)
+void	add_node_middle(t_shell *shell, t_env **head, int position, char *str)
 {
 	t_env	*new;
 	t_env	*tmp;
-	int		i;
 
-	i = 0;
-	new = create_node(tools, str);
+	new = create_env_node(shell, str);
 	if (position == 1)
 	{
 		new->next = *head;
@@ -39,27 +37,27 @@ void	add_node_middle(t_tools *tools, t_env **head, int position, char *str)
 	}
 }
 
-void	ft_change_path_in_env(t_tools *tools)
+void	ft_change_path_in_env(t_shell *shell)
 {
 	t_env	*temp_list;
 	t_env	*temp_node;
 	int		x;
 
-	temp_list = tools->env_list;
+	temp_list = shell->env_list;
 	while (temp_list->next != NULL)
 	{
 		if (ft_strncmp(temp_list->next->str, "PWD=", 4) == 0)
 		{
 			x = temp_list->next->node_num;
 			temp_node = temp_list->next;
-			add_node_middle(tools, &tools->env_list, x, ft_strjoin("PWD=", tools->pwd));
+			add_node_middle(shell, &shell->env_list, x, ft_strjoin("PWD=", shell->pwd));
 			free_env_node(&temp_node);
 		}
 		else if (ft_strncmp(temp_list->next->str, "OLDPWD=", 7) == 0)
 		{
 			x = temp_list->next->node_num;
 			temp_node = temp_list->next;
-			add_node_middle(tools, &tools->env_list, x, ft_strjoin("OLDPWD=", tools->old_pwd));
+			add_node_middle(shell, &shell->env_list, x, ft_strjoin("OLDPWD=", shell->old_pwd));
 			free_env_node(&temp_node);
 		}
 		temp_list = temp_list->next;
@@ -84,23 +82,23 @@ char	*ft_get_env_value(t_env *env_list, char *str)
 	return (NULL);
 }
 
-int	ft_mini_cd(t_tools *tools)
+int	ft_mini_cd(t_shell *shell)
 {
 	char	*path;
 	int		ret;
 
-	path = ft_get_env_value(tools->env_list, "HOME=");
+	path = ft_get_env_value(shell->env_list, "HOME=");
 	ret = chdir(path);
 	if (ret == -1)
 	{
 		ft_putendl_fd("Error: No such file or directory", STDERR_FILENO);
 		return (EXIT_FAILURE);
 	}
-	free (tools->old_pwd);
-	tools->old_pwd = tools->pwd;
-	tools->pwd = getcwd(NULL, 0);
-	if (tools->pwd == NULL)
-		kill_program(tools, "Error: getcwd failed", 6);
-	ft_change_path_in_env(tools);
+	free (shell->old_pwd);
+	shell->old_pwd = shell->pwd;
+	shell->pwd = getcwd(NULL, 0);
+	if (shell->pwd == NULL)
+		kill_program(shell, "Error: getcwd failed", 6);
+	ft_change_path_in_env(shell);
 	return (EXIT_SUCCESS);
 }

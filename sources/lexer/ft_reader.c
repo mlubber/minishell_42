@@ -57,17 +57,17 @@ int	ft_read_word(int i, char *str, t_lexer **lexer_list)
 	return (j);
 }
 
-int	ft_reader(t_tools *tools)
+int	ft_reader(t_shell *shell)
 {
 	int	i;
 	int	j;
 
 	i = 0;
-	while (tools->full_string[i])
+	while (shell->input[i])
 	{
 		j = 0;
-		i = i + ft_skip_spaces(i, tools->full_string);
-		j = ft_read_word(i, tools->full_string, &tools->lexer_list);
+		i = i + ft_skip_spaces(i, shell->input);
+		j = ft_read_word(i, shell->input, &shell->lexer_list);
 		i = i + j;
 	}
 	return (1);

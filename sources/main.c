@@ -12,29 +12,29 @@
 
 #include "../include/minishell.h"
 
-void	init_tools(t_tools *tools)
+static void	init_shell(t_shell *shell)
 {
-	tools->full_string = NULL;
-	tools->paths = NULL;
-	tools->envp = NULL;
-	tools->pwd = NULL;
-	tools->old_pwd = NULL;
-	tools->env_size = 0;
-	tools->env_list = NULL;
-	tools->lexer_list = NULL;
+	shell->input = NULL;
+	shell->paths = NULL;
+	shell->envp = NULL;
+	shell->pwd = NULL;
+	shell->old_pwd = NULL;
+	shell->env_size = 0;
+	shell->env_list = NULL;
+	shell->lexer_list = NULL;
 }
 
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_tools	tools;
+	t_shell	shell;
 
 	if (argc != 1 || argv[1])
-		kill_program(&tools, "Program does not take arguments >:(\n", 1);
-	init_tools(&tools);
-	building_env(&tools, &tools.env_list, envp);
-	ft_minishell_loop(&tools);
-	delete_list(&tools.env_list);
+		kill_program(&shell, "Program does not take arguments >:(\n", 1);
+	init_shell(&shell);
+	building_env(&shell, &shell.env_list, envp);
+	ft_minishell_loop(&shell);
+	kill_program(&shell, NULL, EXIT_SUCCESS);
 	return (0);
 }
 

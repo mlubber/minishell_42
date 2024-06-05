@@ -54,9 +54,9 @@ typedef struct s_token
 }	t_token;
 
 
-typedef struct s_tools
+typedef struct s_shell
 {
-	char	*full_string;
+	char	*input;
 	char	**paths;
 	char	**envp;
 	char	*pwd;
@@ -64,36 +64,46 @@ typedef struct s_tools
 	int		env_size;
 	t_env	*env_list;
 	t_lexer	*lexer_list;
-}	t_tools;
+}	t_shell;
 
-void	ft_readline(char *line);
-void	ft_free_2d_arr(char **arr);
-char	**ft_copy_envp(char **envp);
-int		ft_find_pwd(t_tools *tools);
-char	*find_path(char **envp);
-int		ft_parse_envp(t_tools *tools);
-int		ft_init_tools(t_tools *tools);
-int		ft_reset_tools(t_tools *tools);
-int		ft_minishell_loop(t_tools *tools);
-int		ft_mini_env(t_tools *tools);
-void	ft_mini_pwd(t_tools *tools);
-int		ft_mini_export(t_tools *tools);
-int		ft_mini_cd(t_tools *tools);
+// Main
+
+
+// Environment
+t_env	*create_env_node(t_shell *shell, char *str);
+void	building_env(t_shell *shell, t_env **env_list, char **envp);
+
+
+// Lexer
 int		ft_is_whitespace(char c);
 int		ft_skip_spaces(int i, char *str);
 int		ft_add_node(char *str, t_lexer **lexer_list);
 int		ft_read_word(int i, char *str, t_lexer **lexer_list);
-int		ft_reader(t_tools *tools);
+int		ft_reader(t_shell *shell);
 t_lexer	*ft_new_lexer_node(char *str);
 void	ft_lexer_add_back(t_lexer **lexer_list, t_lexer *new);
 int		ft_handle_quotes(int i, char *str, char c);
-int		ft_count_env_lines(char **envp);
 
-t_env	*create_node(t_tools *tools, char *str); // toegevoegd
-void	building_env(t_tools *tools, t_env **env_list, char **envp); // toegevoegd
-void	kill_program(t_tools *tools, char *msg, int i); // toegevoegd
-void	delete_list(t_env **head); // toegevoegd
-void	add_node_middle(t_tools *tools, t_env **head, int position, char *str);
+
+// Bash shell
+void	ft_minishell_loop(t_shell *shell);
+// int		ft_init_shell(t_shell *shell);
+// int		ft_reset_shell(t_shell *shell);
+
+
+// Builtins
+int		ft_mini_env(t_shell *shell);
+void	ft_mini_pwd(t_shell *shell);
+int		ft_mini_export(t_shell *shell);
+int		ft_mini_cd(t_shell *shell);
+
+
+
+// Kill program
+void	kill_program(t_shell *shell, char *msg, int i);
+void	add_node_middle(t_shell *shell, t_env **head, int position, char *str);
 void	free_env_node(t_env **node);
+void	ft_free_2d_arr(char **arr);
+
 
 #endif

@@ -36,19 +36,19 @@ void	ft_sort_env_lines(char **envp, int count)
 	}
 }
 
-int	ft_mini_export(t_tools *tools)
+int	ft_mini_export(t_shell *shell)
 {
 	int		i;
 	int		count;
 	char	**export_list;
 	t_env	*tmp;
 
-	count = tools->env_size;
+	count = shell->env_size;
 	export_list = malloc((count + 1) * sizeof(char *));
 	if (export_list == NULL)
 		return (EXIT_FAILURE);
 	i = 0;
-	tmp = tools->env_list;
+	tmp = shell->env_list;
 	while (i < count)
 	{
 		export_list[i] = ft_strjoin(ft_strjoin(tmp->var_name, "="),

@@ -10,29 +10,33 @@ OBJ_DIR				= ./build/objects/
 
 # Compiler and CFlags
 CC					= cc
-CFLAGS				= -g -fsanitize=address -Wall -Werror -Wextra -I
+CFLAGS				= -Wall -Werror -Wextra -I #-g -fsanitize=address
 RM					= rm -f
 
 # Source Files
 MAIN_DIR			=	$(SRC_DIR)main.c
 
-UTILS_DIR			=	$(SRC_DIR)utils/ft_utils.c \
-						$(SRC_DIR)utils/ft_parse_envp.c \
-						$(SRC_DIR)utils/ft_minishell_loop.c \
-						$(SRC_DIR)utils/ft_lexer_utils.c \
-						$(SRC_DIR)utils/kill_program.c \
-						$(SRC_DIR)utils/create_env_node.c
+ENV_DIR				=	$(SRC_DIR)env/building_env.c \
+						$(SRC_DIR)env/create_env_node.c
 
 LEXER_DIR			=	$(SRC_DIR)lexer/ft_reader.c \
 						$(SRC_DIR)lexer/ft_handle_quotes.c
+
+SHELL_DIR			=	$(SRC_DIR)shell/ft_minishell_loop.c
+
+#EXEC_DIR
 
 BUILTINS_DIR		=	$(SRC_DIR)builtins/ft_mini_env.c \
 						$(SRC_DIR)builtins/ft_mini_pwd.c \
 						$(SRC_DIR)builtins/ft_mini_export.c \
 						$(SRC_DIR)builtins/ft_mini_cd.c
 
+UTILS_DIR			=	$(SRC_DIR)utils/ft_utils.c \
+						$(SRC_DIR)utils/ft_lexer_utils.c \
+						$(SRC_DIR)utils/kill_program.c
+
 # Concatenate all source files
-SRCS 				= $(BUILTINS_DIR) $(LEXER_DIR) $(UTILS_DIR) $(MAIN_DIR)
+SRCS 				= $(MAIN_DIR) $(ENV_DIR) $(LEXER_DIR) $(SHELL_DIR) $(BUILTINS_DIR) $(UTILS_DIR) 
 
 # Apply the pattern substitution to each source file in SRC and produce a corresponding list of object files in the OBJ_DIR
 OBJ 				= $(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRCS))

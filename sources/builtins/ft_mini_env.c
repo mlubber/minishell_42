@@ -12,11 +12,11 @@
 
 #include "../../include/minishell.h"
 
-int	ft_mini_env(t_tools *tools)
+int	ft_mini_env(t_shell *shell)
 {
 	t_env	*tmp;
 
-	tmp = tools->env_list;
+	tmp = shell->env_list;
 	while (tmp != NULL)
 	{
 		printf("%s\n", tmp->str);

@@ -88,21 +88,8 @@ static char	*set_var_value(char *str)
 	return (var_value);
 }
 
-static void	init_node(t_tools *tools, t_env *node, char *str)
+static void	init_node(t_shell *shell, t_env *node, char *str)
 {
-	node->var_name = set_var_name(str);
-	node->str = ft_strdup(str);
-	if (node->str == NULL)
-		kill_program(tools, "Failed strdupping node!", 6);
-	node->printed = false;
-	node->node_num = tools->env_size;
-	node->next = NULL;
-}
-
-t_env	*create_node(t_tools *tools, char *str)
-{
-	t_env	*node;
-	char	*str_value;
 	int		i;
 
 	i = 0;
@@ -110,19 +97,35 @@ t_env	*create_node(t_tools *tools, char *str)
 		i++;
 	if (str[i] == '=')
 	{
-		str_value = set_var_value(str + i + 1);
-		if (str_value == NULL)
-			return (NULL);
+		node->var_val = set_var_value(str + i + 1);
+		if (node->var_val == NULL)
+			kill_program(shell, "Failed mallocing env var value!", 6);
 	}
 	else
-		str_value = NULL;
+		node->var_val = NULL;
+	node->var_name = set_var_name(str);
+	if (node->var_name == NULL)
+		kill_program(shell, "Failed mallocing env name in env node!", 6);
+	node->str = ft_strdup(str);
+	if (node->str == NULL)
+		kill_program(shell, "Failed dupping str for env node!", 6);
+	node->printed = false;
+	node->node_num = shell->env_size;
+}
+
+t_env	*create_env_node(t_shell *shell, char *str)
+{
+	t_env	*node;
+
 	node = malloc(sizeof(t_env));
 	if (!node)
-		return (NULL);
-	init_node(tools, node, str);
-	node->var_val = str_value;
+		kill_program(shell, "Failed mallocing env node!", 6);
+	node->next = NULL;
+	node->str = NULL;
+	node->var_name = NULL;
+	node->var_val = NULL;
+	init_node(shell, node, str);
 	if (node->var_name == NULL)
-		kill_program(tools, "Failed mallocing node!", 3);
-	tools->env_size++;
+		kill_program(shell, "Failed mallocing node!", 3);
 	return (node);
 }

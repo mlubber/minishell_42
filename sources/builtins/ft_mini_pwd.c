@@ -12,7 +12,7 @@
 
 #include "../../include/minishell.h"
 
-void	ft_mini_pwd(t_tools *tools)
+void	ft_mini_pwd(t_shell *shell)
 {
-	ft_putendl_fd(tools->pwd, STDOUT_FILENO);
+	ft_putendl_fd(shell->pwd, STDOUT_FILENO);
 }
