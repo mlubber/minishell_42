@@ -6,18 +6,18 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/28 11:40:42 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/06/04 16:33:25 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/06/07 12:32:45 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-t_lexer	*ft_new_lexer_node(char *str)
+t_ctable	*ft_new_lexer_node(char *str)
 {
-	t_lexer		*new_node;
+	t_ctable		*new_node;
 	static int	i = 0;
 
-	new_node = (t_lexer *)malloc(sizeof(t_lexer));
+	new_node = (t_ctable *)malloc(sizeof(t_ctable));
 	if (new_node == NULL)
 		return (0);
 	new_node->str = str;
@@ -27,9 +27,9 @@ t_lexer	*ft_new_lexer_node(char *str)
 	return (new_node);
 }
 
-void	ft_lexer_add_back(t_lexer **lexer_list, t_lexer *new)
+void	ft_lexer_add_back(t_ctable **lexer_list, t_ctable *new)
 {
-	t_lexer	*temp;
+	t_ctable	*temp;
 
 	temp = *lexer_list;
 	if (*lexer_list == NULL)

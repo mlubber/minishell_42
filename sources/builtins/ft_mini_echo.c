@@ -1,31 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_mini_env.c                                      :+:    :+:            */
+/*   ft_mini_echo.c                                     :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
+/*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2024/05/27 10:57:13 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/06/07 12:34:13 by wsonepou      ########   odam.nl         */
+/*   Created: 2024/06/07 12:11:12 by wsonepou      #+#    #+#                 */
+/*   Updated: 2024/06/07 15:04:43 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int	ft_mini_env(t_shell *shell, char **split_input)
+int	ft_mini_echo(t_shell *shell, char **split_input)
 {
-	t_env	*tmp;
-
-	tmp = shell->env_list;
-	if (split_input[1] != NULL)
-		printf("env: Too many arguments");
-	else
-	{
-		while (tmp != NULL)
-		{
-			printf("%s\n", tmp->str);
-			tmp = tmp->next;
-		}
-	}
+	printf("Echo is still getting build!");
+	if (split_input != NULL)		//
+		return (1);					// Placement holder to make code work
+	if (shell->env_list != NULL)	//
+		return (1);					//
 	return (1);
 }

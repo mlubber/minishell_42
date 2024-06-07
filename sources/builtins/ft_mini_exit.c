@@ -1,31 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_mini_env.c                                      :+:    :+:            */
+/*   ft_mini_exit.c                                     :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
+/*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2024/05/27 10:57:13 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/06/07 12:34:13 by wsonepou      ########   odam.nl         */
+/*   Created: 2024/06/07 11:27:19 by wsonepou      #+#    #+#                 */
+/*   Updated: 2024/06/07 13:05:43 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int	ft_mini_env(t_shell *shell, char **split_input)
+int	ft_mini_exit(t_shell *shell, char **split_input)
 {
-	t_env	*tmp;
-
-	tmp = shell->env_list;
 	if (split_input[1] != NULL)
-		printf("env: Too many arguments");
-	else
 	{
-		while (tmp != NULL)
-		{
-			printf("%s\n", tmp->str);
-			tmp = tmp->next;
-		}
+		printf("Exit does not take arguments!\n");
+		return (1);
 	}
+	kill_program(shell, "exit", 0);
 	return (1);
 }

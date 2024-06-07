@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/04 09:00:37 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/06/04 16:26:20 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/06/07 17:30:08 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,23 +82,30 @@ char	*ft_get_env_value(t_env *env_list, char *str)
 	return (NULL);
 }
 
-int	ft_mini_cd(t_shell *shell)
+int	ft_mini_cd(t_shell *shell, char **split_input) // dubbele punt '..' werkt nog niet (segvault)
 {
 	char	*path;
 	int		ret;
 
-	path = ft_get_env_value(shell->env_list, "HOME=");
-	ret = chdir(path);
-	if (ret == -1)
+	if (split_input[2] != NULL)
 	{
-		ft_putendl_fd("Error: No such file or directory", STDERR_FILENO);
-		return (EXIT_FAILURE);
+		printf("cd: Too many arguments");
+		return (1);
 	}
+	if (split_input[1] == NULL)
+	{
+		path = ft_get_env_value(shell->env_list, "HOME=");
+		ret = chdir(path);
+	}
+	else
+		ret = chdir(split_input[1]);
+	if (ret == -1)
+		ft_putendl_fd("Error: No such file or directory", STDERR_FILENO);
 	free (shell->old_pwd);
 	shell->old_pwd = shell->pwd;
 	shell->pwd = getcwd(NULL, 0);
 	if (shell->pwd == NULL)
 		kill_program(shell, "Error: getcwd failed", 6);
 	ft_change_path_in_env(shell);
-	return (EXIT_SUCCESS);
+	return (1);
 }

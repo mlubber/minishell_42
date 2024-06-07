@@ -6,11 +6,16 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/09 08:55:50 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/06/04 16:33:47 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/06/07 16:41:34 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+int	ft_is_whitespace(char c)
+{
+	return (c == ' ' || (c >= '\t' && c <= '\r'));
+}
 
 // void	ft_readline(char *line)
 // {

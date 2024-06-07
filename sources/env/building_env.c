@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_parse_envp.c                                    :+:    :+:            */
+/*   building_env.c                                     :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/27 08:05:43 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/06/04 16:29:04 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/06/07 14:58:20 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static void	getting_pwd(t_shell *shell)
+static void	setting_pwd(t_shell *shell)
 {
 	t_env	*tmp;
 
@@ -35,7 +35,7 @@ static void	getting_pwd(t_shell *shell)
 	}
 }
 
-static void	getting_paths(t_shell *shell, char **envp)
+static void	setting_paths(t_shell *shell, char **envp)
 {
 	int		i;
 	char	*paths;
@@ -76,6 +76,6 @@ void	building_env(t_shell *shell, t_env **env_list, char **envp)
 		shell->env_size++;
 		i++;
 	}
-	getting_paths(shell, envp);
-	getting_pwd(shell);
+	setting_paths(shell, envp);
+	setting_pwd(shell);
 }

@@ -20,23 +20,29 @@ ENV_DIR				=	$(SRC_DIR)env/building_env.c \
 						$(SRC_DIR)env/create_env_node.c
 
 LEXER_DIR			=	$(SRC_DIR)lexer/ft_reader.c \
-						$(SRC_DIR)lexer/ft_handle_quotes.c
+						$(SRC_DIR)lexer/ft_handle_quotes.c \
+						$(SRC_DIR)lexer/ft_lexer_utils.c 
 
 SHELL_DIR			=	$(SRC_DIR)shell/ft_minishell_loop.c
 
+PARSER_DIR			=	$(SRC_DIR)parser/input_checker.c \
+						$(SRC_DIR)parser/input_splitter.c
+
 #EXEC_DIR
 
-BUILTINS_DIR		=	$(SRC_DIR)builtins/ft_mini_env.c \
+BUILTINS_DIR		=	$(SRC_DIR)builtins/ft_mini_echo.c \
+						$(SRC_DIR)builtins/ft_mini_cd.c \
 						$(SRC_DIR)builtins/ft_mini_pwd.c \
 						$(SRC_DIR)builtins/ft_mini_export.c \
-						$(SRC_DIR)builtins/ft_mini_cd.c
+						$(SRC_DIR)builtins/ft_mini_unset.c \
+						$(SRC_DIR)builtins/ft_mini_env.c \
+						$(SRC_DIR)builtins/ft_mini_exit.c
 
 UTILS_DIR			=	$(SRC_DIR)utils/ft_utils.c \
-						$(SRC_DIR)utils/ft_lexer_utils.c \
 						$(SRC_DIR)utils/kill_program.c
 
 # Concatenate all source files
-SRCS 				= $(MAIN_DIR) $(ENV_DIR) $(LEXER_DIR) $(SHELL_DIR) $(BUILTINS_DIR) $(UTILS_DIR) 
+SRCS 				= $(MAIN_DIR) $(ENV_DIR) $(LEXER_DIR) $(SHELL_DIR) $(PARSER_DIR) $(BUILTINS_DIR) $(UTILS_DIR) 
 
 # Apply the pattern substitution to each source file in SRC and produce a corresponding list of object files in the OBJ_DIR
 OBJ 				= $(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRCS))

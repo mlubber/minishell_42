@@ -6,16 +6,11 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/28 10:12:45 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/06/04 16:32:33 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/06/07 16:42:16 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-int	ft_is_whitespace(char c)
-{
-	return (c == ' ' || (c >= '\t' && c <= '\r'));
-}
 
 int	ft_skip_spaces(int i, char *str)
 {
@@ -27,9 +22,9 @@ int	ft_skip_spaces(int i, char *str)
 	return (j);
 }
 
-int	ft_add_node(char *str, t_lexer **lexer_list)
+int	ft_add_node(char *str, t_ctable **lexer_list)
 {
-	t_lexer	*node;
+	t_ctable	*node;
 
 	node = ft_new_lexer_node(str);
 	if (node == NULL)
@@ -38,7 +33,7 @@ int	ft_add_node(char *str, t_lexer **lexer_list)
 	return (1);
 }
 
-int	ft_read_word(int i, char *str, t_lexer **lexer_list)
+int	ft_read_word(int i, char *str, t_ctable **lexer_list)
 {
 	size_t	j;
 
