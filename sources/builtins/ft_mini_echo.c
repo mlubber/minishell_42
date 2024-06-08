@@ -12,6 +12,8 @@
 
 #include "../../include/minishell.h"
 
+// No work done yet
+// *** split_input gets replaced by the command table linked list ***
 int	ft_mini_echo(t_shell *shell, char **split_input)
 {
 	printf("Echo is still getting build!");

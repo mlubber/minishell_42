@@ -12,6 +12,7 @@
 
 #include "../include/minishell.h"
 
+// Initializing shell struct
 static void	init_shell(t_shell *shell)
 {
 	shell->input = NULL;

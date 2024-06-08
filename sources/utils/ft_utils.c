@@ -12,6 +12,7 @@
 
 #include "../../include/minishell.h"
 
+// Simple function that returns 1 if a whitespace char is found or 0 if none are found
 int	ft_is_whitespace(char c)
 {
 	return (c == ' ' || (c >= '\t' && c <= '\r'));

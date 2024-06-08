@@ -36,6 +36,8 @@ void	ft_sort_env_lines(char **envp, int count)
 	}
 }
 
+// Works fine
+// *** split_input gets replaced by the command table linked list ***
 int	ft_mini_export(t_shell *shell, char **split_input)
 {
 	int		i;

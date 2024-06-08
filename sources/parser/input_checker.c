@@ -65,6 +65,7 @@ static int	string_check(char *input)
 	return (0);
 }
 
+// Checks the input, but will need to be changed for quotes to work like bash
 int	input_checker(char **input)
 {
 	int	i;

@@ -12,6 +12,8 @@
 
 #include "../../include/minishell.h"
 
+// Works fine
+// *** split_input gets replaced by the command table linked list ***
 int	ft_mini_exit(t_shell *shell, char **split_input)
 {
 	if (split_input[1] != NULL)

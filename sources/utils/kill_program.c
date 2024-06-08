@@ -12,6 +12,7 @@
 
 #include "../../include/minishell.h"
 
+// Frees 2d arrays
 void	*ft_free_2d_arr(char ***arr, int i)
 {
 	if (arr == NULL || *arr == NULL)
@@ -36,6 +37,7 @@ void	*ft_free_2d_arr(char ***arr, int i)
 	return (NULL);
 }
 
+// Frees every node
 void	free_env_node(t_env **node)
 {
 	if ((*node)->str != NULL)
@@ -47,6 +49,7 @@ void	free_env_node(t_env **node)
 	free(*node);
 }
 
+// Frees our malloced environment
 void	free_env(t_shell *shell, t_env **env_head)
 {
 	int		i;
@@ -76,7 +79,7 @@ void	free_env(t_shell *shell, t_env **env_head)
 		free (shell->old_pwd);
 }
 
-
+// Cleans up all malloced stuff and exits minishell
 void	kill_program(t_shell *shell, char *msg, int i)
 {
 	free_env(shell, &shell->env_list);

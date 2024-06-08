@@ -82,7 +82,11 @@ char	*ft_get_env_value(t_env *env_list, char *str)
 	return (NULL);
 }
 
-int	ft_mini_cd(t_shell *shell, char **split_input) // dubbele punt '..' werkt nog niet (segvault)
+
+// Works like the 'cd' function. Using 'cd' or 'cd sources' work, for example
+// NOT FINISHED: input 'cd ..' gives segvaults.
+// *** split_input gets replaced by the command table linked list ***
+int	ft_mini_cd(t_shell *shell, char **split_input)
 {
 	char	*path;
 	int		ret;

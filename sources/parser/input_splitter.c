@@ -101,8 +101,7 @@ static int	ft_wordlength(char *str)
 	return (i);
 }
 
-
-// Andere whitespaces moeten nog worden toegevoegd
+// Currently working but will be replaced for a command table linked list
 char	**input_splitter(char *str)
 {
 	int		i;

@@ -12,7 +12,8 @@
 
 #include "../../include/minishell.h"
 
-
+// This function gets called to check if a cmd is a builtin function
+// *** split_input gets replaced by the command table linked list ***
 int	builtin_check(t_shell *shell, char **split_input)
 {
 	int	x;
@@ -37,6 +38,9 @@ int	builtin_check(t_shell *shell, char **split_input)
 	return (0);
 }
 
+// The minishell loop that keeps minishell running. We check if input is correct,
+// then add the input to readline history, then split the input into a 2d array
+// *** split_input gets replaced by the command table linked list ***
 void	ft_minishell_loop(t_shell *shell)
 {
 	char	*input;

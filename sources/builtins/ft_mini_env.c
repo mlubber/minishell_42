@@ -12,6 +12,8 @@
 
 #include "../../include/minishell.h"
 
+// Prints the environment
+// *** split_input gets replaced by the command table linked list ***
 int	ft_mini_env(t_shell *shell, char **split_input)
 {
 	t_env	*tmp;
