@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/04 09:00:37 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/06/07 17:30:08 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/06/10 13:17:50 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ int	ft_mini_cd(t_shell *shell, char **split_input)
 	char	*path;
 	int		ret;
 
-	if (split_input[2] != NULL)
+	if (split_input[1] != NULL && split_input[2] != NULL)
 	{
 		printf("cd: Too many arguments");
 		return (1);
