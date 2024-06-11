@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/27 10:57:13 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/06/07 12:34:13 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/06/11 17:42:58 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ int	ft_mini_env(t_shell *shell, char **split_input)
 	{
 		while (tmp != NULL)
 		{
-			printf("%s\n", tmp->str);
+			if (ft_strchr(tmp->str, '=') != NULL)
+				printf("%s\n", tmp->str);
 			tmp = tmp->next;
 		}
 	}

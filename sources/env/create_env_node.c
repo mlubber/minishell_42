@@ -6,11 +6,31 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/03 14:38:18 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/06/04 16:32:45 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/06/11 17:37:40 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+char	*ft_dup_str(t_env *node, char *str, int i)
+{
+	char	*result;
+	char	*single_quote_str;
+
+	single_quote_str = ft_strdup(str + i + 1);
+	if (node->var_val != NULL)
+	{
+		if (single_quote_str[0] == '\'')
+			result = ft_strjoin(ft_strjoin(node->var_name, "="),
+					ft_strtrim(single_quote_str, "\'"));
+		else
+			result = ft_strjoin(ft_strjoin(node->var_name, "="),
+					ft_strtrim(node->var_val, "\""));
+	}
+	else
+		result = ft_strdup(str);
+	return (result);
+}
 
 static char	*set_var_name(char *str)
 {
@@ -62,27 +82,29 @@ static char	*set_var_value_quotes(char *str)
 
 static char	*set_var_value(char *str)
 {
-	int		i;
+	// int		i;
 	char	*var_value;
 
-	if (*str == '"')
-	{
-		i = 1;
-		while (str[i] != '"' && str[i] != '\0')
-			i++;
-		if (str[i] == '"')
-			var_value = malloc((i + 2) * sizeof(char));
-		else
-			return (NULL);
-		i = 0;
-		while (var_value != NULL && str[i] != '\0')
-		{
-			var_value[i] = str[i];
-			i++;
-		}
-	}
-	else
-		var_value = set_var_value_quotes(str);
+	// if (*str == '"')
+	// {
+	// 	i = 1;
+	// 	while (str[i] != '"' && str[i] != '\0')
+	// 		i++;
+	// 	if (str[i] == '"')
+	// 		var_value = malloc((i + 2) * sizeof(char));
+	// 	else
+	// 		return (NULL);
+	// 	i = 0;
+	// 	while (var_value != NULL && str[i] != '\0')
+	// 	{
+	// 		var_value[i] = str[i];
+	// 		i++;
+	// 	}
+	// }
+	// else
+	if (str[0] == '\'')
+		str = ft_strtrim(str, "\'");
+	var_value = set_var_value_quotes(str);
 	if (var_value == NULL)
 		return (NULL);
 	return (var_value);
@@ -106,7 +128,7 @@ static void	init_node(t_shell *shell, t_env *node, char *str)
 	node->var_name = set_var_name(str);
 	if (node->var_name == NULL)
 		kill_program(shell, "Failed mallocing env name in env node!", 6);
-	node->str = ft_strdup(str);
+	node->str = ft_dup_str(node, str, i);
 	if (node->str == NULL)
 		kill_program(shell, "Failed dupping str for env node!", 6);
 	node->printed = false;

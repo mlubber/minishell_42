@@ -6,11 +6,66 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/03 11:01:03 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/06/07 13:02:19 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/06/11 17:43:14 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+char	*handle_quotes_var_val(char *str)
+{
+	int		i;
+	int		j;
+	char	*noquotes;
+
+	i = 0;
+	while (str[i] != '=' && str[i] != '\0')
+		i++;
+	if (str[i] == '=')
+	{
+		if (str[i + 1] == '\'')
+			return (str);
+		else
+		{
+			j = i;
+			while (str[j] != '\0')
+			{
+				if (str[j] != '\"' && str[j] != '\'')
+					i++;
+				j++;
+			}
+			noquotes = malloc(i + 1 * sizeof(char));
+			j = 0;
+			i = 0;
+			while (str[j] != '\0')
+			{
+				if (str[j] != '\"' && str[j] != '\'')
+					noquotes[i++] = str[j];
+				j++;
+			}
+			noquotes[i] = '\0';
+			return (noquotes);
+		}
+	}
+	else
+		return (str);
+}
+
+void	ft_free_arr(char ***arr)
+{
+	int	i;
+
+	i = 0;
+	if (*arr == NULL)
+		return ;
+	while ((*arr)[i] != NULL)
+	{
+		free((*arr)[i]);
+		i++;
+	}
+	free(*arr);
+	*arr = NULL;
+}
 
 void	ft_sort_env_lines(char **envp, int count)
 {
@@ -42,30 +97,56 @@ int	ft_mini_export(t_shell *shell, char **split_input)
 {
 	int		i;
 	char	**export_list;
+	char	*str;
 	t_env	*tmp;
+	t_env	*new;
+	// t_env	*temp_print;
 
-	if (split_input[1] != NULL)
-		printf("export: Too many arguments");
-	else
-	{
-		export_list = malloc((shell->env_size + 1) * sizeof(char *));
-		if (export_list == NULL)
-			return (EXIT_FAILURE);
-		i = 0;
-		tmp = shell->env_list;
-		while (i < shell->env_size)
+	// if (split_input[2] != NULL)
+	// 	printf("export: Too many arguments\n");
+	// else
+	// {
+		if (split_input[1] != NULL)
 		{
-			export_list[i] = ft_strjoin(ft_strjoin(tmp->var_name, "="),
-					tmp->var_val);
-			i++;
-			tmp = tmp->next;
+			str = handle_quotes_var_val(split_input[1]);
+			new = create_env_node(shell, str);
+			tmp = shell->env_list;
+			while (tmp->next != NULL)
+				tmp = tmp->next;
+			tmp->next = new;
+			shell->env_size++;
 		}
-		export_list[i] = NULL;
-		ft_sort_env_lines(export_list, shell->env_size);
-		i = 0;
-		while (i < shell->env_size - 1)
-			printf("declare -x %s\n", export_list[i++]);
-		ft_free_2d_arr(&export_list, 0);
-	}
+		else
+		{
+			export_list = malloc((shell->env_size + 1) * sizeof(char *));
+			if (export_list == NULL)
+				return (EXIT_FAILURE);
+			i = 0;
+			tmp = shell->env_list;
+			while (i <= shell->env_size)
+			{
+				if (tmp->var_val == NULL)
+					export_list[i] = ft_strdup(tmp->str);
+				else
+					export_list[i] = ft_strjoin(ft_strjoin(tmp->var_name, "="),
+							tmp->var_val);
+				i++;
+				tmp = tmp->next;
+			}
+			export_list[i] = NULL;
+			ft_sort_env_lines(export_list, shell->env_size + 1);
+			i = 0;
+			while (export_list[i] != NULL)
+				printf("declare -x %s\n", export_list[i++]);
+			ft_free_arr(&export_list);
+		}
+		// temp_print = shell->env_list;
+		// while (temp_print != NULL)
+		// {
+		// 	printf("%s\n", temp_print->str);
+		// 	temp_print = temp_print->next;
+		// }
+		// printf("=================================================================================\n");
+	// }
 	return (true);
 }

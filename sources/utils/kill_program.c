@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/30 14:08:00 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/06/07 15:04:06 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/06/11 10:54:59 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 void	*ft_free_2d_arr(char ***arr, int i)
 {
 	if (arr == NULL || *arr == NULL)
-		return NULL;
+		return (NULL);
 	if (i > 0)
 	{
 		while (i >= 0)
