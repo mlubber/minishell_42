@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/03 11:01:03 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/06/07 13:02:19 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/06/13 17:19:07 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,13 @@ void	ft_sort_env_lines(char **envp, int count)
 
 // Works fine
 // *** split_input gets replaced by the command table linked list ***
-int	ft_mini_export(t_shell *shell, char **split_input)
+int	ft_mini_export(t_shell *shell, char **cmds)
 {
 	int		i;
 	char	**export_list;
 	t_env	*tmp;
 
-	if (split_input[1] != NULL)
+	if (cmds[1] != NULL)
 		printf("export: Too many arguments");
 	else
 	{

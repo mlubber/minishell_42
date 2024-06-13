@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/27 09:30:02 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/06/07 18:38:11 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/06/13 17:38:47 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,64 @@
 
 // This function gets called to check if a cmd is a builtin function
 // *** split_input gets replaced by the command table linked list ***
-int	builtin_check(t_shell *shell, char **split_input)
+int	builtin_check(t_shell *shell)
 {
 	int	x;
 
 	x = 0;
-	if (ft_strncmp(split_input[0], "echo", 5) == 0)
-		x = ft_mini_echo(shell, split_input);
-	else if (ft_strncmp(split_input[0], "cd", 3) == 0)
-		x = ft_mini_cd(shell, split_input);
-	else if (ft_strncmp(split_input[0], "pwd", 4) == 0)
-		x = ft_mini_pwd(shell, split_input);
-	else if (ft_strncmp(split_input[0], "export", 7) == 0)
-		x = ft_mini_export(shell, split_input);
-	else if (ft_strncmp(split_input[0], "unset", 6) == 0)
-		x = ft_mini_unset(shell, split_input);
-	else if (ft_strncmp(split_input[0], "env", 4) == 0)
-		x = ft_mini_env(shell, split_input);
-	else if (ft_strncmp(split_input[0], "exit", 5) == 0)
-		x = ft_mini_exit(shell, split_input);
+	if (ft_strncmp(shell->input->cmds->cmds[0], "echo", 5) == 0)
+		x = ft_mini_echo(shell, shell->input->cmds->cmds);
+	else if (ft_strncmp(shell->input->cmds->cmds[0], "cd", 3) == 0)
+		x = ft_mini_cd(shell, shell->input->cmds->cmds);
+	else if (ft_strncmp(shell->input->cmds->cmds[0], "pwd", 4) == 0)
+		x = ft_mini_pwd(shell, shell->input->cmds->cmds);
+	else if (ft_strncmp(shell->input->cmds->cmds[0], "export", 7) == 0)
+		x = ft_mini_export(shell, shell->input->cmds->cmds);
+	else if (ft_strncmp(shell->input->cmds->cmds[0], "unset", 6) == 0)
+		x = ft_mini_unset(shell, shell->input->cmds->cmds);
+	else if (ft_strncmp(shell->input->cmds->cmds[0], "env", 4) == 0)
+		x = ft_mini_env(shell, shell->input->cmds->cmds);
+	else if (ft_strncmp(shell->input->cmds->cmds[0], "exit", 5) == 0)
+		x = ft_mini_exit(shell, shell->input->cmds->cmds);
 	if (x == 1)
 		return (1);
 	return (0);
+}
+
+void	check_ctable(t_shell *shell) // TESTING PURPOSES
+{
+	t_ctable	*tmp;
+	
+	int o = 0;
+	int num = 0;
+	tmp = shell->input->cmds;
+	while (tmp != NULL)
+	{
+		printf("\n--[NODE: %d]--\n", num);
+		if (tmp->type == 0)
+			printf("Type: cmd\n");
+		else if (tmp->type == 1)
+			printf("Type: |\n");
+		else if (tmp->type == 2)
+			printf("Type: <\n");
+		else if (tmp->type == 3)
+			printf("Type: <<\n");
+		else if (tmp->type == 4)
+			printf("Type: >\n");
+		else if (tmp->type == 5)
+			printf("Type: >>\n");
+		while (tmp->cmds != NULL && tmp->cmds[o] != NULL)
+		{
+			if (tmp->cmds != NULL)
+				printf("Cmd %d: %s\n", o, tmp->cmds[o]);
+			o++;
+		}
+		if (tmp->file != NULL)
+			printf("file %d: %s\n", o, tmp->file);
+		o = 0;
+		tmp = tmp->next;
+		num++;
+	}
 }
 
 // The minishell loop that keeps minishell running. We check if input is correct,
@@ -44,7 +80,6 @@ int	builtin_check(t_shell *shell, char **split_input)
 void	ft_minishell_loop(t_shell *shell)
 {
 	char	*input;
-	char	**split_input;
 
 	while (1)
 	{
@@ -59,11 +94,10 @@ void	ft_minishell_loop(t_shell *shell)
 		add_history(input);
 		if (input_checker(&input) == 1)
 			continue ;
-		split_input = input_splitter(input);
+		create_ctable(shell, input);
+		check_ctable(shell);
 		free (input);
-		if (split_input == NULL)
-			kill_program(shell, "Failed parsing input!", 6);
-		if (builtin_check(shell, split_input) == 1)
+		if (builtin_check(shell) == 1)
 			continue ;
 	}
 	if (input != NULL)

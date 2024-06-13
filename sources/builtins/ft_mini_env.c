@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/27 10:57:13 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/06/07 12:34:13 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/06/13 17:19:16 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 // Prints the environment
 // *** split_input gets replaced by the command table linked list ***
-int	ft_mini_env(t_shell *shell, char **split_input)
+int	ft_mini_env(t_shell *shell, char **cmds)
 {
 	t_env	*tmp;
 
 	tmp = shell->env_list;
-	if (split_input[1] != NULL)
+	if (cmds[1] != NULL)
 		printf("env: Too many arguments");
 	else
 	{

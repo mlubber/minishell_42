@@ -27,8 +27,6 @@ typedef struct s_env
 typedef struct s_ctable {	// ctable = command table
 	t_type			type;	// Dit is het type zoals hierboven
 	char			**cmds;	// Double array voor de cmd + flags of arguments
-	char			*var;	// Als er in een string een '$' gevonden is, kunnen we dat hier opslaan
-	int				var_len;
 	char			*file;	// Filenaam als er een redirect gevonden is
 	struct s_ctable	*next;
 }	t_ctable;
@@ -40,14 +38,12 @@ typedef struct s_input
 	char		*var_val; // pointer to the value of the found env variable
 	int			var_len; // length of the variable name
 	int			var_val_len; // length of the variable value
-	int			cmd_len; // length of the word, excluding var_len & quotes, including
+	int			cmd_len; // length of the word, excluding var_len & quotes, including var_val_len
+	int			part_len; // length of input part that is used to get through the input string
 }	t_input;
 
 typedef struct s_shell {
 	t_input		*input;		// test struct puur voor testing - Wordt vervangen door de echte shell struct
-	bool		infile;
-	bool		outfile;
-	int			len;
 	char		**TEMP_ENV;
 	t_env		*env_list;
 }	t_shell;
@@ -115,9 +111,7 @@ int	checking_var(t_shell *shell, char *str)
 	o = 0;
 	while (shell->TEMP_ENV[o] != NULL) // shell->TEMP_ENV[o] MOET VERVANGEN WORDEN DOOR LINKED LIST
 	{
-		int x = ft_strlen(i + 1);
-		printf("X: %d, string: %s\n", x, shell->TEMP_ENV[o]);
-		if (!ft_strncmp(str + 1, shell->TEMP_ENV[o], x)) // shell->TEMP_ENV[o] MOET VERVANGEN WORDEN DOOR LINKED LIST
+		if (ft_strncmp(str + 1, shell->TEMP_ENV[o], i + 1)) // shell->TEMP_ENV[o] MOET VERVANGEN WORDEN DOOR LINKED LIST
 		{
 			shell->input->var_val = "TEST/DIRECTORY";
 			shell->input->cmd_len += ft_strlen(shell->input->var_val);
@@ -129,7 +123,7 @@ int	checking_var(t_shell *shell, char *str)
 	return (i);
 }
 
-size_t	ft_strlcpy(char *dst, char *src, size_t size, t_shell *shell)
+size_t	ft_copystr(char *dst, char *src, size_t size, t_shell *shell)
 {
 	size_t	i;
 	size_t	o;
@@ -204,31 +198,7 @@ void	*ft_free(char **p)
 	return (NULL);
 }
 
-// Dit checkt de quotes van begin tot eind en returned de length. Moet aangepast worden
-// aan hoe bash werkt. Bijv.: ex"i"t wordt in bash gewoon exit en zou bash moeten afsluiten
-static int	check_quotes(char *str)
-{
-	int	i;
 
-	i = 0;
-	if (str[i] == '\'')
-	{
-		while (str[i] != '\'' && str[i] != '\0')
-			i++;
-		if (str[i] != '\'')
-			return (-1);
-		return (i);
-	}
-	else if (str[i] == '"')
-	{
-		while (str[i] != '"' && str[i] != '\0')
-			i++;
-		if (str[i] != '"')
-			return (-1);
-		return (i);
-	}
-	return (0);
-}
 
 // checked vanaf een bepaald punt in de string of een bepaald symbool gevonden wordt
 static int	char_check(char *str)
@@ -251,6 +221,8 @@ static int	char_check(char *str)
 	// 	return (check_quotes(str));
 	return (0);
 }
+
+
 
 // Is zoals ft_split, maar dan aangepast voor symbolen
 static int	ft_wordcount(char *str)
@@ -341,7 +313,7 @@ char	**input_splitter(t_shell *shell, char *str)
 		return (NULL);
 	while (char_check(str + i) == 0 && str[i] != '\0')
 		i++;
-	shell->len = i;
+	shell->input->part_len = i;
 	i = 0;
 	while (*str)
 	{
@@ -354,7 +326,7 @@ char	**input_splitter(t_shell *shell, char *str)
 		split_parts[i] = malloc((shell->input->cmd_len + 1) * sizeof(char));
 		if (split_parts[i] == NULL)
 			return (ft_free(split_parts));
-		ft_strlcpy(split_parts[i++], str, shell->input->cmd_len + 1, shell);
+		ft_copystr(split_parts[i++], str, shell->input->cmd_len + 1, shell);
 		str += len;
 	}
 	split_parts[i] = NULL;
@@ -396,9 +368,9 @@ char	*get_file_name(t_shell *shell, char *cmdline)
 	while (ft_is_whitespace(cmdline[i + o]) == 0 && char_check(cmdline + i + o) == 0 && cmdline[i + o] != '\0')
 		o++;
 	shell->input->cmd_len = o;
-	shell->len = i + o;
+	shell->input->part_len = i + o;
 	file = malloc((o + 1) * sizeof(char));
-	ft_strlcpy(file, cmdline + i, o, shell);
+	ft_copystr(file, cmdline + i, o, shell);
 	return (file);
 }
 
@@ -422,15 +394,13 @@ t_ctable	*create_ctable_node(t_shell *shell, char *cmdline)
 		else if (new->type == t_greater || new->type == t_d_greater)
 			new->file = get_file_name(shell, cmdline);
 		new->cmds = NULL;
-		new->var = NULL;
 		if (new->type == t_pipe)
-			shell->len = 1;
+			shell->input->part_len = 1;
 	}
 	else
 	{
 		new->type = t_cmd;
 		new->cmds = input_splitter(shell, cmdline);
-		new->var = NULL; // TO BE HANDLED IN NEW FUNCTIONS
 	}
 	new->next = NULL;
 	return (new);
@@ -438,7 +408,7 @@ t_ctable	*create_ctable_node(t_shell *shell, char *cmdline)
 
 
 // Hier komt de while loop die nieuwe nodes aanmaakt 
-void	creating_ctable(t_shell *shell, char *cmdline)
+void	create_ctable(t_shell *shell, char *cmdline)
 {
 	int			i;
 	t_ctable	*tmp;
@@ -449,7 +419,7 @@ void	creating_ctable(t_shell *shell, char *cmdline)
 	while (ft_is_whitespace(cmdline[i]))
 		i++;
 	shell->input->cmds = create_ctable_node(shell, cmdline + i);
-	i += shell->len;
+	i += shell->input->part_len;
 	tmp = shell->input->cmds;
 	while (cmdline[i])
 	{
@@ -462,8 +432,8 @@ void	creating_ctable(t_shell *shell, char *cmdline)
 		if (tmp->next == NULL)
 			exit(6); // PLACEHOLDER KILL_PROGRAM
 		tmp = tmp->next;
-		i += shell->len;
-		shell->len = 0;
+		i += shell->input->part_len;
+		shell->input->part_len = 0;
 	}
 }
 
@@ -476,15 +446,13 @@ int	main(int argc, char **argv, char **envp)
 
 	shell.input = &input;
 	shell.input->cmds = NULL;
-	shell.len = 0;
-	shell.infile = false;
-	shell.outfile = false;
+	shell.input->part_len = 0;
 	shell.TEMP_ENV = envp;
 	char *cmdline = "Hello World! | \"\'che\'d\'sgck\'\" Yepp>> check4.txt";
 	char *cmdline2 = "Hel $HO\"ME Bye \""; // Werkt alleen met doorgegeven envp in shell.TEMP_ENV
 	// printf("\nString to check: %s\n\n", cmdline);
 
-	creating_ctable(&shell, cmdline2);
+	create_ctable(&shell, cmdline2);
 
 	int o = 0;
 	int num = 0;

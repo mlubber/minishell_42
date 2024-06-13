@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/07 11:27:19 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/06/07 13:05:43 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/06/13 17:19:12 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 // Works fine
 // *** split_input gets replaced by the command table linked list ***
-int	ft_mini_exit(t_shell *shell, char **split_input)
+int	ft_mini_exit(t_shell *shell, char **cmds)
 {
-	if (split_input[1] != NULL)
+	if (cmds[1] != NULL)
 	{
 		printf("Exit does not take arguments!\n");
 		return (1);

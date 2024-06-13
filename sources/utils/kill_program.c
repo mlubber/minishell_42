@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/30 14:08:00 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/06/07 15:04:06 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/06/13 16:15:29 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,20 @@ void	*ft_free_2d_arr(char ***arr, int i)
 	free(*arr);
 	return (NULL);
 }
+
+// void	*ft_free(char **p)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while (p[i] != NULL)
+// 	{
+// 		free(p[i]);
+// 		i++;
+// 	}
+// 	free(p);
+// 	return (NULL);
+// }
 
 // Frees every node
 void	free_env_node(t_env **node)

@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/04 09:00:37 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/06/10 13:17:50 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/06/13 17:19:42 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,23 +86,23 @@ char	*ft_get_env_value(t_env *env_list, char *str)
 // Works like the 'cd' function. Using 'cd' or 'cd sources' work, for example
 // NOT FINISHED: input 'cd ..' gives segvaults.
 // *** split_input gets replaced by the command table linked list ***
-int	ft_mini_cd(t_shell *shell, char **split_input)
+int	ft_mini_cd(t_shell *shell, char **cmds)
 {
 	char	*path;
 	int		ret;
 
-	if (split_input[1] != NULL && split_input[2] != NULL)
+	if (cmds[1] != NULL && cmds[2] != NULL)
 	{
 		printf("cd: Too many arguments");
 		return (1);
 	}
-	if (split_input[1] == NULL)
+	if (cmds[1] == NULL)
 	{
 		path = ft_get_env_value(shell->env_list, "HOME=");
 		ret = chdir(path);
 	}
 	else
-		ret = chdir(split_input[1]);
+		ret = chdir(cmds[1]);
 	if (ret == -1)
 		ft_putendl_fd("Error: No such file or directory", STDERR_FILENO);
 	free (shell->old_pwd);
