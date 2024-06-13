@@ -79,7 +79,6 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	size_t	i;
 
 	i = 0;
-	// printf("var: %s,  ---  env: %s\n", s1, s2);
 	while (i != n)
 	{
 		if (s1[i] != s2[i] || s1[i] == '\0' || s2[i] == '\0')
@@ -92,16 +91,19 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 int	checking_var(t_shell *shell, char *str)
 {
 	int		i;
+	int		o;
 	t_env	*tmp;
 	char	*var;
 
-	int o = 0;
+	o = 0;
 	i = 1;
+
 	while (ft_isalnum(str[i]))
 		i++;
+	printf("i: %d\n", i);
 	shell->input->cmd_len -= i;
 	var = malloc(i * sizeof(char));
-	if (var == NULL)
+	if (var == NULL) // KILL_PROGRAM();
 		exit(6);
 	while (o < i - 1)
 	{
@@ -113,7 +115,9 @@ int	checking_var(t_shell *shell, char *str)
 	o = 0;
 	while (shell->TEMP_ENV[o] != NULL) // shell->TEMP_ENV[o] MOET VERVANGEN WORDEN DOOR LINKED LIST
 	{
-		if (ft_strncmp(str + 1, shell->TEMP_ENV[o], i)) // shell->TEMP_ENV[o] MOET VERVANGEN WORDEN DOOR LINKED LIST
+		int x = ft_strlen(i + 1);
+		printf("X: %d, string: %s\n", x, shell->TEMP_ENV[o]);
+		if (!ft_strncmp(str + 1, shell->TEMP_ENV[o], x)) // shell->TEMP_ENV[o] MOET VERVANGEN WORDEN DOOR LINKED LIST
 		{
 			shell->input->var_val = "TEST/DIRECTORY";
 			shell->input->cmd_len += ft_strlen(shell->input->var_val);
@@ -137,7 +141,7 @@ size_t	ft_strlcpy(char *dst, char *src, size_t size, t_shell *shell)
 	p = 0;
 	if (size == 0)
 		return (ft_strlen(src));
-	printf("cmd_len in strlcpy: %d\n", shell->input->cmd_len);
+
 	while (o < shell->input->cmd_len)
 	{
 		if (src[i] == '\'')
@@ -171,7 +175,6 @@ size_t	ft_strlcpy(char *dst, char *src, size_t size, t_shell *shell)
 				i += checking_var(shell, src + i);
 				while (shell->input->var_val[p] != '\0')
 				{
-					printf("o: %zu, p: %zu - %c\n", o, p, shell->input->var_val[p]);
 					dst[o++] = shell->input->var_val[p++];
 				}
 				o++;
@@ -285,7 +288,7 @@ static int	ft_wordlength(t_shell *shell, char *str)
 	quotes = 0;
 	shell->input->cmd_len = 0; // wordlength begint op 0
 	if (char_check(str) > 0)
-		return (char_check(str));
+		return (0);
 	else
 	{
 		while (!ft_is_whitespace(str[i]) && str[i] != '\0' && char_check(str + i) == 0)
@@ -304,7 +307,9 @@ static int	ft_wordlength(t_shell *shell, char *str)
 				while (str[i] != '"')
 				{
 					if (str[i] == '$')
+					{
 						i += checking_var(shell, str + i);
+					}
 					else
 						i++;
 				}
@@ -312,13 +317,14 @@ static int	ft_wordlength(t_shell *shell, char *str)
 				quotes += 2;
 			}
 			else if (str[i] == '$')
+			{
 				i += checking_var(shell, str + i);
+			}
 			else
 				i++;
 		}
 	}
 	shell->input->cmd_len += i - quotes;
-	printf("cmd_len: %d\n", shell->input->cmd_len);
 	return (i);
 }
 
@@ -387,11 +393,12 @@ char	*get_file_name(t_shell *shell, char *cmdline)
 	o = 0;
 	while (cmdline[i] == '<' || cmdline[i] == '>' || ft_is_whitespace(cmdline[i]))
 		i++;
-	while (ft_is_whitespace(cmdline[i + o]) == 0 && char_check(cmdline + i + o) == 0)
+	while (ft_is_whitespace(cmdline[i + o]) == 0 && char_check(cmdline + i + o) == 0 && cmdline[i + o] != '\0')
 		o++;
+	shell->input->cmd_len = o;
 	shell->len = i + o;
 	file = malloc((o + 1) * sizeof(char));
-	ft_strlcpy(file, cmdline + i, o + 1, shell);
+	ft_strlcpy(file, cmdline + i, o, shell);
 	return (file);
 }
 
@@ -473,21 +480,22 @@ int	main(int argc, char **argv, char **envp)
 	shell.infile = false;
 	shell.outfile = false;
 	shell.TEMP_ENV = envp;
-	char *cmdline = "Hello World! | \"chedsgck\" >> check4";
-	char *cmdline2 = "\"\" H\"e\"l $HO\"\"ME Bye \"\""; // Werkt alleen met doorgegeven envp in shell.TEMP_ENV
-	printf("\nString to check: %s\n\n", cmdline2);
+	char *cmdline = "Hello World! | \"\'che\'d\'sgck\'\" Yepp>> check4.txt";
+	char *cmdline2 = "Hel $HO\"ME Bye \""; // Werkt alleen met doorgegeven envp in shell.TEMP_ENV
+	// printf("\nString to check: %s\n\n", cmdline);
 
 	creating_ctable(&shell, cmdline2);
 
 	int o = 0;
+	int num = 0;
 	tmp = shell.input->cmds;
 	while (tmp != NULL)
 	{
-		printf("\nNODE:\n");
+		printf("\n--[NODE: %d]--\n", num);
 		while (tmp->cmds != NULL && tmp->cmds[o] != NULL)
 		{
 			if (tmp->cmds != NULL)
-				printf("string %d: %s\n", o, tmp->cmds[o]);
+				printf("Cmd %d: %s\n", o, tmp->cmds[o]);
 			o++;
 		}
 		if (tmp->file != NULL)
@@ -495,7 +503,7 @@ int	main(int argc, char **argv, char **envp)
 		printf("Type: %d\n", tmp->type);
 		o = 0;
 		tmp = tmp->next;
+		num++;
 	}
 	return (0);
 }
-
