@@ -6,18 +6,44 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/07 12:10:52 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/06/10 13:14:22 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/06/17 13:33:58 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
+int	search_and_delete_var(t_env **head, char *str)
+{
+	t_env	*temp;
+	t_env	*prev;
+
+	temp = *head;
+	prev = NULL;
+	if (temp != NULL
+		&& ft_strncmp(temp->var_name, str, ft_strlen(str) + 1) == 0)
+	{
+		*head = temp->next;
+		free(temp);
+	}
+	while (temp != NULL
+		&& ft_strncmp(temp->var_name, str, ft_strlen(str) + 1) != 0)
+	{
+		prev = temp;
+		temp = temp->next;
+	}
+	if (temp == NULL)
+		return (false);
+	prev->next = temp->next;
+	free_env_node(&temp);
+	return (true);
+}
+
 // Will delete the node and set the next pointers in the prior and latter node correctly.
 // Currently does not work and needs to be split up in multiple functions probably
-// void	delete_var(t_list **head, int position)
+// void	delete_var(t_env **head, int position)
 // {
-// 	t_list	*tmp;
-// 	t_list	*old;
+// 	t_env	*tmp;
+// 	t_env	*old;
 
 // 	tmp = *head;
 // 	old = NULL;
@@ -59,27 +85,20 @@
 int	ft_mini_unset(t_shell *shell, char **split_input)
 {
 	int		i;
-	int		pos;
 	t_env	*tmp;
 
 	i = 0;
-	pos = 0;
 	tmp = shell->env_list;
 	if (split_input[1] == NULL)
 		return (1);
 	while (split_input[i] != NULL)
 	{
-		while (tmp != NULL)
+		if (search_and_delete_var(&tmp, split_input[i]) != 0)
 		{
-			if (ft_strncmp(tmp->var_name, split_input[i], ft_strlen(split_input[i]) + 1) == 0)
-			{
-				// delete_var(tmp, i);
-				break ;
-			}
-			pos++;
+			shell->env_size--;
+			break ;
 		}
-		pos = 0;
-		i++;		
+		i++;
 	}
 	return (1);
 }

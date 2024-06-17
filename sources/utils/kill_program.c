@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/30 14:08:00 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/06/11 10:54:59 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/06/17 13:31:41 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void	free_env_node(t_env **node)
 	if ((*node)->var_val != NULL)
 		free((*node)->var_val);
 	free(*node);
+	*node = NULL;
 }
 
 // Frees our malloced environment

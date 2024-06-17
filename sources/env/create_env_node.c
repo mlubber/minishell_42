@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/03 14:38:18 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/06/11 17:37:40 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/06/17 14:50:43 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ static char	*set_var_name(char *str)
 	return (var_name);
 }
 
-
 static char	*set_var_value_quotes(char *str)
 {
 	int		i;
@@ -80,28 +79,10 @@ static char	*set_var_value_quotes(char *str)
 	return (var_value);
 }
 
-static char	*set_var_value(char *str)
+char	*set_var_value(char *str)
 {
-	// int		i;
 	char	*var_value;
 
-	// if (*str == '"')
-	// {
-	// 	i = 1;
-	// 	while (str[i] != '"' && str[i] != '\0')
-	// 		i++;
-	// 	if (str[i] == '"')
-	// 		var_value = malloc((i + 2) * sizeof(char));
-	// 	else
-	// 		return (NULL);
-	// 	i = 0;
-	// 	while (var_value != NULL && str[i] != '\0')
-	// 	{
-	// 		var_value[i] = str[i];
-	// 		i++;
-	// 	}
-	// }
-	// else
 	if (str[0] == '\'')
 		str = ft_strtrim(str, "\'");
 	var_value = set_var_value_quotes(str);
