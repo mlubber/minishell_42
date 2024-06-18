@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/03 11:01:03 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/06/17 17:04:15 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/06/18 17:06:06 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ char	*cut_quotes_var_val(char *str, int i)
 		j++;
 	}
 	noquotes[i] = '\0';
+	// printf("no quotes: %s\n", noquotes);
 	return (noquotes);
 }
 
@@ -42,11 +43,14 @@ char	*handle_quotes_var_val(char *str)
 	int		i;
 
 	i = 0;
+	// printf("split_input: %s\n", str);
 	while (str[i] != '=' && str[i] != '\0')
 		i++;
 	if (str[i] == '=')
 	{
-		if (str[i + 1] == '\'')
+		if (str[i + 1] == '\'' && str[i + 2] == '\"')
+			return (str);
+		if (str[i + 1] == '\"' && str[i + 2] == '\'')
 			return (str);
 		else
 			return (cut_quotes_var_val(str, i));
@@ -98,37 +102,100 @@ void	ft_sort_env_lines(char **envp, int count)
 	}
 }
 
-int	check_duplicate_var(t_shell *shell, char *split_input)
+void	replace_var_value(t_shell *shell, t_env *temp, char *input, int len)
+{
+	char	*str;
+
+	str = handle_quotes_var_val(input);
+	temp->var_val = set_var_value(str + len + 1);
+	temp->str = ft_dup_str(temp, str, len);
+	if (temp->var_val == NULL)
+		kill_program(shell, "Failed mallocing env var value!", 6);
+}
+
+int	check_duplicate_var(t_shell *shell, char *input)
 {
 	t_env	*temp;
-	int		len;
+	size_t	len;
 
 	temp = shell->env_list;
 	len = 0;
-	while (split_input[len] != '=' && split_input[len] != '\0')
+	while (input[len] != '=' && input[len] != '\0')
 		len++;
 	while (temp != NULL)
 	{
-		// printf("split_input: %s\n", split_input);
-		// printf("temp->str: %s\n", temp->str);
-		// printf("compare result: %d\n", ft_strncmp(temp->str, split_input, len));
-		if (ft_strncmp(temp->str, split_input, len) == 0)
+		if (ft_strlen(temp->var_name) == len)
 		{
-			// printf("temp->var_val: %s\n", temp->var_val);
-			// printf("split_input %s\n", split_input);
-			// temp->var_val = set_var_value(split_input + len + 1);
-			if (split_input[len] == '=')
+			if (ft_strncmp(temp->var_name,
+					input, ft_strlen(temp->var_name)) == 0)
 			{
-				temp->var_val = set_var_value(split_input + len + 1);
-				temp->str = ft_dup_str(temp, split_input, len);
-				if (temp->var_val == NULL)
-					kill_program(shell, "Failed mallocing env var value!", 6);
+				if (input[len] == '=')
+					replace_var_value(shell, temp, input, len);
+				return (true);
 			}
-			else
-				temp->var_val = NULL;
-			return (true);
 		}
 		temp = temp->next;
+	}
+	return (false);
+}
+
+// int	compare_var(t_shell *shell, char *str)
+// {
+// 	int	i;
+// 	int	len;
+
+// 	i = 0;
+// 	len = 0;
+// 	while (str[len] != '=' && str[len] != '\0')
+// 		len++;
+// 	while (i < len && str[i] == shell->env_list->str[i])
+// 		i++;
+// 	if (str[i] != shell->env_list->str[i])
+// 		return (0);
+// 	return (len);
+// }
+
+// int	check_duplicate_var(t_shell *shell, char *input)
+// {
+// 	t_env	*temp;
+// 	t_env	*temp_node;
+// 	int		x;
+// 	int		len;
+
+// 	temp = shell->env_list;
+// 	while (temp != NULL)
+// 	{
+// 		len = compare_var(shell, input);
+// 		if (len > 0 && input[len] == '=')
+// 		{
+// 			x = temp->next->node_num;
+// 			temp_node = temp->next;
+// 			add_node_middle(shell, &shell->env_list, x, input);
+// 			free_env_node(&temp_node);
+// 			return (true);
+// 		}
+// 		temp = temp->next;
+// 	}
+// 	return (false);
+// }
+
+int	check_alpha_num(char *str)
+{
+	int	i;
+
+	i = 0;
+	if ((str[i] >= 'a' && str[i] <= 'z')
+		|| (str[i] >= 'A' && str[i] <= 'Z')
+		|| (str[i] == '_'))
+	{
+		i++;
+		while (str[i] != '=' && str[i] != '\0')
+		{
+			if (!ft_isalnum(str[i]) && str[i] != '_')
+				return (false);
+			i++;
+		}
+		return (true);
 	}
 	return (false);
 }
@@ -139,6 +206,11 @@ void	add_export_node(t_shell *shell, char *split_input)
 	t_env	*new;
 	char	*str;
 
+	if (check_alpha_num(split_input) == 0)
+	{
+		printf("export: '%s': not a valid identifier\n", split_input);
+		return ;
+	}
 	if (check_duplicate_var(shell, split_input) == 1)
 		return ;
 	else
@@ -149,7 +221,6 @@ void	add_export_node(t_shell *shell, char *split_input)
 		while (tmp->next != NULL)
 			tmp = tmp->next;
 		tmp->next = new;
-		shell->env_size++;
 	}
 }
 // Works fine

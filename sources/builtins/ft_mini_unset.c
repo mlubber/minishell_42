@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/07 12:10:52 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/06/17 13:33:58 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/06/18 10:59:17 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,7 @@ int	search_and_delete_var(t_env **head, char *str)
 // 	}
 // }
 
-// Will delete the node and set the next pointers in the prior and latter node correctly.
-// Currently does not work
+// Will delete the node and set the next pointers in the prior and latter node correctly. Updates the node_num accordingly
 // *** split_input gets replaced by the command table linked list ***
 int	ft_mini_unset(t_shell *shell, char **split_input)
 {
@@ -95,6 +94,12 @@ int	ft_mini_unset(t_shell *shell, char **split_input)
 	{
 		if (search_and_delete_var(&tmp, split_input[i]) != 0)
 		{
+			while (tmp->next != NULL)
+			{
+				if (tmp->next->node_num - tmp->node_num > 1)
+					tmp->next->node_num = tmp->node_num + 1;
+				tmp = tmp->next;
+			}
 			shell->env_size--;
 			break ;
 		}

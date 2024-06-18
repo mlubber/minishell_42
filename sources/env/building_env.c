@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/27 08:05:43 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/06/07 14:58:20 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/06/18 11:04:50 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ void	building_env(t_shell *shell, t_env **env_list, char **envp)
 		if (tmp == NULL)
 			kill_program(shell, "Failed building env!", 6);
 		tmp = tmp->next;
-		shell->env_size++;
 		i++;
 	}
 	setting_paths(shell, envp);

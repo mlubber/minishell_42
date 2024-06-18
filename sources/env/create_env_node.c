@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/03 14:38:18 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/06/17 14:50:43 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/06/18 15:38:37 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,12 @@ char	*ft_dup_str(t_env *node, char *str, int i)
 	single_quote_str = ft_strdup(str + i + 1);
 	if (node->var_val != NULL)
 	{
-		if (single_quote_str[0] == '\'')
+		if (single_quote_str[0] == '\'' && single_quote_str[1] == '\"')
 			result = ft_strjoin(ft_strjoin(node->var_name, "="),
 					ft_strtrim(single_quote_str, "\'"));
+		else if (single_quote_str[0] == '\"' && single_quote_str[1] == '\'')
+			result = ft_strjoin(ft_strjoin(node->var_name, "="),
+					ft_strtrim(single_quote_str, "\""));
 		else
 			result = ft_strjoin(ft_strjoin(node->var_name, "="),
 					ft_strtrim(node->var_val, "\""));
@@ -83,8 +86,10 @@ char	*set_var_value(char *str)
 {
 	char	*var_value;
 
-	if (str[0] == '\'')
+	if (str[0] == '\'' && str[1] == '\"')
 		str = ft_strtrim(str, "\'");
+	if (str[0] == '\"' && str[1] == '\'')
+		str = ft_strtrim(str, "\"");
 	var_value = set_var_value_quotes(str);
 	if (var_value == NULL)
 		return (NULL);
@@ -128,6 +133,7 @@ t_env	*create_env_node(t_shell *shell, char *str)
 	node->var_name = NULL;
 	node->var_val = NULL;
 	init_node(shell, node, str);
+	shell->env_size++;
 	if (node->var_name == NULL)
 		kill_program(shell, "Failed mallocing node!", 3);
 	return (node);
