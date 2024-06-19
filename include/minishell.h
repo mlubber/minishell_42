@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/22 06:12:53 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/06/13 17:21:34 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/06/19 17:30:20 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,19 +27,11 @@
 typedef enum { 		// Dit zijn, denk ik, de verschillende cmd types die we moeten bijhouden
 	t_cmd,			// Dit is gewoon de cmd + flags of arguments, bijv. 'ls -la'
 	t_pipe,			// '|'
-	t_less,			// '<'
-	t_d_less,		// '<<'
-	t_greater,		// '>'
-	t_d_greater,	// '>>' 
+	t_in_file,		// '<'
+	t_in_heredoc,	// '<<'
+	t_out_trunc,	// '>'
+	t_out_append,	// '>>' 
 }	t_type;
-
-// typedef struct s_ctable // command table linked list
-// {
-// 	char			*str;
-// 	int				node_nbr;
-// 	struct s_ctable	*prev;
-// 	struct s_ctable	*next;
-// }	t_ctable;
 
 typedef struct s_env
 {
@@ -51,21 +43,19 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
-typedef struct s_token
+typedef struct s_file
 {
-	char	*pipe;
-	char	*bi_env;
-	char	*bi_cd;
-	char	*bi_exit;
-	char	*bi_export;
-	char	*bi_pwd;
-}	t_token;
+	t_type			type;
+	char			*str;
+	struct s_file	*next;
+}	t_file;
 
 /* Command table linked list node */
-typedef struct s_ctable {	// ctable = command table
-	t_type			type;	// Dit is het type zoals hierboven
+typedef struct s_ctable		// ctable = command table
+{
 	char			**cmds;	// Double array voor de cmd + flags of arguments
-	char			*file;	// Filenaam als er een redirect gevonden is
+	t_file			*infiles;
+	t_file			*outfiles;
 	struct s_ctable	*next;
 }	t_ctable;
 
@@ -76,8 +66,8 @@ typedef struct s_input
 	char		*var_val; // pointer to the value of the found env variable
 	int			var_len; // length of the variable name
 	int			var_val_len; // length of the variable value
-	int			cmd_len; // length of the word, excluding var_len & quotes, including var_val_len
-	int			part_len; // length of input part that is used to get through the input string
+	int			word_len; // length of the word, excluding var_len & quotes, including var_val_len
+	int			cmd_seg; // Length of the segment until a pipe or \0, including infiles, outfiles, command and arguments
 }	t_input;
 
 typedef struct s_shell
@@ -101,12 +91,12 @@ void	building_env(t_shell *shell, t_env **env_list, char **envp);
 
 // Lexer
 int			ft_is_whitespace(char c);
-int			ft_skip_spaces(int i, char *str);
-int			ft_add_node(char *str, t_ctable **lexer_list);
-int			ft_read_word(int i, char *str, t_ctable **lexer_list);
-int			ft_reader(t_shell *shell);
-t_ctable	*ft_new_lexer_node(char *str);
-void		ft_lexer_add_back(t_ctable **lexer_list, t_ctable *new);
+// int			ft_skip_spaces(int i, char *str);
+// int			ft_add_node(char *str, t_ctable **lexer_list);
+// int			ft_read_word(int i, char *str, t_ctable **lexer_list);
+// int			ft_reader(t_shell *shell);
+// t_ctable	*ft_new_lexer_node(char *str);
+// void		ft_lexer_add_back(t_ctable **lexer_list, t_ctable *new);
 int			ft_handle_quotes(int i, char *str, char c);
 
 
@@ -114,6 +104,8 @@ int			ft_handle_quotes(int i, char *str, char c);
 // Parser
 int		input_checker(char **input);
 void	create_ctable(t_shell *shell, char *cmdline);
+int		ft_wordlength(t_shell *shell, char *str);
+void	ft_copystr(char *dst, char *src, t_shell *shell);
 
 
 

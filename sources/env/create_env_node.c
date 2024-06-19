@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/03 14:38:18 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/06/04 16:32:45 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/06/18 14:47:23 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ static char	*set_var_value(char *str)
 
 static void	init_node(t_shell *shell, t_env *node, char *str)
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	while (str[i] != '=' && str[i] != '\0')

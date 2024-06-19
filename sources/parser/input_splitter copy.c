@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   input_splitter.c                                   :+:    :+:            */
+/*   input_splitter copy.c                              :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/07 10:48:45 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/06/19 17:31:51 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/06/18 14:39:53 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,10 @@ int	checking_var(t_shell *shell, char *str)
 
 	o = 0;
 	i = 1;
+
 	while (ft_isalnum(str[i]))
 		i++;
-	shell->input->word_len -= i;
+	shell->input->cmd_len -= i;
 	var = malloc(i * sizeof(char));
 	if (var == NULL)
 		kill_program(shell, "Failed mallocing var name", 6);
@@ -40,7 +41,7 @@ int	checking_var(t_shell *shell, char *str)
 		if (!ft_strncmp(var, tmp->var_name, i))
 		{
 			shell->input->var_val = tmp->var_val;
-			shell->input->word_len += ft_strlen(tmp->var_val) - 2;
+			shell->input->cmd_len += ft_strlen(tmp->var_val) - 2;
 			break ;
 		}
 		tmp = tmp->next;
@@ -58,7 +59,7 @@ void	ft_copystr(char *dst, char *src, t_shell *shell)
 	i = 0;
 	o = 0;
 	p = 1;
-	while (o < shell->input->word_len)
+	while (o < shell->input->cmd_len)
 	{
 		if (src[i] == '\'')
 		{
@@ -89,6 +90,7 @@ void	ft_copystr(char *dst, char *src, t_shell *shell)
 		else if (src[i] == '$')
 			{
 				i += checking_var(shell, src + i);
+				printf("TEST %s\n", shell->input->var_val);
 				while (shell->input->var_val[p] != '"' && shell->input->var_val[p] != '\0')
 					dst[o++] = shell->input->var_val[p++];
 				o++;
@@ -162,14 +164,14 @@ static int	ft_wordcount(char *str)
 }
 
 // Berekent de lengte van elk woord, waarbij rekening wordt gehouden met quotes en variables
-int	ft_wordlength(t_shell *shell, char *str)
+static int	ft_wordlength(t_shell *shell, char *str)
 {
 	int	i;
 	int	quotes;
 
 	i = 0;
 	quotes = 0;
-	shell->input->word_len = 0;
+	shell->input->cmd_len = 0; // wordlength begint op 0
 	if (char_check(str) > 0)
 		return (0);
 	else
@@ -190,7 +192,9 @@ int	ft_wordlength(t_shell *shell, char *str)
 				while (str[i] != '"')
 				{
 					if (str[i] == '$')
+					{
 						i += checking_var(shell, str + i);
+					}
 					else
 						i++;
 				}
@@ -198,12 +202,14 @@ int	ft_wordlength(t_shell *shell, char *str)
 				quotes += 2;
 			}
 			else if (str[i] == '$')
+			{
 				i += checking_var(shell, str + i);
+			}
 			else
 				i++;
 		}
 	}
-	shell->input->word_len += i - quotes;
+	shell->input->cmd_len += i - quotes;
 	return (i);
 }
 
@@ -220,7 +226,7 @@ char	**input_splitter(t_shell *shell, char *str)
 		return (NULL);
 	while (char_check(str + i) == 0 && str[i] != '\0')
 		i++;
-	shell->input->cmd_seg = i;
+	shell->input->part_len = i;
 	i = 0;
 	while (*str)
 	{
@@ -229,7 +235,7 @@ char	**input_splitter(t_shell *shell, char *str)
 		if (char_check(str) > 0)
 			break ;
 		len = ft_wordlength(shell, str);
-		split_parts[i] = malloc((shell->input->word_len + 1) * sizeof(char));
+		split_parts[i] = malloc((shell->input->cmd_len + 1) * sizeof(char));
 		if (split_parts[i] == NULL)
 			return (ft_freee(split_parts)); // Huidige ft_freee hier is tijdelijk en moet worden vervangen
 		ft_copystr(split_parts[i++], str, shell);
@@ -261,80 +267,64 @@ static int	type_check(char *str)
 	return (t_cmd);
 }
 
-char	*get_file_name(t_shell *shell, char *cmdline)
-{
-	int		i;
-	int		o;
-	char	*file;
-
-	i = 0;
-	o = 0;
-	while (cmdline[i] == '<' || cmdline[i] == '>' || ft_is_whitespace(cmdline[i]))
-		i++;
-	while (ft_is_whitespace(cmdline[i + o]) == 0 && char_check(cmdline + i + o) == 0 && cmdline[i + o] != '\0')
-		o++;
-	shell->input->word_len = o;
-	shell->input->cmd_seg = i + o;
-	file = malloc((o + 1) * sizeof(char));
-	ft_copystr(file, cmdline + i, shell);
-	return (file);
-}
-
 // Deze functie is voor het aanmaken van een nieuwe ctable node die dan een deel van de input split
 // in een 2d array met input_splitter in het geval van tekst, of opneemt welk symbool er gevonden is,
 // of welke infile of outfile
-// t_ctable	*create_ctable_node(t_shell *shell, char *cmdline)
-// {
-// 	t_ctable	*new;
+t_ctable	*create_ctable_node(t_shell *shell, char *cmdline)
+{
+	t_ctable	*new;
 
-// 	new = malloc(sizeof(t_ctable));
-// 	if (new == NULL)
-// 		kill_program(shell, "couldn't malloc ctable node!", 6); // PLACEHOLDER KILL_PROGRAM
-// 	if (type_check(cmdline) > 0)
-// 	{
-// 		new->type = type_check(cmdline);
-// 		// new->file = NULL;
-// 		// if (new->type == t_less || new->type == t_d_less)
-// 		// 	new->file = get_file_name(shell, cmdline);
-// 		// else if (new->type == t_greater || new->type == t_d_greater)
-// 		// 	new->file = get_file_name(shell, cmdline);
-// 		// new->cmds = NULL;
-// 		// if (new->type == t_pipe)
-// 		// 	shell->input->cmd_seg = 1;
-// 	}
-// 	else
-// 	{
-// 		new->type = t_cmd;
-// 		new->cmds = input_splitter(shell, cmdline);
-// 	}
-// 	new->next = NULL;
-// 	return (new);
-// }
+	new = malloc(sizeof(t_ctable));
+	if (new == NULL)
+		kill_program(shell, "couldn't malloc ctable node!", 6);
+	if (type_check(cmdline) > 0)
+	{
+		new->type = type_check(cmdline);
+		// new->file = NULL;
+		// if (new->type == t_less || new->type == t_d_less)
+		// 	new->file = get_file_name(shell, cmdline);
+		// else if (new->type == t_greater || new->type == t_d_greater)
+		// 	new->file = get_file_name(shell, cmdline);
+		// new->cmds = NULL;
+		// if (new->type == t_pipe)
+		// 	shell->input->part_len = 1;
+	}
+	else
+	{
+		new->type = t_cmd;
+		new->cmds = input_splitter(shell, cmdline);
+	}
+	new->next = NULL;
+	return (new);
+}
 
+// Hier wordt de command table gemaakt
+void	create_ctable(t_shell *shell, char *cmdline)
+{
+	int			i;
+	t_ctable	*tmp;
+	t_ctable	*new;
 
-// // Hier wordt de command table gemaakt
-// void	create_ctable(t_shell *shell, char *cmdline)
-// {
-// 	int			i;
-// 	t_ctable	*tmp;
-// 	t_ctable	*new;
-
-// 	i = 0;
-// 	while (ft_is_whitespace(cmdline[i]))
-// 		i++;
-// 	shell->input->cmds = create_ctable_node(shell, cmdline + i);
-// 	i += shell->input->cmd_seg;
-// 	tmp = shell->input->cmds;
-// 	while (cmdline[i])
-// 	{
-// 		while (ft_is_whitespace(cmdline[i]))
-// 			i++;
-// 		if (cmdline[i] == '\0')
-// 			break ;
-// 		new = create_ctable_node(shell, cmdline + i);
-// 		tmp->next = new;
-// 		tmp = tmp->next;
-// 		i += shell->input->cmd_seg;
-// 		shell->input->cmd_seg = 0;
-// 	}
-// }
+	i = 0;
+	tmp = shell->input->cmds;
+	while (ft_is_whitespace(cmdline[i]))
+		i++;
+	get_files(shell, cmdline);
+	shell->input->cmds = create_ctable_node(shell, cmdline + i);
+	i += shell->input->part_len;
+	tmp = shell->input->cmds;
+	while (cmdline[i])
+	{
+		while (ft_is_whitespace(cmdline[i]))
+			i++;
+		if (cmdline[i] == '\0')
+			break ;
+		new = create_ctable_node(shell, cmdline + i);
+		tmp->next = new;
+		if (tmp->next == NULL)
+			kill_program(shell, "Failed creating cmd node!", 6); // PLACEHOLDER KILL_PROGRAM
+		tmp = tmp->next;
+		i += shell->input->part_len;
+		shell->input->part_len = 0;
+	}
+}

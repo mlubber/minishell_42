@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/27 09:30:02 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/06/13 17:38:47 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/06/18 14:10:08 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,8 @@ void	check_ctable(t_shell *shell) // TESTING PURPOSES
 				printf("Cmd %d: %s\n", o, tmp->cmds[o]);
 			o++;
 		}
-		if (tmp->file != NULL)
-			printf("file %d: %s\n", o, tmp->file);
+		// if (tmp->file != NULL)
+		// 	printf("file %d: %s\n", o, tmp->file);
 		o = 0;
 		tmp = tmp->next;
 		num++;

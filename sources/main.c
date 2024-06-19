@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/21 09:23:10 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/06/13 16:48:11 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/06/19 13:43:29 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ static void	init_shell(t_shell *shell)
 	shell->input->var_val = NULL;
 	shell->input->var_val_len = 0;
 	shell->input->var_len = 0;
-	shell->input->cmd_len = 0;
-	shell->input->part_len = 0;
+	shell->input->word_len = 0;
+	shell->input->cmd_seg = 0;
 }
 
 
