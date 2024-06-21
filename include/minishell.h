@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/22 06:12:53 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/06/19 17:30:20 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/06/21 16:46:35 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ typedef struct s_ctable		// ctable = command table
 	char			**cmds;	// Double array voor de cmd + flags of arguments
 	t_file			*infiles;
 	t_file			*outfiles;
+	int				infile;
+	int				outfile;
 	struct s_ctable	*next;
 }	t_ctable;
 

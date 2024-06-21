@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/27 09:30:02 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/06/18 14:10:08 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/06/21 17:43:37 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ int	builtin_check(t_shell *shell)
 	int	x;
 
 	x = 0;
+	if (shell->input->cmds->cmds == NULL)
+		return (0);
 	if (ft_strncmp(shell->input->cmds->cmds[0], "echo", 5) == 0)
 		x = ft_mini_echo(shell, shell->input->cmds->cmds);
 	else if (ft_strncmp(shell->input->cmds->cmds[0], "cd", 3) == 0)
@@ -38,36 +40,76 @@ int	builtin_check(t_shell *shell)
 	return (0);
 }
 
+// void	check_ctable(t_shell *shell) // TESTING PURPOSES
+// {
+// 	t_ctable	*tmp;
+	
+// 	int o = 0;
+// 	int num = 0;
+// 	tmp = shell->input->cmds;
+// 	while (tmp != NULL)
+// 	{
+// 		printf("\n--[NODE: %d]--\n", num);
+// 		if (tmp->type == 0)
+// 			printf("Type: cmd\n");
+// 		else if (tmp->type == 1)
+// 			printf("Type: |\n");
+// 		else if (tmp->type == 2)
+// 			printf("Type: <\n");
+// 		else if (tmp->type == 3)
+// 			printf("Type: <<\n");
+// 		else if (tmp->type == 4)
+// 			printf("Type: >\n");
+// 		else if (tmp->type == 5)
+// 			printf("Type: >>\n");
+// 		while (tmp->cmds != NULL && tmp->cmds[o] != NULL)
+// 		{
+// 			if (tmp->cmds != NULL)
+// 				printf("Cmd %d: %s\n", o, tmp->cmds[o]);
+// 			o++;
+// 		}
+// 		// if (tmp->file != NULL)
+// 		// 	printf("file %d: %s\n", o, tmp->file);
+// 		o = 0;
+// 		tmp = tmp->next;
+// 		num++;
+// 	}
+// }
+
 void	check_ctable(t_shell *shell) // TESTING PURPOSES
 {
 	t_ctable	*tmp;
+	t_file		*tmp_in;
+	t_file		*tmp_out;
 	
 	int o = 0;
 	int num = 0;
 	tmp = shell->input->cmds;
 	while (tmp != NULL)
 	{
+		tmp_in = tmp->infiles;
+		tmp_out = tmp->outfiles;
 		printf("\n--[NODE: %d]--\n", num);
-		if (tmp->type == 0)
-			printf("Type: cmd\n");
-		else if (tmp->type == 1)
-			printf("Type: |\n");
-		else if (tmp->type == 2)
-			printf("Type: <\n");
-		else if (tmp->type == 3)
-			printf("Type: <<\n");
-		else if (tmp->type == 4)
-			printf("Type: >\n");
-		else if (tmp->type == 5)
-			printf("Type: >>\n");
+		while (tmp_in != NULL)
+		{
+			printf("infile %d: %s\n", o, tmp_in->str);
+			tmp_in = tmp_in->next;
+			o++;
+		}
+		o = 0;
+		while (tmp_out != NULL)
+		{
+			printf("outfile %d: %s\n", o, tmp_out->str);
+			tmp_out = tmp_out->next;
+			o++;
+		}
+		o = 0;
 		while (tmp->cmds != NULL && tmp->cmds[o] != NULL)
 		{
 			if (tmp->cmds != NULL)
 				printf("Cmd %d: %s\n", o, tmp->cmds[o]);
 			o++;
 		}
-		// if (tmp->file != NULL)
-		// 	printf("file %d: %s\n", o, tmp->file);
 		o = 0;
 		tmp = tmp->next;
 		num++;
@@ -95,7 +137,8 @@ void	ft_minishell_loop(t_shell *shell)
 		if (input_checker(&input) == 1)
 			continue ;
 		create_ctable(shell, input);
-		check_ctable(shell);
+		// printf("%s\n", shell->input->cmds->infiles->str); // Testing infile in cmds table
+		check_ctable(shell); // Testing all files and cmds
 		free (input);
 		if (builtin_check(shell) == 1)
 			continue ;
