@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/22 06:12:53 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/06/21 16:46:35 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/06/24 16:08:43 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ typedef struct s_ctable		// ctable = command table
 /* Input struct */
 typedef struct s_input
 {
+	char		*line;
 	t_ctable	*cmds; // head of the cmds linked list
 	char		*var_val; // pointer to the value of the found env variable
 	int			var_len; // length of the variable name
@@ -91,15 +92,10 @@ t_env	*create_env_node(t_shell *shell, char *str);
 void	building_env(t_shell *shell, t_env **env_list, char **envp);
 
 
-// Lexer
-int			ft_is_whitespace(char c);
-// int			ft_skip_spaces(int i, char *str);
-// int			ft_add_node(char *str, t_ctable **lexer_list);
-// int			ft_read_word(int i, char *str, t_ctable **lexer_list);
-// int			ft_reader(t_shell *shell);
-// t_ctable	*ft_new_lexer_node(char *str);
-// void		ft_lexer_add_back(t_ctable **lexer_list, t_ctable *new);
-int			ft_handle_quotes(int i, char *str, char c);
+// Utils
+int		ft_is_whitespace(char c);
+int		check_whitespace(char *str, char c); // Gaat ft_is_whitespace vervangen??
+int		ft_handle_quotes(int i, char *str, char c);
 
 
 
@@ -108,13 +104,15 @@ int		input_checker(char **input);
 void	create_ctable(t_shell *shell, char *cmdline);
 int		ft_wordlength(t_shell *shell, char *str);
 void	ft_copystr(char *dst, char *src, t_shell *shell);
+void	get_files(t_shell *shell, t_ctable *cnode, char *cmdline);
+void	get_cmd(t_shell *shell, t_ctable *cnode, char *cmdline);
 
+int	char_check(char *str);
 
 
 // Bash shell
 void	ft_minishell_loop(t_shell *shell);
-// int		ft_init_shell(t_shell *shell);
-// int		ft_reset_shell(t_shell *shell);
+
 
 
 // Builtins

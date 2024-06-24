@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/27 09:30:02 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/06/21 17:43:37 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/06/24 14:44:01 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,41 +40,6 @@ int	builtin_check(t_shell *shell)
 	return (0);
 }
 
-// void	check_ctable(t_shell *shell) // TESTING PURPOSES
-// {
-// 	t_ctable	*tmp;
-	
-// 	int o = 0;
-// 	int num = 0;
-// 	tmp = shell->input->cmds;
-// 	while (tmp != NULL)
-// 	{
-// 		printf("\n--[NODE: %d]--\n", num);
-// 		if (tmp->type == 0)
-// 			printf("Type: cmd\n");
-// 		else if (tmp->type == 1)
-// 			printf("Type: |\n");
-// 		else if (tmp->type == 2)
-// 			printf("Type: <\n");
-// 		else if (tmp->type == 3)
-// 			printf("Type: <<\n");
-// 		else if (tmp->type == 4)
-// 			printf("Type: >\n");
-// 		else if (tmp->type == 5)
-// 			printf("Type: >>\n");
-// 		while (tmp->cmds != NULL && tmp->cmds[o] != NULL)
-// 		{
-// 			if (tmp->cmds != NULL)
-// 				printf("Cmd %d: %s\n", o, tmp->cmds[o]);
-// 			o++;
-// 		}
-// 		// if (tmp->file != NULL)
-// 		// 	printf("file %d: %s\n", o, tmp->file);
-// 		o = 0;
-// 		tmp = tmp->next;
-// 		num++;
-// 	}
-// }
 
 void	check_ctable(t_shell *shell) // TESTING PURPOSES
 {
@@ -134,8 +99,9 @@ void	ft_minishell_loop(t_shell *shell)
 			continue ;
 		}
 		add_history(input);
-		if (input_checker(&input) == 1)
-			continue ;
+		// if (input_checker(&input) == 1) // Input checker moet gefixed worden
+		// 	continue ;
+		// input = var_check(&input); // Om de var lines te expanden voordat ze geparsed worden
 		create_ctable(shell, input);
 		// printf("%s\n", shell->input->cmds->infiles->str); // Testing infile in cmds table
 		check_ctable(shell); // Testing all files and cmds

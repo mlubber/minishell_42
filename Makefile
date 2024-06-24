@@ -26,7 +26,9 @@ LEXER_DIR			=	$(SRC_DIR)lexer/ft_reader.c \
 SHELL_DIR			=	$(SRC_DIR)shell/ft_minishell_loop.c
 
 PARSER_DIR			=	$(SRC_DIR)parser/input_checker.c \
-						$(SRC_DIR)parser/input_splitter.c
+						$(SRC_DIR)parser/input_splitter.c \
+						$(SRC_DIR)parser/parse_files.c \
+						$(SRC_DIR)parser/parse_cmds.c
 
 #EXEC_DIR
 
