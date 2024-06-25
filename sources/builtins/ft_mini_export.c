@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/03 11:01:03 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/06/18 17:06:06 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/06/25 15:40:52 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ char	*cut_quotes_var_val(char *str, int i)
 		j++;
 	}
 	noquotes[i] = '\0';
-	// printf("no quotes: %s\n", noquotes);
 	return (noquotes);
 }
 
@@ -43,7 +42,6 @@ char	*handle_quotes_var_val(char *str)
 	int		i;
 
 	i = 0;
-	// printf("split_input: %s\n", str);
 	while (str[i] != '=' && str[i] != '\0')
 		i++;
 	if (str[i] == '=')
@@ -178,6 +176,31 @@ int	check_duplicate_var(t_shell *shell, char *input)
 // 	}
 // 	return (false);
 // }
+char	**ft_create_export_list(t_shell *shell)
+{
+	int		i;
+	char	**export_list;
+	t_env	*tmp;
+
+	export_list = malloc((shell->env_size + 2) * sizeof(char *));
+	if (export_list == NULL)
+		return (NULL);
+	i = 0;
+	tmp = shell->env_list;
+	while (i <= shell->env_size && tmp != NULL)
+	{
+		if (tmp->var_val == NULL)
+			export_list[i++] = ft_strdup(tmp->str);
+		else
+			if (ft_strncmp(tmp->str, "_=", 2) != 0)
+				export_list[i++] = ft_strjoin(
+						ft_strjoin(tmp->var_name, "="), tmp->var_val);
+		tmp = tmp->next;
+	}
+	export_list[i] = NULL;
+	ft_sort_env_lines(export_list, i);
+	return (export_list);
+}
 
 int	check_alpha_num(char *str)
 {
@@ -229,7 +252,6 @@ int	ft_mini_export(t_shell *shell, char **split_input)
 {
 	int		i;
 	char	**export_list;
-	t_env	*tmp;
 
 	if (split_input[1] != NULL)
 	{
@@ -239,24 +261,8 @@ int	ft_mini_export(t_shell *shell, char **split_input)
 	}
 	else
 	{
-		export_list = malloc((shell->env_size + 2) * sizeof(char *));
-		if (export_list == NULL)
-			return (EXIT_FAILURE);
 		i = 0;
-		tmp = shell->env_list;
-		while (i <= shell->env_size && tmp != NULL)
-		{
-			if (tmp->var_val == NULL)
-				export_list[i] = ft_strdup(tmp->str);
-			else
-				export_list[i] = ft_strjoin(ft_strjoin(tmp->var_name, "="),
-						tmp->var_val);
-			i++;
-			tmp = tmp->next;
-		}
-		export_list[i] = NULL;
-		ft_sort_env_lines(export_list, shell->env_size + 1);
-		i = 0;
+		export_list = ft_create_export_list(shell);
 		while (export_list[i] != NULL)
 			printf("declare -x %s\n", export_list[i++]);
 		ft_free_arr(&export_list);

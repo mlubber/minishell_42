@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/22 06:12:53 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/06/18 07:14:57 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/06/25 13:49:07 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
-
 typedef struct s_token
 {
 	char	*pipe;
@@ -52,7 +51,6 @@ typedef struct s_token
 	char	*bi_export;
 	char	*bi_pwd;
 }	t_token;
-
 
 typedef struct s_shell
 {
@@ -68,13 +66,11 @@ typedef struct s_shell
 
 // Main
 
-
 // Environment
 t_env		*create_env_node(t_shell *shell, char *str);
 void		building_env(t_shell *shell, t_env **env_list, char **envp);
 char		*set_var_value(char *str);
 char		*ft_dup_str(t_env *node, char *str, int i);
-
 
 // Lexer
 int			ft_is_whitespace(char c);
@@ -86,19 +82,14 @@ t_ctable	*ft_new_lexer_node(char *str);
 void		ft_lexer_add_back(t_ctable **lexer_list, t_ctable *new);
 int			ft_handle_quotes(int i, char *str, char c);
 
-
-
 // Parser
 int			input_checker(char **input);
 char		**input_splitter(char *str);
-
-
 
 // Bash shell
 void		ft_minishell_loop(t_shell *shell);
 // int		ft_init_shell(t_shell *shell);
 // int		ft_reset_shell(t_shell *shell);
-
 
 // Builtins
 int			ft_mini_echo(t_shell *shell, char **split_input);
@@ -109,14 +100,11 @@ int			ft_mini_unset(t_shell *shell, char **split_input);
 int			ft_mini_env(t_shell *shell, char **split_input);
 int			ft_mini_exit(t_shell *shell, char **split_input);
 
-
-
 // Kill program
 void		kill_program(t_shell *shell, char *msg, int i);
 void		add_node_middle(t_shell *shell, t_env **head,
 				int position, char *str);
 void		free_env_node(t_env **node);
 void		*ft_free_2d_arr(char ***arr, int i);
-
 
 #endif

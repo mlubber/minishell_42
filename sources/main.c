@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/21 09:23:10 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/06/07 14:58:38 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/06/25 13:47:38 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ static void	init_shell(t_shell *shell)
 	shell->lexer_list = NULL;
 }
 
-
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell	shell;
@@ -38,4 +37,3 @@ int	main(int argc, char **argv, char **envp)
 	kill_program(&shell, NULL, EXIT_SUCCESS);
 	return (0);
 }
-
