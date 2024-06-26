@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/21 09:23:10 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/06/19 13:43:29 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/06/26 16:02:17 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ static void	init_shell(t_shell *shell)
 	shell->input->var_len = 0;
 	shell->input->word_len = 0;
 	shell->input->cmd_seg = 0;
+	shell->input->dest = 0;
+	shell->input->src = 0;
 }
 
 

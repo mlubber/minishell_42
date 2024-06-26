@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/22 06:12:53 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/06/24 16:08:43 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/06/26 17:02:39 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,13 @@ typedef enum { 		// Dit zijn, denk ik, de verschillende cmd types die we moeten 
 	t_out_trunc,	// '>'
 	t_out_append,	// '>>' 
 }	t_type;
+
+typedef struct s_copy
+{
+	int		src;
+	int		dest;
+	char	quote;
+}	t_copy;
 
 typedef struct s_env
 {
@@ -71,6 +78,8 @@ typedef struct s_input
 	int			var_val_len; // length of the variable value
 	int			word_len; // length of the word, excluding var_len & quotes, including var_val_len
 	int			cmd_seg; // Length of the segment until a pipe or \0, including infiles, outfiles, command and arguments
+	int			src;
+	int			dest;
 }	t_input;
 
 typedef struct s_shell
@@ -102,12 +111,11 @@ int		ft_handle_quotes(int i, char *str, char c);
 // Parser
 int		input_checker(char **input);
 void	create_ctable(t_shell *shell, char *cmdline);
-int		ft_wordlength(t_shell *shell, char *str);
-void	ft_copystr(char *dst, char *src, t_shell *shell);
+int		get_wordlength(t_shell *shell, char *str);
+void	copy_word(char *dst, char *src, t_shell *shell);
 void	get_files(t_shell *shell, t_ctable *cnode, char *cmdline);
 void	get_cmd(t_shell *shell, t_ctable *cnode, char *cmdline);
-
-int	char_check(char *str);
+int		char_check(char *str);
 
 
 // Bash shell

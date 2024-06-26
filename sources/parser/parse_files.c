@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/24 14:37:50 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/06/24 16:08:32 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/06/26 16:55:49 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,9 @@ static t_file	*make_file_node(t_shell *shell, char *line, t_type type)
 	node->type = type;
 	while (line[i] == '<' || line[i] == '>' || check_whitespace(NULL, line[i]))
 		i++;
-	o = ft_wordlength(shell, line + i);
+	o = get_wordlength(shell, line + i);
 	node->str = malloc(o + 1);
-	ft_copystr(node->str, line + i, shell);
+	copy_word(node->str, line + i, shell);
 	return (node);
 }
 
@@ -55,7 +55,7 @@ void	get_files(t_shell *shell, t_ctable *cnode, char *cmdline)
 	int		i;
 
 	i = 0;
-	while (cmdline[i] != '\0' && cmdline[i] != '|')
+	while (i < shell->input->cmd_seg)
 	{
 		new = NULL;
 		if (cmdline[i] == '<' && cmdline[i + 1] == '<')
@@ -75,5 +75,4 @@ void	get_files(t_shell *shell, t_ctable *cnode, char *cmdline)
 			i++;
 		shell->input->word_len = 0;
 	}
-	shell->input->cmd_seg = i;
 }
