@@ -12,6 +12,16 @@
 
 #include "../../include/minishell.h"
 
+int	exit_code_len(t_shell *shell)
+{
+	char	*exit_code;
+
+	exit_code = ft_itoa(shell->exit_code);
+	shell->input->word_len = ft_strlen(exit_code);
+	free (exit_code);
+	return (2);
+}
+
 static int	get_var_val_len(t_shell *shell, char *str)
 {
 	int		i;
@@ -40,6 +50,16 @@ static int	get_var_val_len(t_shell *shell, char *str)
 	return (i);
 }
 
+static int	check_var(t_shell *shell, char *str)
+{
+	int	i;
+
+	i = 1;
+	if (str[i] == '?')
+		return (exit_code_len(shell));
+	else
+		return (get_var_val_len(shell, str));
+}
 
 static int	handle_quotes(t_shell *shell, char *str, char quote)
 {
@@ -49,7 +69,7 @@ static int	handle_quotes(t_shell *shell, char *str, char quote)
 	while (str[i] != quote)
 	{
 		if (quote == '"' && str[i] == '$')
-			i += get_var_val_len(shell, str + i);
+			i += check_var(shell, str + i);
 		else
 			i++;
 	}
@@ -71,7 +91,7 @@ int	get_wordlength(t_shell *shell, char *str)
 		else if (str[i] == '"')
 			i += handle_quotes(shell, str + i, '"');
 		else if (str[i] == '$')
-			i += get_var_val_len(shell, str + i);
+			i += check_var(shell, str + i);
 		else
 			i++;
 	}

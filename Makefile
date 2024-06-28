@@ -26,9 +26,9 @@ LEXER_DIR			=	$(SRC_DIR)lexer/ft_reader.c \
 SHELL_DIR			=	$(SRC_DIR)shell/ft_minishell_loop.c
 
 PARSER_DIR			=	$(SRC_DIR)parser/input_checker.c \
-						$(SRC_DIR)parser/parsing_input.c \
+						$(SRC_DIR)parser/parse_input.c \
 						$(SRC_DIR)parser/parse_files.c \
-						$(SRC_DIR)parser/parse_cmds.c \
+						$(SRC_DIR)parser/parse_cmd.c \
 						$(SRC_DIR)parser/get_wordlength.c \
 						$(SRC_DIR)parser/copy_word.c \
 						$(SRC_DIR)parser/parsing_utils.c
@@ -44,7 +44,8 @@ BUILTINS_DIR		=	$(SRC_DIR)builtins/ft_mini_echo.c \
 						$(SRC_DIR)builtins/ft_mini_exit.c
 
 UTILS_DIR			=	$(SRC_DIR)utils/ft_utils.c \
-						$(SRC_DIR)utils/kill_program.c
+						$(SRC_DIR)utils/kill_program.c \
+						$(SRC_DIR)utils/free_cmd_list.c
 
 # Concatenate all source files
 SRCS 				= $(MAIN_DIR) $(ENV_DIR) $(LEXER_DIR) $(SHELL_DIR) $(PARSER_DIR) $(BUILTINS_DIR) $(UTILS_DIR) 

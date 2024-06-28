@@ -48,19 +48,34 @@ static int	get_var_value(t_shell *shell, char *dst, char *src, t_copy *pos)
 	return (i);
 }
 
+static int	check_var(t_shell *shell, char *dst, char *src, t_copy *pos)
+{
+	int		i;
+	char	*exit_code;
+
+	i = 0;
+	if (src[1] == '?')
+	{
+		exit_code = ft_itoa(shell->exit_code);
+		while (exit_code[i] != '\0')
+			dst[pos->dest++] = exit_code[i++];
+		free (exit_code);
+		return (2);
+	}
+	else
+		return (get_var_value(shell, dst, src, pos));
+}
+
 static void	handle_quotes(t_shell *shell, char *dst, char *src, t_copy *pos)
 {
 	pos->src++;
-	// printf("copy before quotes\n");
-	// printf("quote: %c\n", pos->quote);
 	while (src[pos->src] != pos->quote)
 	{
 		if (pos->quote == '"' && src[pos->src] == '$')
-			pos->src += get_var_value(shell, dst, src + pos->src, pos);
+			pos->src += check_var(shell, dst, src + pos->src, pos);
 		else
 			dst[pos->dest++] = src[pos->src++];
 	}
-	// printf("copy after quotes\n");
 	pos->src++;	
 }
 
@@ -84,7 +99,7 @@ void	copy_word(char *dst, char *src, t_shell *shell)
 			handle_quotes(shell, dst, src, &pos);
 		}
 		else if (src[pos.src] == '$')
-				pos.src += get_var_value(shell, dst, src + pos.src, &pos);
+				pos.src += check_var(shell, dst, src + pos.src, &pos);
 		else
 			dst[pos.dest++] = src[pos.src++];
 	}

@@ -111,6 +111,8 @@ void	ft_minishell_loop(t_shell *shell)
 		// 	continue ;
 		create_ctable(shell, input);
 		check_ctable(shell); // Testing all files and cmds
+		// execute cmds here!
+		free_cmd_list(&shell->input->cmds);
 		free (input);
 		if (builtin_check(shell) == 1)
 			continue ;

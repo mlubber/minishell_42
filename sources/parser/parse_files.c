@@ -49,7 +49,7 @@ static t_file	*make_file_node(t_shell *shell, char *line, t_type type)
 	return (node);
 }
 
-void	get_files(t_shell *shell, t_ctable *cnode, char *cmdline)
+void	parse_files(t_shell *shell, t_ctable *cnode, char *cmdline)
 {
 	t_file	*new;
 	int		i;

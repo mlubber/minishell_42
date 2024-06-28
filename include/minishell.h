@@ -89,6 +89,7 @@ typedef struct s_shell
 	char		*pwd;
 	char		*old_pwd;
 	int			env_size;
+	int			exit_code;
 	t_env		*env_list;
 	t_input		*input;
 }	t_shell;
@@ -113,9 +114,12 @@ int		input_checker(char **input);
 void	create_ctable(t_shell *shell, char *cmdline);
 int		get_wordlength(t_shell *shell, char *str);
 void	copy_word(char *dst, char *src, t_shell *shell);
-void	get_files(t_shell *shell, t_ctable *cnode, char *cmdline);
-void	get_cmd(t_shell *shell, t_ctable *cnode, char *cmdline);
+void	parse_files(t_shell *shell, t_ctable *cnode, char *cmdline);
+void	parse_cmd(t_shell *shell, t_ctable *cnode, char *cmdline);
+
 int		char_check(char *str);
+int		skip_quotes(char *cmdline, char quote);
+int		skip_file_or_word(char *cmdline, char c);
 
 
 // Bash shell
@@ -139,6 +143,10 @@ void	kill_program(t_shell *shell, char *msg, int i);
 void	add_node_middle(t_shell *shell, t_env **head, int position, char *str);
 void	free_env_node(t_env **node);
 void	*ft_free_2d_arr(char ***arr, int i);
+
+void	free_cmd_list(t_ctable **head);
+
+
 
 
 #endif

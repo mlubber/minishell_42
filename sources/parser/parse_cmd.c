@@ -12,29 +12,6 @@
 
 #include "../../include/minishell.h"
 
-int	skip_file_or_word(char *cmdline, char c)
-{
-	int	i;
-
-	if (c == '<' || c == '>')
-	{
-		i = 1;
-		if (cmdline[i] == c)
-			i = 2;
-		i += check_whitespace(cmdline + i, 0);
-		while (cmdline[i] && !check_whitespace(NULL, cmdline[i]) && !char_check(cmdline + i))
-			i++;
-		return (i);		
-	}
-	else
-	{
-		i = 0;
-		while (cmdline[i] && !check_whitespace(NULL, cmdline[i]) && !char_check(cmdline + i))
-			i++;
-		return (i);
-	}
-}
-
 int	cmd_arg_count(t_shell *shell, char *cmdline)
 {
 	int	count;
@@ -67,7 +44,7 @@ int	set_cmd(t_shell *shell, t_ctable *cnode, char *cmdline, int i)
 	return (len);
 }
 
-void	get_cmd(t_shell *shell, t_ctable *cnode, char *cmdline)
+void	parse_cmd(t_shell *shell, t_ctable *cnode, char *cmdline)
 {
 	int	i;
 	int	cmd_c;

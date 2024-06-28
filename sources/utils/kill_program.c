@@ -37,19 +37,7 @@ void	*ft_free_2d_arr(char ***arr, int i)
 	return (NULL);
 }
 
-// void	*ft_free(char **p)
-// {
-// 	int	i;
 
-// 	i = 0;
-// 	while (p[i] != NULL)
-// 	{
-// 		free(p[i]);
-// 		i++;
-// 	}
-// 	free(p);
-// 	return (NULL);
-// }
 
 // Frees every node
 void	free_env_node(t_env **node)
@@ -87,9 +75,9 @@ void	free_env(t_shell *shell, t_env **env_head)
 			free_env_node(env_head);
 		*env_head = tmp;
 	}
-	if (shell->pwd != NULL) // Freeing PWD
+	if (shell->pwd != NULL) // Freeing PWD   ------ Wijzen env PWD en shell->pwd naar zelfde malloc of verschillende?
 		free (shell->pwd);
-	if (shell->old_pwd != NULL) // Freeing OLD_PWD
+	if (shell->old_pwd != NULL) // Freeing OLD_PWD     ------ Wijzen env OLD_PWD en shell->old_pwd naar zelfde malloc of verschillende?
 		free (shell->old_pwd);
 }
 

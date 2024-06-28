@@ -61,8 +61,8 @@ t_ctable	*create_ctable_node(t_shell *shell, char *line)
 	cnode->infiles = NULL;
 	cnode->outfiles = NULL;
 	cnode->cmds = NULL;
-	get_files(shell, cnode, line);
-	get_cmd(shell, cnode, line);
+	parse_files(shell, cnode, line);
+	parse_cmd(shell, cnode, line);
 	cnode->next = NULL;
 	return (cnode);
 }

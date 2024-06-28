@@ -21,6 +21,7 @@ static void	init_shell(t_shell *shell)
 	shell->old_pwd = NULL;
 	shell->env_size = 0;
 	shell->env_list = NULL;
+	shell->exit_code = 0;
 
 	shell->input->cmds = NULL;
 	shell->input->var_val = NULL;

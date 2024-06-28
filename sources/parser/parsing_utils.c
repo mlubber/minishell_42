@@ -12,6 +12,40 @@
 
 #include "../../include/minishell.h"
 
+int	skip_quotes(char *cmdline, char quote)
+{
+	int	i;
+
+	i = 1;
+	while (cmdline[i] != quote)
+		i++;
+	i++;
+	return (i);
+}
+
+int	skip_file_or_word(char *cmdline, char c)
+{
+	int	i;
+
+	if (c == '<' || c == '>')
+	{
+		i = 1;
+		if (cmdline[i] == c)
+			i = 2;
+		i += check_whitespace(cmdline + i, 0);
+		while (cmdline[i] && !check_whitespace(NULL, cmdline[i]) && !char_check(cmdline + i))
+			i++;
+		return (i);		
+	}
+	else
+	{
+		i = 0;
+		while (cmdline[i] && !check_whitespace(NULL, cmdline[i]) && !char_check(cmdline + i))
+			i++;
+		return (i);
+	}
+}
+
 int	char_check(char *str)
 {
 	int	i;
