@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   parsing_input.c                                    :+:    :+:            */
+/*   parse_input.c                                      :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/18 14:36:27 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/06/26 16:59:41 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/07/01 18:23:31 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,12 @@ void	get_cmd_seg_len(t_shell *shell, char *cmdline)
 			i++;
 			while (cmdline[i] != '\'')
 				i++;
-			i++;
 		}
 		else if (cmdline[i] == '"')
 		{
 			i++;
 			while (cmdline[i] != '"')
 				i++;
-			i++;
 		}
 		i++;
 	}

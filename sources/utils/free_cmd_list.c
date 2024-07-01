@@ -42,6 +42,7 @@ void	free_cmd_list(t_ctable **head)
 		free_file_list(&tmp->infiles, &tmp->infiles);
 		if (tmp->cmds != NULL)
 		{
+			i = 0;
 			while (tmp->cmds[i] != NULL)
 			{
 				free(tmp->cmds[i]);

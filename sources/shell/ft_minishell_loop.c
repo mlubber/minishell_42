@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/27 09:30:02 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/06/26 17:17:52 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/07/01 18:36:57 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ void	check_ctable(t_shell *shell) // TESTING PURPOSES
 		tmp = tmp->next;
 		num++;
 	}
+	printf("\n");
 }
 
 // The minishell loop that keeps minishell running. We check if input is correct,
@@ -107,15 +108,15 @@ void	ft_minishell_loop(t_shell *shell)
 			continue ;
 		}
 		add_history(input);
-		// if (input_checker(&input) == 1) // Input checker moet gefixed worden
-		// 	continue ;
+		if (input_checker(&input) == 1)
+			continue ;
 		create_ctable(shell, input);
+		free (input);
 		check_ctable(shell); // Testing all files and cmds
+		// if (builtin_check(shell) == 1)
+		// 	continue ;
 		// execute cmds here!
 		free_cmd_list(&shell->input->cmds);
-		free (input);
-		if (builtin_check(shell) == 1)
-			continue ;
 	}
 	if (input != NULL)
 		free (input);

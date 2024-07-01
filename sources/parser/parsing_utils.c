@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/26 16:58:48 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/06/26 16:59:09 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/07/01 18:22:04 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ int	skip_quotes(char *cmdline, char quote)
 	i = 1;
 	while (cmdline[i] != quote)
 		i++;
-	i++;
 	return (i);
 }
 
@@ -48,14 +47,11 @@ int	skip_file_or_word(char *cmdline, char c)
 
 int	char_check(char *str)
 {
-	int	i;
-
-	i = 0;
-	if (str[i] == '|')
+	if (str[0] == '|')
 		return (1);
-	if (str[i] == '<' || str[i] == '>')
+	if (str[0] == '<' || str[0] == '>')
 	{
-		if ((str[i] == '<' && str[i + 1] == '<') || (str[i] == '>' && str[i + 1] == '>'))
+		if ((str[0] == '<' && str[1] == '<') || (str[0] == '>' && str[1] == '>'))
 			return (2);
 		return (1);
 	}
