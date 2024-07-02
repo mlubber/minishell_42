@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/18 14:36:27 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/07/01 18:23:31 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/07/02 14:07:50 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,17 @@ t_ctable	*create_ctable_node(t_shell *shell, char *line)
 	return (cnode);
 }
 
+void	reset_input_values(t_input *input)
+{
+	input->var_len = 0;
+	input->var_val_len = 0;
+	input->word_len = 0;
+	input->cmd_seg = 0;
+	input->src = 0;
+	input->dest = 0;
+	
+}
+
 void	create_ctable(t_shell *shell, char *line)
 {
 	t_ctable	*tmp;
@@ -87,4 +98,5 @@ void	create_ctable(t_shell *shell, char *line)
 		line += shell->input->cmd_seg;
 		shell->input->cmd_seg = 0;
 	}
+	reset_input_values(shell->input);
 }

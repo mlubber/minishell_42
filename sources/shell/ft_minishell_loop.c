@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/27 09:30:02 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/07/01 18:36:57 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/07/02 13:47:05 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,15 @@ void	check_ctable(t_shell *shell) // TESTING PURPOSES
 	printf("\n");
 }
 
+void	start_execution(t_shell *shell)
+{
+		// if (builtin_check(shell) == 1)
+		// 	continue ;
+		// execute cmds here!
+		free_cmd_list(&shell->input->cmds);	
+}
+
+
 // The minishell loop that keeps minishell running. We check if input is correct,
 // then add the input to readline history, then split the input into a 2d array
 // *** split_input gets replaced by the command table linked list ***
@@ -113,10 +122,7 @@ void	ft_minishell_loop(t_shell *shell)
 		create_ctable(shell, input);
 		free (input);
 		check_ctable(shell); // Testing all files and cmds
-		// if (builtin_check(shell) == 1)
-		// 	continue ;
-		// execute cmds here!
-		free_cmd_list(&shell->input->cmds);
+		start_execution(shell);
 	}
 	if (input != NULL)
 		free (input);

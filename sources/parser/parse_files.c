@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/24 14:37:50 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/06/26 16:55:49 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/07/02 14:09:05 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,22 @@ static t_file	*lstlast(t_file *lst)
 	return (lst);
 }
 
-static void	lstadd_back(t_file **lst, t_file *new)
+static void	lstadd_back(t_ctable *cnode, t_file *new, char c)
 {
-	if (!*lst)
-		*lst = new;
-	else
-		lstlast(*lst)->next = new;
+	if (c == '<')
+	{
+		if (!cnode->infiles)
+			cnode->infiles = new;
+		else
+			lstlast(cnode->infiles)->next = new;
+	}
+	else if (c == '>')
+	{
+		if (!cnode->outfiles)
+			cnode->outfiles = new;
+		else
+			lstlast(cnode->outfiles)->next = new;		
+	}
 }
 
 static t_file	*make_file_node(t_shell *shell, char *line, t_type type)
@@ -58,7 +68,9 @@ void	parse_files(t_shell *shell, t_ctable *cnode, char *cmdline)
 	while (i < shell->input->cmd_seg)
 	{
 		new = NULL;
-		if (cmdline[i] == '<' && cmdline[i + 1] == '<')
+		if (cmdline[i] == '\'' || cmdline[i] == '"')
+			i += skip_quotes(cmdline + i, cmdline[i]);
+		else if (cmdline[i] == '<' && cmdline[i + 1] == '<')
 			new = make_file_node(shell, cmdline + i, t_in_heredoc);
 		else if (cmdline[i] == '<')
 			new = make_file_node(shell, cmdline + i, t_in_file);
@@ -66,11 +78,10 @@ void	parse_files(t_shell *shell, t_ctable *cnode, char *cmdline)
 			new = make_file_node(shell, cmdline + i, t_out_append);
 		else if (cmdline[i] == '>')
 			new = make_file_node(shell, cmdline + i, t_out_trunc);
-		if (new != NULL && cmdline[i] == '<')
-			lstadd_back(&cnode->infiles, new);
-		else if (new != NULL && cmdline[i] == '>')
-			lstadd_back(&cnode->outfiles, new);
-		i += shell->input->word_len;
+		if (new != NULL && (cmdline[i] == '<' || cmdline[i] == '>'))
+			lstadd_back(cnode, new, cmdline[i]);
+		if (new != NULL)
+			i += skip_file_or_word(cmdline + i, cmdline[i], 0);
 		if (shell->input->word_len == 0)
 			i++;
 		shell->input->word_len = 0;
