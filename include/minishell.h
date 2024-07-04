@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/22 06:12:53 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/07/02 14:09:28 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/07/04 16:51:02 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <limits.h>
 # include <fcntl.h>
 # include <stdbool.h>
+# include <errno.h>
 # include "../libraries/libft/include/libft.h"
 # include "../libraries/libft/include/get_next_line.h"
 # include <readline/readline.h>
@@ -60,26 +61,27 @@ typedef struct s_file
 /* Command table linked list node */
 typedef struct s_ctable		// ctable = command table
 {
-	char			**cmds;	// Double array voor de cmd + flags of arguments
+	char			**cmd_array;	// Double array voor de cmd + flags of arguments
 	t_file			*infiles;
 	t_file			*outfiles;
 	int				infile;
 	int				outfile;
+	bool			run_cmd;
 	struct s_ctable	*next;
 }	t_ctable;
 
 /* Input struct */
 typedef struct s_input
 {
-	char		*line;
-	t_ctable	*cmds; // head of the cmds linked list
+	char		*line; // Input str from user
+	t_ctable	*cnode; // head of the cmds linked list
 	char		*var_val; // pointer to the value of the found env variable
 	int			var_len; // length of the variable name
 	int			var_val_len; // length of the variable value
 	int			word_len; // length of the word, excluding var_len & quotes, including var_val_len
 	int			cmd_seg; // Length of the segment until a pipe or \0, including infiles, outfiles, command and arguments
-	int			src;
-	int			dest;
+	int			cmds_count; // Amount of cmds
+	int			fds[2]; // pipe filedescriptor array 	<<-------- Kan misschien beter in ctable struct
 }	t_input;
 
 typedef struct s_shell
@@ -90,6 +92,8 @@ typedef struct s_shell
 	char		*old_pwd;
 	int			env_size;
 	int			exit_code;
+	int			stdinput;
+	int			stdoutput;
 	t_env		*env_list;
 	t_input		*input;
 }	t_shell;
@@ -105,8 +109,6 @@ void	building_env(t_shell *shell, t_env **env_list, char **envp);
 // Utils
 int		ft_is_whitespace(char c);
 int		check_whitespace(char *str, char c); // Gaat ft_is_whitespace vervangen??
-int		ft_handle_quotes(int i, char *str, char c);
-
 
 
 // Parser
@@ -124,6 +126,11 @@ int		skip_file_or_word(char *cmdline, char c, int i);
 
 // Bash shell
 void	ft_minishell_loop(t_shell *shell);
+
+
+// Executor
+void	start_execution(t_shell *shell);
+bool	handling_redirs(t_shell *shell, t_ctable *cnode);
 
 
 

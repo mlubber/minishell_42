@@ -6,39 +6,11 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/27 09:30:02 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/07/02 13:47:05 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/07/04 16:51:42 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-// This function gets called to check if a cmd is a builtin function
-// *** split_input gets replaced by the command table linked list ***
-int	builtin_check(t_shell *shell)
-{
-	int	x;
-
-	x = 0;
-	if (shell->input->cmds->cmds == NULL)
-		return (0);
-	if (ft_strncmp(shell->input->cmds->cmds[0], "echo", 5) == 0)
-		x = ft_mini_echo(shell, shell->input->cmds->cmds);
-	else if (ft_strncmp(shell->input->cmds->cmds[0], "cd", 3) == 0)
-		x = ft_mini_cd(shell, shell->input->cmds->cmds);
-	else if (ft_strncmp(shell->input->cmds->cmds[0], "pwd", 4) == 0)
-		x = ft_mini_pwd(shell, shell->input->cmds->cmds);
-	else if (ft_strncmp(shell->input->cmds->cmds[0], "export", 7) == 0)
-		x = ft_mini_export(shell, shell->input->cmds->cmds);
-	else if (ft_strncmp(shell->input->cmds->cmds[0], "unset", 6) == 0)
-		x = ft_mini_unset(shell, shell->input->cmds->cmds);
-	else if (ft_strncmp(shell->input->cmds->cmds[0], "env", 4) == 0)
-		x = ft_mini_env(shell, shell->input->cmds->cmds);
-	else if (ft_strncmp(shell->input->cmds->cmds[0], "exit", 5) == 0)
-		x = ft_mini_exit(shell, shell->input->cmds->cmds);
-	if (x == 1)
-		return (1);
-	return (0);
-}
 
 
 void	check_ctable(t_shell *shell) // TESTING PURPOSES
@@ -49,7 +21,7 @@ void	check_ctable(t_shell *shell) // TESTING PURPOSES
 	
 	int o = 0;
 	int num = 0;
-	tmp = shell->input->cmds;
+	tmp = shell->input->cnode;
 	while (tmp != NULL)
 	{
 		tmp_in = tmp->infiles;
@@ -77,10 +49,10 @@ void	check_ctable(t_shell *shell) // TESTING PURPOSES
 			o++;
 		}
 		o = 0;
-		while (tmp->cmds != NULL && tmp->cmds[o] != NULL)
+		while (tmp->cmd_array != NULL && tmp->cmd_array[o] != NULL)
 		{
-			if (tmp->cmds != NULL)
-				printf("Cmd %d: %s\n", o, tmp->cmds[o]);
+			if (tmp->cmd_array != NULL)
+				printf("Cmd %d: %s\n", o, tmp->cmd_array[o]);
 			o++;
 		}
 		o = 0;
@@ -90,13 +62,6 @@ void	check_ctable(t_shell *shell) // TESTING PURPOSES
 	printf("\n");
 }
 
-void	start_execution(t_shell *shell)
-{
-		// if (builtin_check(shell) == 1)
-		// 	continue ;
-		// execute cmds here!
-		free_cmd_list(&shell->input->cmds);	
-}
 
 
 // The minishell loop that keeps minishell running. We check if input is correct,
@@ -123,6 +88,7 @@ void	ft_minishell_loop(t_shell *shell)
 		free (input);
 		check_ctable(shell); // Testing all files and cmds
 		start_execution(shell);
+		free_cmd_list(&shell->input->cnode);
 	}
 	if (input != NULL)
 		free (input);

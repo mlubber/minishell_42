@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/24 14:46:20 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/07/04 11:47:13 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/07/04 14:21:18 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,10 @@ int	set_cmd(t_shell *shell, t_ctable *cnode, char *cmdline, int i)
 	int	len;
 
 	len = get_wordlength(shell, cmdline);
-	cnode->cmds[i] = malloc((shell->input->word_len + 1) * sizeof(char));
-	if (!cnode->cmds[i])
+	cnode->cmd_array[i] = malloc((shell->input->word_len + 1) * sizeof(char));
+	if (!cnode->cmd_array[i])
 		kill_program(shell, "failed mallocing cmd node 2d array", 6);
-	copy_word(cnode->cmds[i], cmdline, shell);
+	copy_word(cnode->cmd_array[i], cmdline, shell);
 	return (len);
 }
 
@@ -53,10 +53,10 @@ void	parse_cmd(t_shell *shell, t_ctable *cnode, char *cmdline)
 	cmd_c = cmd_arg_count(shell, cmdline);
 	if (cmd_c == 0)
 		return ;
-	cnode->cmds = malloc((cmd_c + 1) * sizeof(char *));
-	if (!cnode->cmds)
+	cnode->cmd_array = malloc((cmd_c + 1) * sizeof(char *));
+	if (!cnode->cmd_array)
 		kill_program(shell, "cmd_array mallocing failed!", 6);
-	cnode->cmds[cmd_c] = NULL;
+	cnode->cmd_array[cmd_c] = NULL;
 	while (*cmdline && *cmdline != '|')
 	{
 		if (*cmdline == '<' || *cmdline == '>')

@@ -40,15 +40,15 @@ void	free_cmd_list(t_ctable **head)
 	while (tmp != NULL)
 	{
 		free_file_list(&tmp->infiles, &tmp->infiles);
-		if (tmp->cmds != NULL)
+		if (tmp->cmd_array != NULL)
 		{
 			i = 0;
-			while (tmp->cmds[i] != NULL)
+			while (tmp->cmd_array[i] != NULL)
 			{
-				free(tmp->cmds[i]);
+				free(tmp->cmd_array[i]);
 				i++;
 			}
-			free (tmp->cmds);
+			free (tmp->cmd_array);
 		}
 		tmp = tmp->next;
 		free (*head);

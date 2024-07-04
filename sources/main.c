@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/21 09:23:10 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/06/26 16:02:17 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/07/04 14:53:40 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,8 @@ static void	init_shell(t_shell *shell)
 	shell->env_size = 0;
 	shell->env_list = NULL;
 	shell->exit_code = 0;
-
-	shell->input->cmds = NULL;
-	shell->input->var_val = NULL;
-	shell->input->var_val_len = 0;
-	shell->input->var_len = 0;
-	shell->input->word_len = 0;
-	shell->input->cmd_seg = 0;
-	shell->input->dest = 0;
-	shell->input->src = 0;
+	shell->stdinput = dup(STDIN_FILENO);
+	shell->stdoutput = dup(STDOUT_FILENO);
 }
 
 
