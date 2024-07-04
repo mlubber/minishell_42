@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   parse_cmds.c                                       :+:    :+:            */
+/*   parse_cmd.c                                        :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/24 14:46:20 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/06/26 16:56:18 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/07/04 11:47:13 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	cmd_arg_count(t_shell *shell, char *cmdline)
 	while (*cmdline && *cmdline != '|')
 	{
 		if (*cmdline == '<' || *cmdline == '>')
-			cmdline += skip_file_or_word(cmdline, *cmdline);
+			cmdline += skip_file_or_word(cmdline, *cmdline, 0);
 		else
 		{
 			count++;
@@ -60,7 +60,7 @@ void	parse_cmd(t_shell *shell, t_ctable *cnode, char *cmdline)
 	while (*cmdline && *cmdline != '|')
 	{
 		if (*cmdline == '<' || *cmdline == '>')
-			cmdline += skip_file_or_word(cmdline, *cmdline);
+			cmdline += skip_file_or_word(cmdline, *cmdline, 0);
 		else if (!check_whitespace(NULL, *cmdline))
 			cmdline += set_cmd(shell, cnode, cmdline, i++);
 		cmdline += check_whitespace(cmdline, 0);
