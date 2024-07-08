@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/26 16:36:58 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/07/08 11:19:17 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/07/08 16:23:13 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ static int	get_var_val_len(t_shell *shell, char *str)
 	free(var_name);
 	if (tmp == NULL)
 		return (i);
-	shell->input->word_len += ft_strlen(tmp->var_val) - 2;
+	if (tmp->var_val != NULL)
+		shell->input->word_len += ft_strlen(tmp->var_val) - 2;
 	return (i);
 }
 
@@ -84,7 +85,7 @@ int	get_wordlength(t_shell *shell, char *str)
 
 	i = 0;
 	shell->input->word_len = 0;
-	while (str[i] != '\0' && !ft_is_whitespace(str[i]) && char_check(str + i) == 0)
+	while (str[i] != '\0' && !check_whitespace(NULL, str[i]) && char_check(str + i) == 0)
 	{
 		if (str[i] == '\'')
 			i += handle_quotes(shell, str + i, '\'');

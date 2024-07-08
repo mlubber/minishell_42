@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/26 15:38:48 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/07/08 12:19:09 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/07/08 16:22:00 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ static void	copy_var(char *dst, char *var_value, t_copy *pos)
 	int	i;
 
 	i = 1;
+	if (var_value == NULL)
+		return ;
 	while (var_value[i] != '"')
 		dst[pos->dest++] = var_value[i++];
 }

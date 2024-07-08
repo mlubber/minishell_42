@@ -6,38 +6,11 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/30 14:08:00 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/06/13 16:15:29 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/07/08 16:05:40 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-// Frees 2d arrays
-void	*ft_free_2d_arr(char ***arr, int i)
-{
-	if (arr == NULL || *arr == NULL)
-		return NULL;
-	if (i > 0)
-	{
-		while (i >= 0)
-		{
-			if ((*arr)[i] != NULL)
-				free((*arr)[i]);
-			i++;
-		}
-		free (*arr);
-		return (NULL);
-	}
-	while ((*arr)[i])
-	{
-		free((*arr)[i]);
-		i++;
-	}
-	free(*arr);
-	return (NULL);
-}
-
-
 
 // Frees every node
 void	free_env_node(t_env **node)

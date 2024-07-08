@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/22 06:12:53 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/07/08 15:57:50 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/07/08 16:17:30 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,12 +105,6 @@ typedef struct s_shell
 t_env	*create_env_node(t_shell *shell, char *str);
 void	building_env(t_shell *shell, t_env **env_list, char **envp);
 char	*set_var_value(char *str);
-char	*ft_dup_str(t_env *node, char *str, int i);
-
-
-// Utils
-int		ft_is_whitespace(char c);
-int		check_whitespace(char *str, char c); // Gaat ft_is_whitespace vervangen??
 
 
 // Parser
@@ -124,6 +118,7 @@ void	parse_cmd(t_shell *shell, t_ctable *cnode, char *cmdline);
 int		char_check(char *str);
 int		skip_quotes(char *cmdline, char quote);
 int		skip_file_or_word(char *cmdline, char c, int i);
+int		check_whitespace(char *str, char c);
 
 
 // Bash shell
@@ -133,7 +128,6 @@ void	ft_minishell_loop(t_shell *shell);
 // Executor
 void	start_execution(t_shell *shell);
 bool	handling_redirs(t_shell *shell, t_ctable *cnode);
-
 
 
 // Builtins
@@ -148,16 +142,11 @@ int		check_alpha_num(char *str);
 void	ft_free_arr(char ***arr);
 
 
-
 // Kill program
 void	kill_program(t_shell *shell, char *msg, int i);
-void	add_node_middle(t_shell *shell, t_env **head, int position, char *str);
 void	free_env_node(t_env **node);
-void	*ft_free_2d_arr(char ***arr, int i);
 
 void	free_cmd_list(t_ctable **head);
-
-
 
 
 #endif
