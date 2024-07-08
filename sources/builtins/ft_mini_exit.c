@@ -6,14 +6,13 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/07 11:27:19 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/06/13 17:19:12 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/07/08 15:53:07 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-// Works fine
-// *** split_input gets replaced by the command table linked list ***
+// Doesn't work
 int	ft_mini_exit(t_shell *shell, char **cmds)
 {
 	if (cmds[1] != NULL)

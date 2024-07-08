@@ -6,20 +6,33 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/07 12:11:12 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/06/13 17:19:24 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/07/08 15:52:48 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-// No work done yet
-// *** split_input gets replaced by the command table linked list ***
-int	ft_mini_echo(t_shell *shell, char **cmds)
+int	ft_mini_echo(t_shell *shell, char **split_input)
 {
-	printf("Echo is still getting build!");
-	if (cmds != NULL)		//
-		return (1);					// Placement holder to make code work
-	if (shell->env_list != NULL)	//
-		return (1);					//
+	int		i;
+	bool	newline;
+
+	i = 1;
+	newline = true;
+	if (shell->env_list == NULL)
+		return (0);
+	if (split_input[1] != NULL && ft_strncmp(split_input[1], "-n", 2) == 0)
+	{
+		newline = false;
+		i = 2;
+	}
+	while (split_input[i] != NULL)
+	{
+		ft_putstr_fd(split_input[i++], STDOUT_FILENO);
+		if (split_input[i] != NULL)
+			ft_putchar_fd(' ', STDOUT_FILENO);
+	}
+	if (newline)
+		ft_putchar_fd('\n', STDOUT_FILENO);
 	return (1);
 }

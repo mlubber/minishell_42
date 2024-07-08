@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/22 06:12:53 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/07/04 16:51:02 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/07/08 15:57:50 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,8 @@ typedef struct s_shell
 // Environment
 t_env	*create_env_node(t_shell *shell, char *str);
 void	building_env(t_shell *shell, t_env **env_list, char **envp);
+char	*set_var_value(char *str);
+char	*ft_dup_str(t_env *node, char *str, int i);
 
 
 // Utils
@@ -142,6 +144,8 @@ int		ft_mini_export(t_shell *shell, char **cmds);
 int		ft_mini_unset(t_shell *shell, char **cmds);
 int		ft_mini_env(t_shell *shell, char **cmds);
 int		ft_mini_exit(t_shell *shell, char **cmds);
+int		check_alpha_num(char *str);
+void	ft_free_arr(char ***arr);
 
 
 

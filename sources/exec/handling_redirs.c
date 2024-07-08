@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/04 14:35:10 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/07/04 17:01:05 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/07/08 10:45:55 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,13 +114,13 @@ bool	handling_redirs(t_shell *shell, t_ctable *cnode)
 	file = open_infiles(shell, cnode, cnode->infiles);
 	if (file != NULL)
 	{
-		printf("Error: Couldn't open file: %s", file);
+		printf("Error: Couldn't open file: %s\n", file);
 		return (false);
 	}
 	file = open_outfiles(shell, cnode, cnode->outfiles);
 	if (file != NULL)
 	{
-		printf("Error: Couldn't open file: %s", file);
+		printf("Error: Couldn't open file: %s\n", file);
 		return (false);
 	}
 	return (true);

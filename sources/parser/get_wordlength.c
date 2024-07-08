@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/26 16:36:58 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/06/26 17:35:43 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/07/08 11:19:17 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int	get_var_val_len(t_shell *shell, char *str)
 	char	*var_name;
 
 	i = 1;
-	while (ft_isalnum(str[i]))
+	while (ft_isalnum(str[i]) || str[i] == '_')
 		i++;
 	shell->input->word_len -= i;
 	var_name = malloc(i * sizeof(char));

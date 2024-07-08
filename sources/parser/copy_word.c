@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/26 15:38:48 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/06/26 17:29:19 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/07/08 12:19:09 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	get_var_value(t_shell *shell, char *dst, char *src, t_copy *pos)
 	char	*var_name;
 
 	i = 1;
-	while (ft_isalnum(src[i]))
+	while (ft_isalnum(src[i]) || src[i] == '_')
 		i++;
 	var_name = malloc(i * sizeof(char));
 	if (var_name == NULL)
@@ -76,13 +76,13 @@ static void	handle_quotes(t_shell *shell, char *dst, char *src, t_copy *pos)
 		else
 			dst[pos->dest++] = src[pos->src++];
 	}
-	pos->src++;	
+	pos->src++;
 }
 
 void	copy_word(char *dst, char *src, t_shell *shell)
 {
 	t_copy	pos;
-	
+
 	pos.src = 0;
 	pos.dest = 0;
 	pos.quote = 0;
@@ -99,7 +99,7 @@ void	copy_word(char *dst, char *src, t_shell *shell)
 			handle_quotes(shell, dst, src, &pos);
 		}
 		else if (src[pos.src] == '$')
-				pos.src += check_var(shell, dst, src + pos.src, &pos);
+			pos.src += check_var(shell, dst, src + pos.src, &pos);
 		else
 			dst[pos.dest++] = src[pos.src++];
 	}

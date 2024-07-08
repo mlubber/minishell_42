@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/27 09:30:02 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/07/04 16:51:42 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/07/08 10:44:46 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ void	check_ctable(t_shell *shell) // TESTING PURPOSES
 	}
 	printf("\n");
 }
-
 
 
 // The minishell loop that keeps minishell running. We check if input is correct,

@@ -39,7 +39,8 @@ BUILTINS_DIR		=	$(SRC_DIR)builtins/ft_mini_echo.c \
 						$(SRC_DIR)builtins/ft_mini_export.c \
 						$(SRC_DIR)builtins/ft_mini_unset.c \
 						$(SRC_DIR)builtins/ft_mini_env.c \
-						$(SRC_DIR)builtins/ft_mini_exit.c
+						$(SRC_DIR)builtins/ft_mini_exit.c \
+						$(SRC_DIR)builtins/ft_builtins_utils.c
 
 UTILS_DIR			=	$(SRC_DIR)utils/ft_utils.c \
 						$(SRC_DIR)utils/kill_program.c \
