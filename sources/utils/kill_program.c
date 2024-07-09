@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/30 14:08:00 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/07/08 16:05:40 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/07/09 15:10:39 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,6 @@ void	kill_program(t_shell *shell, char *msg, int i)
 {
 	free_env(shell, &shell->env_list);
 	rl_clear_history();
-	if (shell->input != NULL)
-		free (shell->input);
 	if (msg != NULL)
 	{
 		printf("%s\n", msg);

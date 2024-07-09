@@ -6,12 +6,15 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/22 06:12:53 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/07/09 10:29:57 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/07/09 16:02:29 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+
+# define PROMPT	"\033[1;32mminishell: \033[0m"
+# define _XOPEN_SOURCE 700
 
 # include <stdio.h>
 # include <stdlib.h>
@@ -152,6 +155,9 @@ void	kill_program(t_shell *shell, char *msg, int i);
 void	free_env_node(t_env **node);
 
 void	free_cmd_list(t_ctable **head);
+
+// Signals
+void	init_signals(void);
 
 
 #endif

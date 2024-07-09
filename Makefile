@@ -10,7 +10,7 @@ OBJ_DIR				= ./build/objects/
 
 # Compiler and CFlags
 CC					= cc
-CFLAGS				= -g -fsanitize=address -Wall -Werror -Wextra -I#-g -fsanitize=address
+CFLAGS				= -Wall -Werror -Wextra -I#-g -fsanitize=address
 RM					= rm -f
 
 # Source Files
@@ -43,7 +43,8 @@ BUILTINS_DIR		=	$(SRC_DIR)builtins/ft_mini_echo.c \
 						$(SRC_DIR)builtins/ft_builtins_utils.c
 
 UTILS_DIR			=	$(SRC_DIR)utils/kill_program.c \
-						$(SRC_DIR)utils/free_cmd_list.c
+						$(SRC_DIR)utils/free_cmd_list.c \
+						$(SRC_DIR)utils/signals.c
 
 # Concatenate all source files
 SRCS 				= $(MAIN_DIR) $(ENV_DIR) $(SHELL_DIR) $(PARSER_DIR) $(EXEC_DIR) $(BUILTINS_DIR) $(UTILS_DIR) 

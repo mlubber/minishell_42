@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/27 09:30:02 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/07/09 10:46:15 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/07/09 16:36:24 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,10 @@ void	ft_minishell_loop(t_shell *shell)
 
 	while (1)
 	{
-		input = readline("minishell: ");
+		input = readline(PROMPT);
 		if (input == NULL)
 			break ;
-		else if (input[0] == '\0')
+		else if (input[0] == '\0' )
 		{
 			free (input);
 			continue ;
