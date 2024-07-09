@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/22 06:12:53 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/07/08 16:17:30 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/07/09 09:49:44 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include "../libraries/libft/include/get_next_line.h"
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <signal.h>
 
 typedef enum { 		// Dit zijn, denk ik, de verschillende cmd types die we moeten bijhouden
 	t_cmd,			// Dit is gewoon de cmd + flags of arguments, bijv. 'ls -la'
@@ -138,8 +139,11 @@ int		ft_mini_export(t_shell *shell, char **cmds);
 int		ft_mini_unset(t_shell *shell, char **cmds);
 int		ft_mini_env(t_shell *shell, char **cmds);
 int		ft_mini_exit(t_shell *shell, char **cmds);
-int		check_alpha_num(char *str);
+
 void	ft_free_arr(char ***arr);
+int		check_alpha_num(char *str);
+char	*path_check(t_shell *shell, char *path);
+void	ft_check_upper_dir(t_shell *shell);
 
 
 // Kill program

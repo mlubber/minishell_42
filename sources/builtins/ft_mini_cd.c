@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/04 09:00:37 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/07/08 15:51:13 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/07/09 09:56:02 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ char	*ft_get_env_value(t_env *env_list, char *str)
 			while (tmp->str[i] != '=')
 				i++;
 			if (ft_strncmp("OLDPWD=", str, ft_strlen(str)) == 0)
-				printf("%s\n", tmp->str + i + 1);
+				ft_putendl_fd(tmp->str + i + 1, STDERR_FILENO);
 			return (tmp->str + i + 1);
 		}
 		tmp = tmp->next;
@@ -85,6 +85,9 @@ int	ft_change_directory(t_shell *shell, char **split_input)
 	if (split_input[1] == NULL
 		|| (split_input[1][0] == '~' && split_input[1][1] == '\0'))
 		ret = chdir(home_value);
+	else if (split_input[1][0] == '-' && split_input[1][1] == '-'
+		&& split_input[1][2] == '\0')
+		ret = chdir(home_value);
 	else if (split_input[1][0] == '-' && split_input[1][1] == '\0')
 		ret = chdir(ft_get_env_value(shell->env_list, "OLDPWD="));
 	else if (split_input[1][0] == '~' && split_input[1][1] != '\0')
@@ -96,29 +99,6 @@ int	ft_change_directory(t_shell *shell, char **split_input)
 	return (ret);
 }
 
-char	*path_check(t_shell *shell, char *path)
-{
-	int		i;
-	char	*new_pwd;
-
-	i = ft_strlen(path) - 1;
-	if (path[i] == '/')
-		i--;
-	while (path[i] != '/')
-		i--;
-	new_pwd = malloc((i + 1) * sizeof(char));
-	new_pwd[i] = '\0';
-	i--;
-	while (i >= 0)
-	{
-		new_pwd[i] = path[i];
-		i--;
-	}
-	if (shell->pwd != NULL)
-		free (shell->pwd);
-	return (new_pwd);
-}
-
 // Works like the 'cd' function. Using 'cd' or 'cd sources' work, for example
 int	ft_mini_cd(t_shell *shell, char **split_input)
 {
@@ -126,7 +106,7 @@ int	ft_mini_cd(t_shell *shell, char **split_input)
 
 	if (split_input[1] != NULL && split_input[2] != NULL)
 	{
-		printf("cd: Too many arguments");
+		ft_putendl_fd("cd: Too many arguments", STDERR_FILENO);
 		return (1);
 	}
 	ret = ft_change_directory(shell, split_input);
@@ -142,12 +122,7 @@ int	ft_mini_cd(t_shell *shell, char **split_input)
 	shell->old_pwd = shell->pwd;
 	shell->pwd = getcwd(NULL, 0);
 	if (shell->pwd == NULL)
-	{
-		shell->pwd = path_check(shell, shell->old_pwd);
-		while (access(shell->pwd, F_OK) == -1)
-			shell->pwd = path_check(shell, shell->pwd);
-		chdir(shell->pwd);
-	}
+		ft_check_upper_dir(shell);
 	ft_change_path_in_env(shell);
 	return (1);
 }

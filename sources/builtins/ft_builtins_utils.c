@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/08 15:55:48 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/07/08 15:57:56 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/07/09 09:48:27 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,36 @@ int	check_alpha_num(char *str)
 		return (true);
 	}
 	return (false);
+}
+
+char	*path_check(t_shell *shell, char *path)
+{
+	int		i;
+	char	*new_pwd;
+
+	i = ft_strlen(path) - 1;
+	if (path[i] == '/')
+		i--;
+	while (path[i] != '/')
+		i--;
+	new_pwd = malloc((i + 1) * sizeof(char));
+	new_pwd[i] = '\0';
+	i--;
+	while (i >= 0)
+	{
+		new_pwd[i] = path[i];
+		i--;
+	}
+	if (shell->pwd != NULL)
+		free (shell->pwd);
+	return (new_pwd);
+}
+
+void	ft_check_upper_dir(t_shell *shell)
+{
+
+	shell->pwd = path_check(shell, shell->old_pwd);
+	while (access(shell->pwd, F_OK) == -1)
+		shell->pwd = path_check(shell, shell->pwd);
+	chdir(shell->pwd);
 }
