@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/27 09:30:02 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/07/08 10:44:46 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/07/09 10:46:15 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	check_ctable(t_shell *shell) // TESTING PURPOSES
 	t_ctable	*tmp;
 	t_file		*tmp_in;
 	t_file		*tmp_out;
-	
+
 	int o = 0;
 	int num = 0;
 	tmp = shell->input->cnode;

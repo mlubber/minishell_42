@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/22 06:12:53 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/07/09 09:49:44 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/07/09 10:29:57 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,7 @@ void	ft_free_arr(char ***arr);
 int		check_alpha_num(char *str);
 char	*path_check(t_shell *shell, char *path);
 void	ft_check_upper_dir(t_shell *shell);
+void	replace_var_value(t_shell *shell, t_env *temp, char *input, int len);
 
 
 // Kill program

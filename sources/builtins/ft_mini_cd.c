@@ -6,13 +6,13 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/04 09:00:37 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/07/09 09:56:02 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/07/09 10:47:55 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	ft_change_path_in_env(t_shell *shell)
+static void	ft_change_path_in_env(t_shell *shell)
 {
 	t_env	*temp_list;
 	int		i;

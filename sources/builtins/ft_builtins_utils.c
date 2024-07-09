@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/08 15:55:48 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/07/09 09:48:27 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/07/09 10:30:00 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,4 +79,12 @@ void	ft_check_upper_dir(t_shell *shell)
 	while (access(shell->pwd, F_OK) == -1)
 		shell->pwd = path_check(shell, shell->pwd);
 	chdir(shell->pwd);
+}
+
+void	replace_var_value(t_shell *shell, t_env *temp, char *input, int len)
+{
+	temp->var_val = set_var_value(input + len + 1);
+	temp->str = ft_strdup(input);
+	if (temp->var_val == NULL)
+		kill_program(shell, "Failed mallocing env var value!", 6);
 }

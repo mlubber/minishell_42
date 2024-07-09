@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/24 14:37:50 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/07/02 14:09:05 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/07/09 10:45:44 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ static void	lstadd_back(t_ctable *cnode, t_file *new, char c)
 static t_file	*make_file_node(t_shell *shell, char *line, t_type type)
 {
 	t_file	*node;
-	int			i;
-	int			o;
+	int		i;
+	int		o;
 
 	i = 1;
 	node = malloc(sizeof(t_file));

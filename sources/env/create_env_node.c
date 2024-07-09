@@ -6,34 +6,11 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/03 14:38:18 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/07/08 15:35:24 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/07/09 10:42:38 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-// char	*ft_dup_str(t_env *node, char *str, int i)
-// {
-// 	char	*result;
-// 	char	*single_quote_str;
-
-// 	single_quote_str = ft_strdup(str + i + 1);
-// 	if (node->var_val != NULL)
-// 	{
-// 		if (single_quote_str[0] == '\'' && single_quote_str[1] == '\"')
-// 			result = ft_strjoin(ft_strjoin(node->var_name, "="),
-// 					ft_strtrim(single_quote_str, "\'"));
-// 		else if (single_quote_str[0] == '\"' && single_quote_str[1] == '\'')
-// 			result = ft_strjoin(ft_strjoin(node->var_name, "="),
-// 					ft_strtrim(single_quote_str, "\""));
-// 		else
-// 			result = ft_strjoin(ft_strjoin(node->var_name, "="),
-// 					ft_strtrim(node->var_val, "\""));
-// 	}
-// 	else
-// 		result = ft_strdup(str);
-// 	return (result);
-// }
 
 static char	*set_var_name(char *str)
 {
@@ -85,26 +62,8 @@ static char	*set_var_value_quotes(char *str)
 
 char	*set_var_value(char *str)
 {
-	// int		i;
 	char	*var_value;
 
-	// if (*str == '"')
-	// {
-	// 	i = 1;
-	// 	while (str[i] != '"' && str[i] != '\0')
-	// 		i++;
-	// 	if (str[i] == '"')
-	// 		var_value = malloc((i + 2) * sizeof(char));
-	// 	else
-	// 		return (NULL);
-	// 	i = 0;
-	// 	while (var_value != NULL && str[i] != '\0')
-	// 	{
-	// 		var_value[i] = str[i];
-	// 		i++;
-	// 	}
-	// }
-	// else
 	var_value = set_var_value_quotes(str);
 	if (var_value == NULL)
 		return (NULL);

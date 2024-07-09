@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/04 14:35:10 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/07/08 10:45:55 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/07/09 10:44:18 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ static char	*open_infiles(t_shell *shell, t_ctable *cnode, t_file *infile)
 		}
 		infile = infile->next;
 	}
-	return (NULL);	
+	return (NULL);
 }
 
 

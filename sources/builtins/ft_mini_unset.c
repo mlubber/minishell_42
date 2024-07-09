@@ -6,13 +6,13 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/07 12:10:52 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/07/08 16:00:08 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/07/09 10:47:17 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int	search_and_delete_var(t_env **head, char *str)
+static int	search_and_delete_var(t_env **head, char *str)
 {
 	t_env	*temp;
 	t_env	*prev;
@@ -38,7 +38,6 @@ int	search_and_delete_var(t_env **head, char *str)
 	return (true);
 }
 
-// Will delete the node and set the next pointers in the prior and latter node correctly. Updates the node_num accordingly
 int	ft_mini_unset(t_shell *shell, char **split_input)
 {
 	int		i;

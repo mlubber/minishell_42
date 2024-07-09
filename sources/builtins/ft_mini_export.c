@@ -6,19 +6,11 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/03 11:01:03 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/07/08 15:59:19 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/07/09 10:53:01 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-void	replace_var_value(t_shell *shell, t_env *temp, char *input, int len)
-{
-	temp->var_val = set_var_value(input + len + 1);
-	temp->str = ft_strdup(input);
-	if (temp->var_val == NULL)
-		kill_program(shell, "Failed mallocing env var value!", 6);
-}
 
 int	check_duplicate_var(t_shell *shell, char *input)
 {
@@ -143,4 +135,3 @@ int	ft_mini_export(t_shell *shell, char **split_input)
 	}
 	return (true);
 }
-
