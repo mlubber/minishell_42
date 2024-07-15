@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   free_cmd_list.c                                    :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2024/07/15 12:10:51 by mlubbers      #+#    #+#                 */
+/*   Updated: 2024/07/15 12:10:57 by mlubbers      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
 void	free_file_list(t_file **infiles, t_file **outfiles)

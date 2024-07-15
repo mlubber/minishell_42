@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/22 06:12:53 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/07/09 16:02:29 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/07/15 17:13:57 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # include "../libraries/libft/include/get_next_line.h"
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <sys/wait.h>
 # include <signal.h>
 
 typedef enum { 		// Dit zijn, denk ik, de verschillende cmd types die we moeten bijhouden
@@ -90,8 +91,6 @@ typedef struct s_input
 
 typedef struct s_shell
 {
-	char		**envp;
-	char		**paths;
 	char		*pwd;
 	char		*old_pwd;
 	int			env_size;
@@ -132,6 +131,7 @@ void	ft_minishell_loop(t_shell *shell);
 // Executor
 void	start_execution(t_shell *shell);
 bool	handling_redirs(t_shell *shell, t_ctable *cnode);
+char	*ft_connectstring(char const *s1, char const *s2, char c);
 
 
 // Builtins
@@ -148,6 +148,7 @@ int		check_alpha_num(char *str);
 char	*path_check(t_shell *shell, char *path);
 void	ft_check_upper_dir(t_shell *shell);
 void	replace_var_value(t_shell *shell, t_env *temp, char *input, int len);
+char	**ft_create_export_list(t_shell *shell, t_env *tmp, int i);
 
 
 // Kill program

@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/21 09:23:10 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/07/09 15:10:06 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/07/15 16:50:08 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 // Initializing shell struct
 static void	init_shell(t_shell *shell)
 {
-	shell->paths = NULL;
-	shell->envp = NULL;
 	shell->pwd = NULL;
 	shell->old_pwd = NULL;
 	shell->env_size = 0;
@@ -39,7 +37,6 @@ int	main(int argc, char **argv, char **envp)
 	init_shell(&shell);
 	building_env(&shell, &shell.env_list, envp);
 	ft_minishell_loop(&shell);
-	// printf("igdfxihgdfxhng\n");
 	kill_program(&shell, NULL, EXIT_SUCCESS);
 	return (0);
 }

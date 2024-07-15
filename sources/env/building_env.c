@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/27 08:05:43 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/06/07 14:58:20 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/07/15 17:09:40 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,28 +35,6 @@ static void	setting_pwd(t_shell *shell)
 	}
 }
 
-static void	setting_paths(t_shell *shell, char **envp)
-{
-	int		i;
-	char	*paths;
-
-	i = 0;
-	while (envp[i] != NULL)
-	{
-		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
-		{
-			paths = envp[i] + 5;
-			break ;
-		}
-		i++;
-	}
-	if (envp[i] == NULL)
-		kill_program(shell, "Couldn't find env", 1);
-	shell->paths = ft_split(paths, ':');
-	if (shell->paths == NULL)
-		kill_program(shell, "Failed mallocing paths", 6);
-}
-
 void	building_env(t_shell *shell, t_env **env_list, char **envp)
 {
 	t_env	*tmp;
@@ -73,9 +51,7 @@ void	building_env(t_shell *shell, t_env **env_list, char **envp)
 		if (tmp == NULL)
 			kill_program(shell, "Failed building env!", 6);
 		tmp = tmp->next;
-		shell->env_size++;
 		i++;
 	}
-	setting_paths(shell, envp);
 	setting_pwd(shell);
 }

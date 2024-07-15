@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/30 14:08:00 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/07/09 15:10:39 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/07/15 16:48:52 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,15 +31,6 @@ void	free_env(t_shell *shell, t_env **env_head)
 	t_env	*tmp;
 
 	i = 0;
-	if (shell->paths != NULL) // Freeing paths
-	{
-		while (shell->paths[i] != NULL)
-		{
-			free(shell->paths[i]);
-			i++;
-		}
-		free(shell->paths);
-	}
 	tmp = *env_head;
 	while (env_head != NULL && tmp != NULL) // Freeing ENV linked list
 	{

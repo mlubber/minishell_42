@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/03 11:01:03 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/07/09 10:53:01 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/07/15 17:14:25 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,25 +65,27 @@ void	ft_sort_env_lines(char **envp, int count)
 	}
 }
 
-char	**ft_create_export_list(t_shell *shell)
+char	**ft_create_export_list(t_shell *shell, t_env *tmp, int i)
 {
-	int		i;
 	char	**export_list;
-	t_env	*tmp;
 
-	export_list = malloc((shell->env_size + 2) * sizeof(char *));
+	export_list = malloc((shell->env_size) * sizeof(char *));
 	if (export_list == NULL)
 		return (NULL);
-	i = 0;
-	tmp = shell->env_list;
-	while (i <= shell->env_size && tmp != NULL)
+	while (tmp != NULL)
 	{
 		if (tmp->var_val == NULL)
 			export_list[i++] = ft_strdup(tmp->str);
-		else
-			if (ft_strncmp(tmp->str, "_=", 2) != 0)
-				export_list[i++] = ft_strjoin(
-						ft_strjoin(tmp->var_name, "="), tmp->var_val);
+		else if (ft_strncmp(tmp->str, "_=", 2) != 0)
+		{
+			export_list[i] = ft_connectstring(tmp->var_name, tmp->var_val, '=');
+			if (export_list[i] == NULL)
+			{
+				ft_free_arr(&export_list);
+				kill_program(shell, "failed mallocing export list", 6);
+			}
+			i++;
+		}
 		tmp = tmp->next;
 	}
 	export_list[i] = NULL;
@@ -128,7 +130,7 @@ int	ft_mini_export(t_shell *shell, char **split_input)
 	else
 	{
 		i = 0;
-		export_list = ft_create_export_list(shell);
+		export_list = ft_create_export_list(shell, shell->env_list, 0);
 		while (export_list[i] != NULL)
 			printf("declare -x %s\n", export_list[i++]);
 		ft_free_arr(&export_list);
