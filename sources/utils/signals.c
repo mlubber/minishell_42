@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/09 11:12:52 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/07/15 16:44:11 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/07/16 16:12:58 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	sigint_handler(int signal)
 		rl_replace_line("", 0);
 		rl_redisplay();
 		ft_putchar_fd('\n', STDOUT_FILENO);
-		ft_putstr_fd(PROMPT, STDOUT_FILENO);
+		ft_putstr_fd("minishell: ", STDOUT_FILENO);
 	}
 }
 
@@ -34,7 +34,7 @@ void	sigquit_handler(int signal)
 		rl_replace_line("", 0);
 		rl_redisplay();
 		ft_putchar_fd('\n', STDOUT_FILENO);
-		ft_putstr_fd(PROMPT, STDOUT_FILENO);
+		ft_putstr_fd("minishell: ", STDOUT_FILENO);
 	}
 }
 

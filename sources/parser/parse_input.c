@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/18 14:36:27 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/07/04 16:47:42 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/07/16 16:04:58 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,25 +69,11 @@ t_ctable	*create_ctable_node(t_shell *shell, char *line)
 	return (cnode);
 }
 
-void	reset_input_values(t_shell *shell, t_input *input)
-{
-	input->var_len = 0;
-	input->var_val_len = 0;
-	input->word_len = 0;
-	input->cmd_seg = 0;
-	input->cmds_count = 0;
-	if (dup2(STDIN_FILENO, shell->stdinput) == -1)
-		kill_program(shell, "Failed resetting stdin", 7);
-	if (dup2(STDOUT_FILENO, shell->stdoutput) == -1)
-		kill_program(shell, "Failed resetting stdout", 7);
-}
-
 void	create_ctable(t_shell *shell, char *line)
 {
 	t_ctable	*tmp;
 	t_ctable	*new;
 
-	reset_input_values(shell, shell->input);
 	line += check_whitespace(line, 0);
 	shell->input->cnode = create_ctable_node(shell, line);
 	line += shell->input->cmd_seg;

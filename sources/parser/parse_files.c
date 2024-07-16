@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/24 14:37:50 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/07/09 10:45:44 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/07/16 16:04:18 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void	lstadd_back(t_ctable *cnode, t_file *new, char c)
 		if (!cnode->outfiles)
 			cnode->outfiles = new;
 		else
-			lstlast(cnode->outfiles)->next = new;		
+			lstlast(cnode->outfiles)->next = new;
 	}
 }
 
@@ -70,7 +70,7 @@ void	parse_files(t_shell *shell, t_ctable *cnode, char *cmdline)
 		new = NULL;
 		if (cmdline[i] == '\'' || cmdline[i] == '"')
 			i += skip_quotes(cmdline + i, cmdline[i]);
-		else if (cmdline[i] == '<' && cmdline[i + 1] == '<')
+		if (cmdline[i] == '<' && cmdline[i + 1] == '<')
 			new = make_file_node(shell, cmdline + i, t_in_heredoc);
 		else if (cmdline[i] == '<')
 			new = make_file_node(shell, cmdline + i, t_in_file);

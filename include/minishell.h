@@ -6,14 +6,13 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/22 06:12:53 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/07/16 14:14:37 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/07/16 16:09:22 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# define PROMPT	"\033[1;32mminishell: \033[0m"
 # define _XOPEN_SOURCE 700
 
 # include <stdio.h>
@@ -111,7 +110,7 @@ char	*set_var_value(char *str);
 
 
 // Parser
-int		input_checker(char **input);
+int		input_checker(t_shell *shell, char *cmdline);
 void	create_ctable(t_shell *shell, char *cmdline);
 int		get_wordlength(t_shell *shell, char *str);
 void	copy_word(char *dst, char *src, t_shell *shell);
@@ -122,6 +121,7 @@ int		char_check(char *str);
 int		skip_quotes(char *cmdline, char quote);
 int		skip_file_or_word(char *cmdline, char c, int i);
 int		check_whitespace(char *str, char c);
+int		finish_line(t_shell *shell);
 
 
 // Bash shell

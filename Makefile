@@ -22,6 +22,7 @@ ENV_DIR				=	$(SRC_DIR)env/building_env.c \
 SHELL_DIR			=	$(SRC_DIR)shell/ft_minishell_loop.c
 
 PARSER_DIR			=	$(SRC_DIR)parser/input_checker.c \
+						$(SRC_DIR)parser/finish_line.c \
 						$(SRC_DIR)parser/parse_input.c \
 						$(SRC_DIR)parser/parse_files.c \
 						$(SRC_DIR)parser/parse_cmd.c \

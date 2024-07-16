@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/07 16:35:52 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/07/01 18:22:21 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/07/16 16:03:32 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,6 @@ static int	check_quotes(char *cmdline)
 	return (0);
 }
 
-// ''  "HOME"  ''
-
-// 01  234567  89
-
 static int	check_redirs(char *cmdline)
 {
 	int	i;
@@ -50,7 +46,7 @@ static int	check_redirs(char *cmdline)
 	{
 		if (cmdline[i] == '\'' || cmdline[i] == '"')
 			i += skip_quotes(cmdline + i, cmdline[i]);
-		else if (cmdline[i] == '<' || cmdline[i] == '>')
+		if (cmdline[i] == '<' || cmdline[i] == '>')
 		{
 			i++;
 			if (cmdline[i] == cmdline[i - 1])
@@ -59,18 +55,17 @@ static int	check_redirs(char *cmdline)
 			if (char_check(cmdline + i) || cmdline[i] == '\0')
 				return (2);
 		}
-		if (cmdline[i] != '\0')
+		if (cmdline[i] != '\0' && cmdline[i] != '\'' && cmdline[i] != '"')
 			i++;
 	}
 	return (0);
 }
 
-static int	check_pipes(char *cmdline)
+static int	check_pipes(t_shell *shell, char *cmdline)
 {
 	int	i;
 
 	i = 0;
-	i += check_whitespace(cmdline, 0);
 	if (cmdline[i] == '|')
 		return (2);
 	while (cmdline[i])
@@ -81,51 +76,39 @@ static int	check_pipes(char *cmdline)
 		{
 			i++;
 			i += check_whitespace(cmdline + i, 0);
-			if (cmdline[i] == '|' || cmdline[i] == '\0')
+			if (cmdline[i] == '|')
 				return (2);
+			else if (cmdline[i] == '\0')
+				return (finish_line(shell));
 		}
-		if (cmdline[i] != '\0')
+		else if (cmdline[i] != '\0')
 			i++;
 	}
 	return (0);
 }
 
-int	input_checker(char **cmdline)
+int	input_checker(t_shell *shell, char *cmdline)
 {
 	int	i;
 	int	x;
 
 	i = 0;
 	x = 0;
-	i += check_whitespace(*cmdline, 0);
-	if (*cmdline[i] == '\0')
+	i += check_whitespace(cmdline, 0);
+	if (cmdline[i] == '\0')
 		x = 1;
-	else
-	{
-		if (check_quotes(*cmdline + i) == 2)
-		{
-			printf("quotes_check failed\n");
+	else if (check_quotes(cmdline + i) == 2 || check_redirs(cmdline + i) == 2 || check_pipes(shell, cmdline + i) == 2)
 			x = 2;
-		}
-		else if (check_redirs(*cmdline + i) == 2)
-		{
-			printf("redirs_check failed\n");
-			x = 2;
-		}
-		else if (check_pipes(*cmdline + i) == 2)
-		{
-			printf("pipes_check failed\n");
-			x = 2;
-		}
-	}
-	// else if (check_quotes(*cmdline + i) == 2 || check_redirs(*cmdline + i) == 2 || check_pipes(*cmdline + i) == 2)
-	// 		x = 2;
 	if (x > 0)
 	{
 		if (x == 2)
 			printf("Syntax error!\n");
-		free (*cmdline);
-		return (1);
+		if (shell->input->line != NULL)
+		{
+			free (shell->input->line);
+			shell->input->line = NULL;
+		}
+		return (x);
 	}
 	return (0);
 }
