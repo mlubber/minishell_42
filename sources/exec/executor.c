@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/04 12:38:42 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/07/16 15:54:43 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/07/16 15:57:51 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,4 +97,3 @@ void	start_execution(t_shell *shell)
 	else
 		executing_multiple_cmds(shell);
 }
-
