@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/27 09:30:02 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/07/09 16:36:24 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/07/16 14:15:47 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	ft_minishell_loop(t_shell *shell)
 
 	while (1)
 	{
-		input = readline(PROMPT);
+		input = readline("minishell: ");
 		if (input == NULL)
 			break ;
 		else if (input[0] == '\0' )
@@ -85,7 +85,7 @@ void	ft_minishell_loop(t_shell *shell)
 			continue ;
 		create_ctable(shell, input);
 		free (input);
-		check_ctable(shell); // Testing all files and cmds
+		// check_ctable(shell); // Testing all files and cmds
 		start_execution(shell);
 		free_cmd_list(&shell->input->cnode);
 	}

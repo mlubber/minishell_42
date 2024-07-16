@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/22 06:12:53 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/07/15 17:13:57 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/07/16 14:14:37 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,9 @@ void	ft_minishell_loop(t_shell *shell);
 void	start_execution(t_shell *shell);
 bool	handling_redirs(t_shell *shell, t_ctable *cnode);
 char	*ft_connectstring(char const *s1, char const *s2, char c);
+int		builtin_check(t_shell *shell);
+char	**ft_get_paths(t_shell *shell);
+void	ft_not_found_free(char **cmds, char **paths, char **envp);
 
 
 // Builtins
@@ -149,6 +152,7 @@ char	*path_check(t_shell *shell, char *path);
 void	ft_check_upper_dir(t_shell *shell);
 void	replace_var_value(t_shell *shell, t_env *temp, char *input, int len);
 char	**ft_create_export_list(t_shell *shell, t_env *tmp, int i);
+char	**ft_create_env(t_shell *shell);
 
 
 // Kill program

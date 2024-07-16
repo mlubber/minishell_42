@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/03 11:01:03 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/07/15 17:14:25 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/07/16 13:09:34 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ char	**ft_create_export_list(t_shell *shell, t_env *tmp, int i)
 {
 	char	**export_list;
 
-	export_list = malloc((shell->env_size) * sizeof(char *));
+	export_list = malloc((shell->env_size + 1) * sizeof(char *));
 	if (export_list == NULL)
 		return (NULL);
 	while (tmp != NULL)

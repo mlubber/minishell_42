@@ -29,9 +29,11 @@ PARSER_DIR			=	$(SRC_DIR)parser/input_checker.c \
 						$(SRC_DIR)parser/copy_word.c \
 						$(SRC_DIR)parser/parsing_utils.c
 
-EXEC_DIR			=	$(SRC_DIR)exec/executor.c \
+EXEC_DIR			=	$(SRC_DIR)exec/executor_utils.c \
+						$(SRC_DIR)exec/executor.c \
 						$(SRC_DIR)exec/handling_redirs.c \
 						$(SRC_DIR)exec/pipex_part.c
+
 
 BUILTINS_DIR		=	$(SRC_DIR)builtins/ft_mini_echo.c \
 						$(SRC_DIR)builtins/ft_mini_cd.c \
