@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/22 06:12:53 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/07/16 16:09:22 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/07/22 11:38:49 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,7 @@ void	ft_check_upper_dir(t_shell *shell);
 void	replace_var_value(t_shell *shell, t_env *temp, char *input, int len);
 char	**ft_create_export_list(t_shell *shell, t_env *tmp, int i);
 char	**ft_create_env(t_shell *shell);
+void	add_export_node(t_shell *shell, char *split_input);
 
 
 // Kill program

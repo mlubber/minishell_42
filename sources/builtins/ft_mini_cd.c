@@ -6,37 +6,36 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/04 09:00:37 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/07/09 10:47:55 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/07/22 09:21:27 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
+static void	ft_update_env_var(t_env *node, char *key, char *value)
+{
+	int		i;
+
+	free(node->str);
+	node->str = ft_strjoin(key, value);
+	i = 0;
+	while (node->str[i] != '=')
+		i++;
+	free(node->var_val);
+	node->var_val = set_var_value(node->str + i + 1);
+}
+
 static void	ft_change_path_in_env(t_shell *shell)
 {
 	t_env	*temp_list;
-	int		i;
 
 	temp_list = shell->env_list;
-	while (temp_list->next != NULL)
+	while (temp_list != NULL)
 	{
-		i = 0;
-		if (ft_strncmp(temp_list->next->str, "PWD=", 4) == 0)
-		{
-			temp_list->next->str = ft_strjoin("PWD=", shell->pwd);
-			while (temp_list->next->str[i] != '=')
-				i++;
-			temp_list->next->var_val
-				= set_var_value(temp_list->next->str + i + 1);
-		}
-		else if (ft_strncmp(temp_list->next->str, "OLDPWD=", 7) == 0)
-		{
-			temp_list->next->str = ft_strjoin("OLDPWD=", shell->old_pwd);
-			while (temp_list->next->str[i] != '=')
-				i++;
-			temp_list->next->var_val
-				= set_var_value(temp_list->next->str + i + 1);
-		}
+		if (ft_strncmp(temp_list->str, "PWD=", 4) == 0)
+			ft_update_env_var(temp_list, "PWD=", shell->pwd);
+		else if (ft_strncmp(temp_list->str, "OLDPWD=", 7) == 0)
+			ft_update_env_var(temp_list, "OLDPWD=", shell->old_pwd);
 		temp_list = temp_list->next;
 	}
 }
@@ -63,20 +62,11 @@ char	*ft_get_env_value(t_env *env_list, char *str)
 	return (NULL);
 }
 
-char	*ft_get_full_path(t_env *env_list, char *str)
-{
-	char	*home;
-	char	*join;
-
-	home = ft_get_env_value(env_list, "HOME=");
-	join = ft_strjoin(home, str + 1);
-	return (join);
-}
-
 int	ft_change_directory(t_shell *shell, char **split_input)
 {
 	int		ret;
 	char	*home_value;
+	char	*home_joined;
 
 	home_value = ft_get_env_value(shell->env_list, "HOME=");
 	if (split_input[1] != NULL && split_input[1][0] == '~')
@@ -91,11 +81,13 @@ int	ft_change_directory(t_shell *shell, char **split_input)
 	else if (split_input[1][0] == '-' && split_input[1][1] == '\0')
 		ret = chdir(ft_get_env_value(shell->env_list, "OLDPWD="));
 	else if (split_input[1][0] == '~' && split_input[1][1] != '\0')
-		ret = chdir(ft_get_full_path(shell->env_list, split_input[1]));
-	else
 	{
-		ret = chdir(split_input[1]);
+		home_joined = ft_strjoin(home_value, split_input[1] + 1);
+		ret = chdir(home_joined);
+		free(home_joined);
 	}
+	else
+		ret = chdir(split_input[1]);
 	return (ret);
 }
 

@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/03 11:01:03 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/07/16 15:58:13 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/07/22 16:18:24 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,6 @@ int	ft_mini_export(t_shell *shell, char **split_input)
 	if (split_input[1] != NULL)
 	{
 		i = 1;
-		printf("%s\n", split_input[1]);
 		while (split_input[i] != NULL)
 			add_export_node(shell, split_input[i++]);
 	}

@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/27 10:57:13 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/07/16 14:23:26 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/07/22 16:20:36 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,6 @@ char	**ft_create_env(t_shell *shell)
 	while (i < shell->env_size)
 	{
 		envp_array[i] = temp->str;
-		// printf("env_array: %s\n", envp_array[i]);
-		// if (ft_strncmp(temp->var_name, "SHLVL", 5) == 0 )
-		// {
-		// 	printf("string: %s\n", temp->str);
-		// 	printf("shell level: %s\n", temp->var_val);
-		// }
 		temp = temp->next;
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/27 09:30:02 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/07/16 16:12:02 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/07/22 16:19:25 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,12 +95,12 @@ void	ft_minishell_loop(t_shell *shell)
 		add_history(shell->input->line);
 		if (input_checker(shell, shell->input->line) > 0)
 		{
-			printf("we continue\n");
+			// printf("we continue\n");
 			continue ;
 		}
 		create_ctable(shell, shell->input->line);
 		free (shell->input->line);
-		check_ctable(shell); // Testing all files and cmds
+		// check_ctable(shell); // Testing all files and cmds
 		start_execution(shell);
 		free_cmd_list(&shell->input->cnode);
 	}

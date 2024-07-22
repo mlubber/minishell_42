@@ -6,11 +6,39 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/27 08:05:43 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/07/15 17:09:40 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/07/22 12:01:01 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+void	setting_shlvl(t_shell *shell)
+{
+	t_env	*temp;
+	char	**split_str;
+	int		value;
+	char	*input;
+
+	temp = shell->env_list;
+	while (temp != NULL)
+	{
+		if (ft_strncmp(temp->var_name, "SHLVL", 6) == 0)
+		{
+			split_str = ft_split(temp->str, '=');
+			value = ft_atoi(split_str[1]);
+			value++;
+			free(split_str[1]);
+			split_str[1] = ft_itoa(value);
+			input = ft_connectstring(split_str[0], split_str[1], '=');
+			free(temp->str);
+			free(temp->var_val);
+			add_export_node(shell, input);
+			ft_free_arr(&split_str);
+			free(input);
+		}
+		temp = temp->next;
+	}
+}
 
 static void	setting_pwd(t_shell *shell)
 {
@@ -53,5 +81,6 @@ void	building_env(t_shell *shell, t_env **env_list, char **envp)
 		tmp = tmp->next;
 		i++;
 	}
+	setting_shlvl(shell);
 	setting_pwd(shell);
 }

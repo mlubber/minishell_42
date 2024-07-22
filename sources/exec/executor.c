@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/04 12:38:42 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/07/16 15:57:51 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/07/22 12:52:12 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,11 @@ static void	exec_cmd(t_shell *shell, char **cmds, char **paths)
 		i = 0;
 		envp = ft_create_env(shell);
 		if (ft_strnstr(cmds[0], "/", ft_strlen(cmds[0])))
+		{
 			execve(cmds[0], cmds, envp);
+			ft_not_found_free(cmds, paths, envp);
+			kill_program(shell, NULL, errno);
+		}
 		else
 			create_cmd_path(shell, cmds, paths, envp);
 	}
@@ -72,7 +76,6 @@ static void	executing_multiple_cmds(t_shell *shell)
 	{
 		tmp = tmp->next;
 	}
-
 }
 
 static void	executing_one_cmd(t_shell *shell)
