@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/26 16:36:58 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/07/08 16:23:13 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/07/23 09:37:24 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,7 @@ static int	get_var_val_len(t_shell *shell, char *str)
 
 static int	check_var(t_shell *shell, char *str)
 {
-	int	i;
-
-	i = 1;
-	if (str[i] == '?')
+	if (str[1] == '?')
 		return (exit_code_len(shell));
 	else
 		return (get_var_val_len(shell, str));
@@ -96,6 +93,8 @@ int	get_wordlength(t_shell *shell, char *str)
 		else
 			i++;
 	}
+	if (str[0] == '$' && str[1] == '?')
+		return (i);
 	shell->input->word_len += i;
 	return (i);
 }
