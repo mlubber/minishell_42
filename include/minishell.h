@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/22 06:12:53 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/07/23 14:02:25 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/07/23 14:55:16 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ typedef struct s_ctable		// ctable = command table
 	t_file			*outfiles;
 	int				infile;
 	int				outfile;
+	int				hd_pipe[2];
 	bool			run_cmd;
 	struct s_ctable	*next;
 }	t_ctable;

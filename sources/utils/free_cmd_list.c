@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/15 12:10:51 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/07/23 13:41:49 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/07/23 16:48:44 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,22 @@ void	free_file_list(t_file **infiles, t_file **outfiles)
 	}
 }
 
+static void	close_fds(t_ctable *cnode)
+{
+	if (cnode->hd_pipe[0] != 0 && close(cnode->hd_pipe[0]) == -1)
+		printf("Failed closing read-end hd_pipe fd %d\n", cnode->hd_pipe[0]);
+	if (cnode->hd_pipe[1] != 0 && close(cnode->hd_pipe[1]) == -1)
+		printf("Failed closing write-end hd_pipe fd %d\n", cnode->hd_pipe[0]);
+	if (cnode->infile != 0 && close(cnode->infile) == -1)
+		printf("Failed closing infile fd %d\n", cnode->hd_pipe[0]);
+	if (cnode->outfile != 0 && close(cnode->outfile) == -1)
+		printf("Failed closing outfile fd %d\n", cnode->hd_pipe[0]);
+	cnode->hd_pipe[0] = 0; // Niet zeker of deze declaraties nodig zijn
+	cnode->hd_pipe[1] = 0;
+	cnode->infile = 0;
+	cnode->outfile = 0;
+}
+
 void	free_cmd_list(t_ctable **head)
 {
 	t_ctable	*tmp;
@@ -52,16 +68,18 @@ void	free_cmd_list(t_ctable **head)
 	while (tmp != NULL)
 	{
 		free_file_list(&tmp->infiles, &tmp->outfiles);
-		if (tmp->cmd_array != NULL)
-		{
-			i = 0;
-			while (tmp->cmd_array[i] != NULL)
-			{
-				free(tmp->cmd_array[i]);
-				i++;
-			}
-			free (tmp->cmd_array);
-		}
+		// if (tmp->cmd_array != NULL)
+		// {
+		// 	i = 0;
+		// 	while (tmp->cmd_array[i] != NULL)
+		// 	{
+		// 		free(tmp->cmd_array[i]);
+		// 		i++;
+		// 	}
+		// 	free (tmp->cmd_array);
+		// }
+		ft_free_arr(&tmp->cmd_array);
+		close_fds(tmp);
 		tmp = tmp->next;
 		free (*head);
 		*head = tmp;
