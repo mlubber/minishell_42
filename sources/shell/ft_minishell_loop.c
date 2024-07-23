@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/27 09:30:02 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/07/23 10:17:21 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/07/23 13:12:48 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,9 @@ static void	reset_input_values(t_shell *shell, t_input *input)
 	input->cmd_seg = 0;
 	input->cmds_count = 0;
 	// input->check_depth = 0;
-	if (dup2(STDIN_FILENO, shell->stdinput) == -1)
+	if (dup2(shell->stdinput, STDIN_FILENO) == -1)
 		kill_program(shell, "Failed resetting stdin", 7);
-	if (dup2(STDOUT_FILENO, shell->stdoutput) == -1)
+	if (dup2(shell->stdoutput, STDOUT_FILENO) == -1)
 		kill_program(shell, "Failed resetting stdout", 7);
 }
 
@@ -104,5 +104,6 @@ void	ft_minishell_loop(t_shell *shell)
 		start_execution(shell);
 		free_cmd_list(&shell->input->cnode);
 	}
+	printf("out of while loop\n");
 	kill_program(shell, NULL, 0);
 }

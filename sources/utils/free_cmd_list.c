@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/15 12:10:51 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/07/15 12:10:57 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/07/23 13:41:49 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	free_cmd_list(t_ctable **head)
 	tmp = *head;
 	while (tmp != NULL)
 	{
-		free_file_list(&tmp->infiles, &tmp->infiles);
+		free_file_list(&tmp->infiles, &tmp->outfiles);
 		if (tmp->cmd_array != NULL)
 		{
 			i = 0;

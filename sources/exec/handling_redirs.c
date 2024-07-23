@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/04 14:35:10 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/07/15 16:46:39 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/07/23 14:01:49 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static char	*open_outfiles(t_shell *shell, t_ctable *cnode, t_file *outfile)
 			cnode->outfile = open(outfile->str, O_CREAT | O_APPEND | O_WRONLY, 0777);
 		if (cnode->outfile == -1)
 			return (outfile->str);
-		if (dup2(cnode->outfile, STDIN_FILENO) == -1)
+		if (dup2(cnode->outfile, STDOUT_FILENO) == -1)
 			kill_program(shell, "Failed dup2 infile", errno);
 		outfile = outfile->next;
 	}
