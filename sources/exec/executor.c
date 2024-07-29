@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/04 12:38:42 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/07/23 15:55:33 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/07/29 13:28:32 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,8 @@ void	create_cmd_path(t_shell *shell, char **cmds, char **paths, char **envp)
 	kill_program(shell, NULL, errno);
 }
 
-static void	exec_cmd(t_shell *shell, char **cmds, char **paths)
+static void	exec_cmd(t_shell *shell, t_ctable *tmp, char **paths, int *pipe_fd)
 {
-	int		i;
 	char	*cmd_path;
 	char	**envp;
 	int		pid;
@@ -49,54 +48,78 @@ static void	exec_cmd(t_shell *shell, char **cmds, char **paths)
 	pid = fork();
 	if (pid == 0)
 	{
-		i = 0;
-		envp = ft_create_env(shell);
-		if (ft_strnstr(cmds[0], "/", ft_strlen(cmds[0])))
+		if (tmp->next)
 		{
-			execve(cmds[0], cmds, envp);
-			ft_not_found_free(cmds, paths, envp);
+			dup2(pipe_fd[1], STDOUT_FILENO);
+			close(pipe_fd[1]);
+			close(pipe_fd[0]);
+		}
+		dup2(shell->stdinput, STDIN_FILENO);
+		envp = ft_create_env(shell);
+		if (ft_strnstr(tmp->cmd_array[0], "/", ft_strlen(tmp->cmd_array[0])))
+		{
+			execve(tmp->cmd_array[0], tmp->cmd_array, envp);
+			ft_not_found_free(tmp->cmd_array, paths, envp);
 			kill_program(shell, NULL, errno);
 		}
 		else
-			create_cmd_path(shell, cmds, paths, envp);
+			create_cmd_path(shell, tmp->cmd_array, paths, envp);
+	}
+	else if (pid > 0)
+	{
+		wait(NULL);
+		if (tmp->next)
+		{
+			close(pipe_fd[1]);
+			shell->stdinput = pipe_fd[0];
+		}
 	}
 	else
 		wait(NULL);
 }
 
-static void	executing_multiple_cmds(t_shell *shell)
-{
-	int			i;
-	t_ctable	*tmp;
-
-	i = 0;
-	tmp = shell->input->cnode;
-	printf("multiple cmds\n");
-	while (tmp != NULL)
-	{
-		tmp = tmp->next;
-	}
-}
-
-static void	executing_one_cmd(t_shell *shell)
+static void	executing_one_cmd(t_shell *shell, t_ctable *tmp, int *pipe_fd)
 {
 	bool	open_success;
 	char	**paths;
 
-	open_success = handling_redirs(shell, shell->input->cnode);
+	open_success = handling_redirs(shell, tmp);
 	if (open_success == false)
 		return ;
 	if (builtin_check(shell) == 1)
 		return ;
 	paths = ft_get_paths(shell);
-	exec_cmd(shell, shell->input->cnode->cmd_array, paths);
+	exec_cmd(shell, tmp, paths, pipe_fd);
 	ft_free_arr(&paths);
 }
 
 void	start_execution(t_shell *shell)
 {
-	if (shell->input->cmds_count == 1)
-		executing_one_cmd(shell);
-	else
-		executing_multiple_cmds(shell);
+	int			pipe_fd[2];
+	t_ctable	*tmp;
+
+	tmp = shell->input->cnode;
+	while (tmp != NULL)
+	{
+		if (tmp->next)
+		{
+			if (pipe(pipe_fd) == -1)
+			{
+				perror("minishell");
+				kill_program(shell, "Failed pipe multiple cmds", errno);
+			}
+		}
+		executing_one_cmd(shell, tmp, pipe_fd);
+		tmp = tmp->next;
+	}
 }
+
+// void	start_execution(t_shell *shell)
+// {
+// 	int		pipe_fd[2];
+
+// 	// if (shell->input->cmds_count == 1)
+// 	// 	executing_one_cmd(shell, shell->input->cnode, pipe_fd);
+// 	// else
+// 	executing_multiple_cmds(shell, pipe_fd);
+// }

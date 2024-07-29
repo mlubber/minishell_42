@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/04 14:35:10 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/07/23 16:17:23 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/07/29 08:32:54 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	ft_heredoc(t_shell *shell, t_ctable *cnode, t_file *infile)
 		input = get_next_line(0);
 		if (input == NULL)
 			break ;
-		if (strncmp(input, infile->str, limiter_len) == 0
+		if (ft_strncmp(input, infile->str, limiter_len) == 0
 			&& input[limiter_len] == '\n')
 		{
 			free(input);
