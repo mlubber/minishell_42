@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/04 14:35:10 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/07/29 08:32:54 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/07/29 13:58:13 by link          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,6 @@ static void	ft_heredoc(t_shell *shell, t_ctable *cnode, t_file *infile)
 
 static char	*open_outfiles(t_shell *shell, t_ctable *cnode, t_file *outfile)
 {
-	t_file	*tmp;
-
-	tmp = cnode->outfiles;
 	while (outfile != NULL)
 	{
 		if (cnode->outfile != 0)

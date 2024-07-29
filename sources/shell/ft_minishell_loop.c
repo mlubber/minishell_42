@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/27 09:30:02 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/07/29 13:29:32 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/07/29 14:07:50 by link          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	ft_minishell_loop(t_shell *shell)
 	{
 		reset_input_values(shell, shell->input);
 		shell->input->line = readline("minishell: ");
-		printf("input: %s\n", shell->input->line);
+		// printf("input: %s\n", shell->input->line);
 		if (shell->input->line == NULL)
 		{
 			break ;

@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/30 14:08:00 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/07/15 16:48:52 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/07/29 13:58:48 by link          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,8 @@ void	free_env_node(t_env **node)
 // Frees our malloced environment
 void	free_env(t_shell *shell, t_env **env_head)
 {
-	int		i;
 	t_env	*tmp;
 
-	i = 0;
 	tmp = *env_head;
 	while (env_head != NULL && tmp != NULL) // Freeing ENV linked list
 	{

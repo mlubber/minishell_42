@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/15 12:10:51 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/07/23 16:48:44 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/07/29 14:06:47 by link          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,25 +59,13 @@ static void	close_fds(t_ctable *cnode)
 void	free_cmd_list(t_ctable **head)
 {
 	t_ctable	*tmp;
-	int			i;
 
-	i = 0;
 	if (*head == NULL)
 		return ;
 	tmp = *head;
 	while (tmp != NULL)
 	{
 		free_file_list(&tmp->infiles, &tmp->outfiles);
-		// if (tmp->cmd_array != NULL)
-		// {
-		// 	i = 0;
-		// 	while (tmp->cmd_array[i] != NULL)
-		// 	{
-		// 		free(tmp->cmd_array[i]);
-		// 		i++;
-		// 	}
-		// 	free (tmp->cmd_array);
-		// }
 		ft_free_arr(&tmp->cmd_array);
 		close_fds(tmp);
 		tmp = tmp->next;

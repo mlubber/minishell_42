@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/04 12:38:42 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/07/29 13:28:32 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/07/29 13:57:06 by link          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,9 @@ void	create_cmd_path(t_shell *shell, char **cmds, char **paths, char **envp)
 
 static void	exec_cmd(t_shell *shell, t_ctable *tmp, char **paths, int *pipe_fd)
 {
-	char	*cmd_path;
 	char	**envp;
 	int		pid;
 
-	cmd_path = NULL;
 	pid = fork();
 	if (pid == 0)
 	{
