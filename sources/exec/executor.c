@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/04 12:38:42 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/07/29 13:57:06 by link          ########   odam.nl         */
+/*   Updated: 2024/07/30 11:55:32 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,14 @@ static void	exec_cmd(t_shell *shell, t_ctable *tmp, char **paths, int *pipe_fd)
 	{
 		if (tmp->next)
 		{
-			dup2(pipe_fd[1], STDOUT_FILENO);
-			close(pipe_fd[1]);
-			close(pipe_fd[0]);
+			if (dup2(pipe_fd[1], STDOUT_FILENO) == -1)
+				kill_program(shell, "Child stdout dup fail", errno);
 		}
-		dup2(shell->stdinput, STDIN_FILENO);
+		if (dup2(shell->stdinput, STDIN_FILENO) == -1)
+			kill_program(shell, "Child stdin dup fail", errno);
+		handling_redirs(shell, tmp);
+		close(pipe_fd[0]);
+		close(pipe_fd[1]);
 		envp = ft_create_env(shell);
 		if (ft_strnstr(tmp->cmd_array[0], "/", ft_strlen(tmp->cmd_array[0])))
 		{
@@ -63,17 +66,16 @@ static void	exec_cmd(t_shell *shell, t_ctable *tmp, char **paths, int *pipe_fd)
 		else
 			create_cmd_path(shell, tmp->cmd_array, paths, envp);
 	}
-	else if (pid > 0)
+	else
 	{
-		wait(NULL);
+		waitpid(pid, NULL, 0);
+		shell->stdinput = STDIN_FILENO;
 		if (tmp->next)
 		{
 			close(pipe_fd[1]);
 			shell->stdinput = pipe_fd[0];
 		}
 	}
-	else
-		wait(NULL);
 }
 
 static void	executing_one_cmd(t_shell *shell, t_ctable *tmp, int *pipe_fd)
@@ -97,6 +99,8 @@ void	start_execution(t_shell *shell)
 	t_ctable	*tmp;
 
 	tmp = shell->input->cnode;
+	if (shell->input->cnode->cmd_array == NULL)
+		return ;
 	while (tmp != NULL)
 	{
 		if (tmp->next)
@@ -116,8 +120,10 @@ void	start_execution(t_shell *shell)
 // {
 // 	int		pipe_fd[2];
 
-// 	// if (shell->input->cmds_count == 1)
-// 	// 	executing_one_cmd(shell, shell->input->cnode, pipe_fd);
-// 	// else
-// 	executing_multiple_cmds(shell, pipe_fd);
+// 	if (shell->input->cnode->cmd_array == NULL)
+// 		return ;
+// 	if (shell->input->cmds_count == 1)
+// 		executing_one_cmd(shell, shell->input->cnode, pipe_fd);
+// 	else
+// 		executing_multiple_cmds(shell, pipe_fd);
 // }
