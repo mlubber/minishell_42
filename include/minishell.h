@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/22 06:12:53 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/07/29 09:48:50 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/07/30 16:04:42 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,15 +133,17 @@ void	ft_minishell_loop(t_shell *shell);
 void	start_execution(t_shell *shell);
 bool	handling_redirs(t_shell *shell, t_ctable *cnode);
 char	*ft_connectstring(char const *s1, char const *s2, char c);
-int		builtin_check(t_shell *shell);
 char	**ft_get_paths(t_shell *shell);
 void	ft_not_found_free(char **cmds, char **paths, char **envp);
+int		builtin_execute(t_shell *shell, t_ctable *tmp);
+void	builtin_child_exec(t_shell *shell, t_ctable *tmp, int *pipe_fd);
+int		builtin_check(t_ctable *tmp);
 
 
 // Builtins
 int		ft_mini_echo(t_shell *shell, char **cmds);
 int		ft_mini_cd(t_shell *shell, char **cmds);
-int		ft_mini_pwd(t_shell *shell, char **cmds);
+int		ft_mini_pwd(t_shell *shell);
 int		ft_mini_export(t_shell *shell, char **cmds);
 int		ft_mini_unset(t_shell *shell, char **cmds);
 int		ft_mini_env(t_shell *shell, char **cmds);

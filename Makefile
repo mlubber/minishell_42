@@ -30,7 +30,8 @@ PARSER_DIR			=	$(SRC_DIR)parser/input_checker.c \
 						$(SRC_DIR)parser/copy_word.c \
 						$(SRC_DIR)parser/parsing_utils.c
 
-EXEC_DIR			=	$(SRC_DIR)exec/executor_utils.c \
+EXEC_DIR			=	$(SRC_DIR)exec/executor_builtins.c \
+						$(SRC_DIR)exec/executor_utils.c \
 						$(SRC_DIR)exec/executor.c \
 						$(SRC_DIR)exec/handling_redirs.c \
 						$(SRC_DIR)exec/pipex_part.c

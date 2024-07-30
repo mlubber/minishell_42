@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/30 14:08:00 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/07/29 13:58:48 by link          ########   odam.nl         */
+/*   Updated: 2024/07/30 13:55:06 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	kill_program(t_shell *shell, char *msg, int i)
 	rl_clear_history();
 	if (msg != NULL)
 	{
-		printf("%s\n", msg);
+		ft_putendl_fd(msg, STDERR_FILENO);
 		exit(i);
 	}
 	exit(EXIT_SUCCESS);

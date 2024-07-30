@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/04 12:38:42 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/07/30 11:55:32 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/07/30 16:05:36 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,14 @@ static void	exec_cmd(t_shell *shell, t_ctable *tmp, char **paths, int *pipe_fd)
 	char	**envp;
 	int		pid;
 
+	if (builtin_check(tmp) == 1)
+	{
+		if (tmp->next)
+			builtin_child_exec(shell, tmp, pipe_fd);
+		else
+			builtin_execute(shell, tmp);
+		return ;
+	}
 	pid = fork();
 	if (pid == 0)
 	{
@@ -86,8 +94,8 @@ static void	executing_one_cmd(t_shell *shell, t_ctable *tmp, int *pipe_fd)
 	open_success = handling_redirs(shell, tmp);
 	if (open_success == false)
 		return ;
-	if (builtin_check(shell) == 1)
-		return ;
+	// if (builtin_check(shell, tmp) == 1)
+	// 	return ;
 	paths = ft_get_paths(shell);
 	exec_cmd(shell, tmp, paths, pipe_fd);
 	ft_free_arr(&paths);
@@ -107,7 +115,7 @@ void	start_execution(t_shell *shell)
 		{
 			if (pipe(pipe_fd) == -1)
 			{
-				perror("minishell");
+				perror("pipe");
 				kill_program(shell, "Failed pipe multiple cmds", errno);
 			}
 		}
