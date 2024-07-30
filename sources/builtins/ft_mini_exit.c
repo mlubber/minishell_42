@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/07 11:27:19 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/07/29 11:28:15 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/07/30 16:38:47 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,9 @@ int	ft_mini_exit(t_shell *shell, char **cmds)
 		printf("Exit does not take arguments!\n");
 		return (1);
 	}
-	kill_program(shell, "exit", 0);
+	if (shell->input->cnode->next)
+		kill_program(shell, NULL, 0);
+	else
+		kill_program(shell, "exit", 0);
 	return (1);
 }

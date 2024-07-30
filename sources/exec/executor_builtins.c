@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/30 15:49:28 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/07/30 16:05:04 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/07/30 16:39:53 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	builtin_child_exec(t_shell *shell, t_ctable *tmp, int *pipe_fd)
 		close(pipe_fd[0]);
 		close(pipe_fd[1]);
 		builtin_execute(shell, tmp);
-		exit(EXIT_SUCCESS);
+		kill_program(shell, NULL, EXIT_SUCCESS);
 	}
 	else
 	{
