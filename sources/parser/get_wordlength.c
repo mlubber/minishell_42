@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/26 16:36:58 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/07/23 09:37:24 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/05 13:12:42 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,12 +89,15 @@ int	get_wordlength(t_shell *shell, char *str)
 		else if (str[i] == '"')
 			i += handle_quotes(shell, str + i, '"');
 		else if (str[i] == '$')
+		{
+			if (str[1] == '?')
+				return (check_var(shell, str + i));
 			i += check_var(shell, str + i);
+		}
 		else
 			i++;
 	}
-	if (str[0] == '$' && str[1] == '?')
-		return (i);
 	shell->input->word_len += i;
+	printf("i = %d\n", i);
 	return (i);
 }

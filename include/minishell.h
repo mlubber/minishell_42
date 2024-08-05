@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/22 06:12:53 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/07/30 16:04:42 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/05 13:20:08 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ int		finish_line(t_shell *shell);
 
 
 // Bash shell
-void	ft_minishell_loop(t_shell *shell);
+void	ft_minishell_loop(t_shell *shell, int argc, char **argv);
 
 
 // Executor
