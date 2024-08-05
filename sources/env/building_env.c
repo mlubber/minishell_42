@@ -6,11 +6,23 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/27 08:05:43 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/07/22 12:01:01 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/05 07:54:11 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+int	ft_max_lvl(int value)
+{
+	value++;
+	if (value > 999)
+	{
+		ft_putstr_fd("minishell: warning: shell level (1000) ", 0);
+		ft_putendl_fd("too high, resetting to 1", 0);
+		value = 1;
+	}
+	return (value);
+}
 
 void	setting_shlvl(t_shell *shell)
 {
@@ -26,12 +38,10 @@ void	setting_shlvl(t_shell *shell)
 		{
 			split_str = ft_split(temp->str, '=');
 			value = ft_atoi(split_str[1]);
-			value++;
+			value = ft_max_lvl(value);
 			free(split_str[1]);
 			split_str[1] = ft_itoa(value);
 			input = ft_connectstring(split_str[0], split_str[1], '=');
-			free(temp->str);
-			free(temp->var_val);
 			add_export_node(shell, input);
 			ft_free_arr(&split_str);
 			free(input);

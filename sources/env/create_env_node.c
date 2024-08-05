@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/03 14:38:18 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/07/22 10:21:39 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/05 07:30:37 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ static char	*set_var_name(char *str)
 	var_name[i] = '\0';
 	return (var_name);
 }
-
 
 static char	*set_var_value_quotes(char *str)
 {
