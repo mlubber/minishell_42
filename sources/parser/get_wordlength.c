@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/26 16:36:58 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/05 13:12:42 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/05 14:56:42 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,5 @@ int	get_wordlength(t_shell *shell, char *str)
 			i++;
 	}
 	shell->input->word_len += i;
-	printf("i = %d\n", i);
 	return (i);
 }
