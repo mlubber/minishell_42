@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/04 12:38:42 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/07/30 16:05:36 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/06 18:42:39 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,32 +38,20 @@ void	create_cmd_path(t_shell *shell, char **cmds, char **paths, char **envp)
 	kill_program(shell, NULL, errno);
 }
 
-static void	exec_cmd(t_shell *shell, t_ctable *tmp, char **paths, int *pipe_fd)
+static pid_t	exec_cmd(t_shell *shell, t_ctable *tmp, char **paths, int node_nr)
 {
 	char	**envp;
-	int		pid;
+	pid_t	pid;
 
 	if (builtin_check(tmp) == 1)
-	{
-		if (tmp->next)
-			builtin_child_exec(shell, tmp, pipe_fd);
-		else
-			builtin_execute(shell, tmp);
-		return ;
-	}
+		return (builtin_child_exec(shell, tmp, node_nr));
 	pid = fork();
 	if (pid == 0)
 	{
-		if (tmp->next)
-		{
-			if (dup2(pipe_fd[1], STDOUT_FILENO) == -1)
-				kill_program(shell, "Child stdout dup fail", errno);
-		}
-		if (dup2(shell->stdinput, STDIN_FILENO) == -1)
-			kill_program(shell, "Child stdin dup fail", errno);
-		handling_redirs(shell, tmp);
-		close(pipe_fd[0]);
-		close(pipe_fd[1]);
+		if (handling_redirs(shell, tmp, node_nr) == false)
+			kill_program(shell, NULL, errno);
+		if (tmp->cmd_array == NULL)
+			kill_program(shell, NULL, 0);
 		envp = ft_create_env(shell);
 		if (ft_strnstr(tmp->cmd_array[0], "/", ft_strlen(tmp->cmd_array[0])))
 		{
@@ -74,64 +62,45 @@ static void	exec_cmd(t_shell *shell, t_ctable *tmp, char **paths, int *pipe_fd)
 		else
 			create_cmd_path(shell, tmp->cmd_array, paths, envp);
 	}
-	else
-	{
-		waitpid(pid, NULL, 0);
-		shell->stdinput = STDIN_FILENO;
-		if (tmp->next)
-		{
-			close(pipe_fd[1]);
-			shell->stdinput = pipe_fd[0];
-		}
-	}
+	if (shell->input->fds[0] != -1 && dup2(shell->input->fds[0], STDIN_FILENO) == -1)
+		kill_program(shell, "exec_cmd child dup2 fds[0]", errno);
+	closing_fds(shell->input->fds);
+	return (pid);
 }
 
-static void	executing_one_cmd(t_shell *shell, t_ctable *tmp, int *pipe_fd)
+static pid_t	executing_one_cmd(t_shell *shell, t_ctable *tmp, int node_nr)
 {
-	bool	open_success;
 	char	**paths;
+	pid_t	pid;
 
-	open_success = handling_redirs(shell, tmp);
-	if (open_success == false)
-		return ;
-	// if (builtin_check(shell, tmp) == 1)
-	// 	return ;
 	paths = ft_get_paths(shell);
-	exec_cmd(shell, tmp, paths, pipe_fd);
+	pid = exec_cmd(shell, tmp, paths, node_nr);
 	ft_free_arr(&paths);
+	return (pid);
 }
 
 void	start_execution(t_shell *shell)
 {
-	int			pipe_fd[2];
+	int			i;
 	t_ctable	*tmp;
 
+	i = 0;
 	tmp = shell->input->cnode;
-	if (shell->input->cnode->cmd_array == NULL)
-		return ;
 	while (tmp != NULL)
 	{
-		if (tmp->next)
+		if (tmp->next != NULL)
 		{
-			if (pipe(pipe_fd) == -1)
+			if (pipe(shell->input->fds) == -1)
 			{
 				perror("pipe");
 				kill_program(shell, "Failed pipe multiple cmds", errno);
 			}
 		}
-		executing_one_cmd(shell, tmp, pipe_fd);
+		shell->input->pids[i] = executing_one_cmd(shell, tmp, i);
+		i++;
 		tmp = tmp->next;
 	}
+	while (wait(NULL) != -1)
+		continue ;
 }
 
-// void	start_execution(t_shell *shell)
-// {
-// 	int		pipe_fd[2];
-
-// 	if (shell->input->cnode->cmd_array == NULL)
-// 		return ;
-// 	if (shell->input->cmds_count == 1)
-// 		executing_one_cmd(shell, shell->input->cnode, pipe_fd);
-// 	else
-// 		executing_multiple_cmds(shell, pipe_fd);
-// }

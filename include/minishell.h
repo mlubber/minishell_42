@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/22 06:12:53 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/05 13:20:08 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/06 18:14:14 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@
 # include <readline/history.h>
 # include <sys/wait.h>
 # include <signal.h>
+
+extern volatile sig_atomic_t g_signal;
 
 typedef enum { 		// Dit zijn, denk ik, de verschillende cmd types die we moeten bijhouden
 	t_cmd,			// Dit is gewoon de cmd + flags of arguments, bijv. 'ls -la'
@@ -71,7 +73,6 @@ typedef struct s_ctable		// ctable = command table
 	int				infile;
 	int				outfile;
 	int				hd_pipe[2];
-	bool			run_cmd;
 	struct s_ctable	*next;
 }	t_ctable;
 
@@ -85,8 +86,9 @@ typedef struct s_input
 	int			var_val_len; // length of the variable value
 	int			word_len; // length of the word, excluding var_len & quotes, including var_val_len
 	int			cmd_seg; // Length of the segment until a pipe or \0, including infiles, outfiles, command and arguments
-	int			cmds_count; // Amount of cmds
-	int			fds[2]; // pipe filedescriptor array 	<<-------- Kan misschien beter in ctable struct
+	int			node_count; // Amount of cmds
+	pid_t		*pids; // pid_t array to keep track of child process IDs
+	int			fds[2];
 }	t_input;
 
 typedef struct s_shell
@@ -131,12 +133,12 @@ void	ft_minishell_loop(t_shell *shell, int argc, char **argv);
 
 // Executor
 void	start_execution(t_shell *shell);
-bool	handling_redirs(t_shell *shell, t_ctable *cnode);
+bool	handling_redirs(t_shell *shell, t_ctable *cnode, int node_nr);
 char	*ft_connectstring(char const *s1, char const *s2, char c);
 char	**ft_get_paths(t_shell *shell);
 void	ft_not_found_free(char **cmds, char **paths, char **envp);
 int		builtin_execute(t_shell *shell, t_ctable *tmp);
-void	builtin_child_exec(t_shell *shell, t_ctable *tmp, int *pipe_fd);
+pid_t	builtin_child_exec(t_shell *shell, t_ctable *tmp, int node_nr);
 int		builtin_check(t_ctable *tmp);
 
 
@@ -163,7 +165,8 @@ void	add_export_node(t_shell *shell, char *split_input);
 void	kill_program(t_shell *shell, char *msg, int i);
 void	free_env_node(t_env **node);
 
-void	free_cmd_list(t_ctable **head);
+void	free_cmd_list(t_input *input, t_ctable **head);
+void	closing_fds(int *fds);
 
 // Signals
 void	init_signals(void);

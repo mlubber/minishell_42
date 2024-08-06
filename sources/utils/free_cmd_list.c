@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/15 12:10:51 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/07/29 14:06:47 by link          ########   odam.nl         */
+/*   Updated: 2024/08/06 16:36:11 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,12 @@ static void	close_fds(t_ctable *cnode)
 	cnode->outfile = 0;
 }
 
-void	free_cmd_list(t_ctable **head)
+void	free_cmd_list(t_input *input, t_ctable **head)
 {
 	t_ctable	*tmp;
 
+	if (input->pids != NULL)
+		free(input->pids);
 	if (*head == NULL)
 		return ;
 	tmp = *head;

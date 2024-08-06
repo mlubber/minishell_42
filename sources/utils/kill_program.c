@@ -6,11 +6,21 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/30 14:08:00 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/07/30 13:55:06 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/06 17:14:34 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+void	closing_fds(int *fds)
+{
+	if (fds[0] != -1 && close(fds[0]) == -1)
+		perror("fds[0]");
+	if (fds[1] != -1 && close(fds[1]) == -1)
+		perror("fds[1]");
+	fds[0] = -1;
+	fds[1] = -1;
+}
 
 // Frees every node
 void	free_env_node(t_env **node)

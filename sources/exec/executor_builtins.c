@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/30 15:49:28 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/07/30 16:39:53 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/06 18:26:39 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,36 +31,27 @@ int	builtin_execute(t_shell *shell, t_ctable *tmp)
 	return (0);
 }
 
-void	builtin_child_exec(t_shell *shell, t_ctable *tmp, int *pipe_fd)
+pid_t	builtin_child_exec(t_shell *shell, t_ctable *tmp, int node_nr)
 {
 	int	pid;
 
+	if (shell->input->node_count == 1)
+	{
+		builtin_execute(shell, tmp);
+		return (-1);
+	}
 	pid = fork();
 	if (pid == 0)
 	{
-		if (tmp->next)
-		{
-			if (dup2(pipe_fd[1], STDOUT_FILENO) == -1)
-				kill_program(shell, "Child stdout dup fail", errno);
-		}
-		if (dup2(shell->stdinput, STDIN_FILENO) == -1)
-			kill_program(shell, "Child stdin dup fail", errno);
-		handling_redirs(shell, tmp);
-		close(pipe_fd[0]);
-		close(pipe_fd[1]);
+		if (handling_redirs(shell, tmp, node_nr) == false)
+			kill_program(shell, NULL, errno);
 		builtin_execute(shell, tmp);
 		kill_program(shell, NULL, EXIT_SUCCESS);
 	}
-	else
-	{
-		waitpid(pid, NULL, 0);
-		shell->stdinput = STDIN_FILENO;
-		if (tmp->next)
-		{
-			close(pipe_fd[1]);
-			shell->stdinput = pipe_fd[0];
-		}
-	}
+	if (dup2(shell->input->fds[0], STDIN_FILENO) == -1)
+		kill_program(shell, "child dup2 fds[0]", errno);
+	closing_fds(shell->input->fds);
+	return (pid);
 }
 
 int	builtin_check(t_ctable *tmp)

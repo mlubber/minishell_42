@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/27 09:30:02 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/05 13:19:23 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/06 19:07:22 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,8 @@ static void	reset_input_values(t_shell *shell, t_input *input)
 	input->var_val_len = 0;
 	input->word_len = 0;
 	input->cmd_seg = 0;
-	input->cmds_count = 0;
-	// input->check_depth = 0;
+	input->node_count = 0;
+	shell->input->pids = NULL;
 	if (dup2(shell->stdinput, STDIN_FILENO) == -1)
 		kill_program(shell, "Failed resetting stdin", 7);
 	if (dup2(shell->stdoutput, STDOUT_FILENO) == -1)
@@ -85,7 +85,7 @@ void	ft_minishell_loop(t_shell *shell, int argc, char **argv)
 	{
 		create_ctable(shell, argv[2]);
 		start_execution(shell);
-		free_cmd_list(&shell->input->cnode);
+		free_cmd_list(shell->input, &shell->input->cnode);
 	}
 	else
 	{
@@ -110,7 +110,7 @@ void	ft_minishell_loop(t_shell *shell, int argc, char **argv)
 			free (shell->input->line);
 			check_ctable(shell); // Testing all files and cmds
 			start_execution(shell);
-			free_cmd_list(&shell->input->cnode);
+			free_cmd_list(shell->input, &shell->input->cnode);
 		}
 		printf("out of while loop\n");
 	}

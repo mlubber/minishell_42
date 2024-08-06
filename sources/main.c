@@ -6,11 +6,13 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/21 09:23:10 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/05 14:49:22 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/06 18:47:13 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+volatile sig_atomic_t	g_signal = 0;
 
 // Initializing shell struct
 static void	init_shell(t_shell *shell)
@@ -22,6 +24,8 @@ static void	init_shell(t_shell *shell)
 	shell->exit_code = 0;
 	shell->stdinput = dup(STDIN_FILENO);
 	shell->stdoutput = dup(STDOUT_FILENO);
+	shell->input->fds[0] = -1;
+	shell->input->fds[1] = -1;
 	init_signals();
 }
 

@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/04 14:35:10 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/07/29 13:58:13 by link          ########   odam.nl         */
+/*   Updated: 2024/08/06 19:40:46 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	ft_heredoc(t_shell *shell, t_ctable *cnode, t_file *infile)
 		kill_program(shell, "Failed creating pipe", errno);
 	while (1)
 	{
-		input = get_next_line(0);
+		input = get_next_line(shell->stdinput);
 		if (input == NULL)
 			break ;
 		if (ft_strncmp(input, infile->str, limiter_len) == 0
@@ -35,18 +35,37 @@ static void	ft_heredoc(t_shell *shell, t_ctable *cnode, t_file *infile)
 		free (input);
 	}
 	if (dup2(cnode->hd_pipe[0], STDIN_FILENO) == -1)
-		kill_program(shell, "child dup2 fds[0]", errno);
-	// if (close(cnode->hd_pipe[1]) == -1)
-	// 	printf("Failed closing hd_pipe write end");
+		kill_program(shell, "heredoc dup2 hd_pipe[0], STDIN failed", errno);
+	if ((close(cnode->hd_pipe[1]) == -1) || (close(cnode->hd_pipe[0]) == -1))
+		printf("Failed closing hd_pipe write end");
+}
+
+static char	*open_infiles(t_shell *shell, t_ctable *cnode, t_file *infile)
+{
+	while (infile != NULL)
+	{
+		if (infile->type == t_in_file)
+		{
+			cnode->infile = open(infile->str, O_RDONLY);
+			if (cnode->infile == -1)
+				return (infile->str);
+			if (dup2(cnode->infile, STDIN_FILENO) == -1)
+				kill_program(shell, "Failed dup2 infile", errno);
+			if (close(cnode->infile) == -1)
+				printf("Failed closing infile %s\n", infile->str);
+			cnode->infile = 0;
+		}
+		else if (infile->type == t_in_heredoc && infile->next == NULL)
+			ft_heredoc(shell, cnode, infile);
+		infile = infile->next;
+	}
+	return (NULL);
 }
 
 static char	*open_outfiles(t_shell *shell, t_ctable *cnode, t_file *outfile)
 {
 	while (outfile != NULL)
 	{
-		if (cnode->outfile != 0)
-			if (close(cnode->outfile) == -1)
-				printf("Failed closing outfile fd %d\n", cnode->outfile);
 		if (outfile->type == t_out_trunc)
 			cnode->outfile = open(outfile->str, O_CREAT | O_TRUNC | O_WRONLY, 0777);
 		else
@@ -55,57 +74,21 @@ static char	*open_outfiles(t_shell *shell, t_ctable *cnode, t_file *outfile)
 			return (outfile->str);
 		if (dup2(cnode->outfile, STDOUT_FILENO) == -1)
 			kill_program(shell, "Failed dup2 infile", errno);
+		if (close(cnode->outfile) == -1)
+			printf("Failed closing hd_pipe write end");
+		cnode->outfile = 0;
 		outfile = outfile->next;
 	}
 	return (NULL);
 }
 
-// Few different cases to check for:
-// -- No infiles & heredocs
-// -- Infiles but no heredocs
-// -- No infiles, but heredocs
-// -- Both infiles and heredocs, but last is an infile
-// -- Both infiles and heredocs, but last is a heredoc
-static char	*open_infiles(t_shell *shell, t_ctable *cnode, t_file *infile)
+bool	handling_redirs(t_shell *shell, t_ctable *cnode, int node_nr)
 {
-	while (infile != NULL)
-	{
-		if (infile->type == t_in_file)
-		{
-			if (cnode->infile != 0)
-				if (close(cnode->infile) == -1)
-					printf("Failed closing infile fd %d\n", cnode->infile);
-			cnode->infile = open(infile->str, O_RDONLY);
-			if (cnode->infile == -1)
-				return (infile->str);
-			if (dup2(cnode->infile, STDIN_FILENO) == -1)
-				kill_program(shell, "Failed dup2 infile", errno);
-		}
-		else if (infile->type == t_in_heredoc && infile->next == NULL)
-		{
-			if (cnode->infile != 0)
-				if (close(cnode->infile) == -1)
-					printf("Failed closing infile fd %d\n", cnode->infile);
-			ft_heredoc(shell, cnode, cnode->infiles);
-		}
-		infile = infile->next;
-	}
-	return (NULL);
-}
-
-
-bool	handling_redirs(t_shell *shell, t_ctable *cnode)
-{
-	t_file	*infile;
 	char	*file;
 
-	infile = cnode->infiles;
-	while (infile != NULL)
-	{
-		// if (infile->type == t_in_heredoc)
-		// 	ft_heredoc(infile);
-		infile = infile->next;
-	}
+	if (node_nr != shell->input->node_count - 1)
+		if (dup2(shell->input->fds[1], STDOUT_FILENO) == -1)
+			kill_program(shell, "Child stdout dup fail", errno);
 	file = open_infiles(shell, cnode, cnode->infiles);
 	if (file != NULL)
 	{
