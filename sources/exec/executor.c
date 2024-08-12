@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/04 12:38:42 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/06 18:42:39 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/12 14:59:12 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static pid_t	exec_cmd(t_shell *shell, t_ctable *tmp, char **paths, int node_nr)
 	}
 	if (shell->input->fds[0] != -1 && dup2(shell->input->fds[0], STDIN_FILENO) == -1)
 		kill_program(shell, "exec_cmd child dup2 fds[0]", errno);
-	closing_fds(shell->input->fds);
+	closing_fds(shell);
 	return (pid);
 }
 
@@ -99,6 +99,9 @@ void	start_execution(t_shell *shell)
 		shell->input->pids[i] = executing_one_cmd(shell, tmp, i);
 		i++;
 		tmp = tmp->next;
+		if (tmp == NULL)
+			if (dup2(shell->stdinput, STDIN_FILENO) == -1)
+				kill_program(shell, "Failed resetting stdin", 7);
 	}
 	while (wait(NULL) != -1)
 		continue ;

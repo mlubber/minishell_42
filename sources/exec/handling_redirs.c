@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/04 14:35:10 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/06 19:40:46 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/12 14:59:03 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ bool	handling_redirs(t_shell *shell, t_ctable *cnode, int node_nr)
 	if (node_nr != shell->input->node_count - 1)
 		if (dup2(shell->input->fds[1], STDOUT_FILENO) == -1)
 			kill_program(shell, "Child stdout dup fail", errno);
+	closing_fds(shell);
 	file = open_infiles(shell, cnode, cnode->infiles);
 	if (file != NULL)
 	{

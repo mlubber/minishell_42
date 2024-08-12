@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/30 15:49:28 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/06 18:26:39 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/12 15:57:52 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ pid_t	builtin_child_exec(t_shell *shell, t_ctable *tmp, int node_nr)
 	}
 	if (dup2(shell->input->fds[0], STDIN_FILENO) == -1)
 		kill_program(shell, "child dup2 fds[0]", errno);
-	closing_fds(shell->input->fds);
+	closing_fds(shell);
 	return (pid);
 }
 

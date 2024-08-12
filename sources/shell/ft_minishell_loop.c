@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/27 09:30:02 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/06 19:07:22 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/12 13:12:54 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ void	ft_minishell_loop(t_shell *shell, int argc, char **argv)
 			}
 			create_ctable(shell, shell->input->line);
 			free (shell->input->line);
-			check_ctable(shell); // Testing all files and cmds
+			// check_ctable(shell); // Testing all files and cmds
 			start_execution(shell);
 			free_cmd_list(shell->input, &shell->input->cnode);
 		}
