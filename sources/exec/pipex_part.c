@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/04 15:50:25 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/07/23 10:00:55 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/06 16:27:52 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@
 // 	pid_t	pid;
 
 // 	i = 0;
-// 	while (i < shell->input->cmds_count)
+// 	while (i < shell->input->node_count)
 // 	{
 // 		if (pipe(shell->input->fds) == -1)
 // 			kill_program(shell, "Error: failed creating pipe", 8);

@@ -6,11 +6,13 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/21 09:23:10 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/05 17:02:57 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/06 10:40:11 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+volatile sig_atomic_t	g_signal = 0;
 
 // Initializing shell struct
 static void	init_shell(t_shell *shell)

@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/27 09:30:02 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/05 16:17:33 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/06 16:27:16 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static void	reset_input_values(t_shell *shell, t_input *input)
 	input->var_val_len = 0;
 	input->word_len = 0;
 	input->cmd_seg = 0;
-	input->cmds_count = 0;
+	input->node_count = 0;
 	// input->check_depth = 0;
 	if (dup2(shell->stdinput, STDIN_FILENO) == -1)
 		kill_program(shell, "Failed resetting stdin", 7);
@@ -95,7 +95,7 @@ void	ft_minishell_loop(t_shell *shell, int argc, char **argv)
 			shell->input->line = readline("minishell: ");
 			if (shell->input->line == NULL)
 				break ;
-			else if (shell->input->line[0] == '\0' )
+			else if (shell->input->line[0] == '\0')
 			{
 				free (shell->input->line);
 				continue ;

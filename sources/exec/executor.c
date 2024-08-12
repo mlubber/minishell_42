@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/04 12:38:42 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/07/30 16:05:36 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/06 16:27:42 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ static void	exec_cmd(t_shell *shell, t_ctable *tmp, char **paths, int *pipe_fd)
 	pid = fork();
 	if (pid == 0)
 	{
+		sigint_handler(g_signal);
 		if (tmp->next)
 		{
 			if (dup2(pipe_fd[1], STDOUT_FILENO) == -1)
@@ -76,7 +77,8 @@ static void	exec_cmd(t_shell *shell, t_ctable *tmp, char **paths, int *pipe_fd)
 	}
 	else
 	{
-		waitpid(pid, NULL, 0);
+		// if (waitpid(pid, NULL, 0) == 0)
+		// 	kill(pid, SIGINT);
 		shell->stdinput = STDIN_FILENO;
 		if (tmp->next)
 		{
@@ -111,6 +113,7 @@ void	start_execution(t_shell *shell)
 		return ;
 	while (tmp != NULL)
 	{
+		g_signal = 0;
 		if (tmp->next)
 		{
 			if (pipe(pipe_fd) == -1)
@@ -122,6 +125,8 @@ void	start_execution(t_shell *shell)
 		executing_one_cmd(shell, tmp, pipe_fd);
 		tmp = tmp->next;
 	}
+	while (wait(NULL) != -1)
+		continue ;
 }
 
 // void	start_execution(t_shell *shell)
@@ -130,7 +135,7 @@ void	start_execution(t_shell *shell)
 
 // 	if (shell->input->cnode->cmd_array == NULL)
 // 		return ;
-// 	if (shell->input->cmds_count == 1)
+// 	if (shell->input->node_count == 1)
 // 		executing_one_cmd(shell, shell->input->cnode, pipe_fd);
 // 	else
 // 		executing_multiple_cmds(shell, pipe_fd);

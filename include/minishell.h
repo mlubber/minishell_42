@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/22 06:12:53 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/05 17:02:53 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/06 16:27:29 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@
 # include <readline/history.h>
 # include <sys/wait.h>
 # include <signal.h>
+
+extern volatile sig_atomic_t g_signal;
 
 typedef enum { 		// Dit zijn, denk ik, de verschillende cmd types die we moeten bijhouden
 	t_cmd,			// Dit is gewoon de cmd + flags of arguments, bijv. 'ls -la'
@@ -85,7 +87,7 @@ typedef struct s_input
 	int			var_val_len; // length of the variable value
 	int			word_len; // length of the word, excluding var_len & quotes, including var_val_len
 	int			cmd_seg; // Length of the segment until a pipe or \0, including infiles, outfiles, command and arguments
-	int			cmds_count; // Amount of cmds
+	int			node_count; // Amount of cmds
 	int			fds[2]; // pipe filedescriptor array 	<<-------- Kan misschien beter in ctable struct
 }	t_input;
 
@@ -167,6 +169,6 @@ void	free_cmd_list(t_ctable **head);
 
 // Signals
 void	init_signals(void);
-
+void	sigint_handler(int signal);
 
 #endif
