@@ -6,11 +6,11 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/09 11:12:52 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/07/16 16:12:58 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/12 10:45:36 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "../../include/minishell.h"
 
 void	sigint_handler(int signal)
 {
