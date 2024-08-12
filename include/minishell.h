@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/22 06:12:53 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/12 15:55:37 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/12 17:45:29 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,8 +168,13 @@ void	free_env_node(t_env **node);
 void	free_cmd_list(t_input *input, t_ctable **head);
 void	closing_fds(t_shell *shell);
 
+
 // Signals
 void	init_signals(void);
+
+
+// Error handling
+void	handle_error(char *str);
 
 
 #endif

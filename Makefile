@@ -19,7 +19,8 @@ MAIN_DIR			=	$(SRC_DIR)main.c
 ENV_DIR				=	$(SRC_DIR)env/building_env.c \
 						$(SRC_DIR)env/create_env_node.c
 
-SHELL_DIR			=	$(SRC_DIR)shell/ft_minishell_loop.c
+SHELL_DIR			=	$(SRC_DIR)shell/ft_minishell_loop.c \
+						$(SRC_DIR)shell/error_handling.c
 
 PARSER_DIR			=	$(SRC_DIR)parser/input_checker.c \
 						$(SRC_DIR)parser/finish_line.c \
