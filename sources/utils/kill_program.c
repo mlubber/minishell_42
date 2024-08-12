@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/30 14:08:00 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/12 15:59:08 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/12 16:04:14 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	closing_fds(t_shell *shell)
 	shell->input->fds[1] = -1;
 }
 
-// Frees every node
+// Frees all nodes
 void	free_env_node(t_env **node)
 {
 	if ((*node)->str != NULL)
