@@ -6,20 +6,21 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/30 14:08:00 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/06 17:14:34 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/12 13:36:29 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	closing_fds(int *fds)
+void	closing_fds(t_shell *shell)
 {
-	if (fds[0] != -1 && close(fds[0]) == -1)
-		perror("fds[0]");
-	if (fds[1] != -1 && close(fds[1]) == -1)
-		perror("fds[1]");
-	fds[0] = -1;
-	fds[1] = -1;
+	printf("fds[0]: %d, fds[1]: %d\n", shell->input->fds[0], shell->input->fds[1]);
+	if (shell->input->fds[0] != -1 && close(shell->input->fds[0]) == -1)
+		perror("shell->input->fds[0]");
+	if (shell->input->fds[1] != -1 && close(shell->input->fds[1]) == -1)
+		perror("shell->input->fds[1]");
+	shell->input->fds[0] = -1;
+	shell->input->fds[1] = -1;
 }
 
 // Frees every node
