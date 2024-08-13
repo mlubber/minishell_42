@@ -6,11 +6,39 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/04 12:38:42 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/12 14:59:12 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/13 09:55:05 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+void	wait_for_children(pid_t *pids, int node_count)
+{
+	int	status;
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < node_count)
+	{
+		waitpid(pids[i], &status, 0);
+		// printf("status pid #%d: %d\n", pids[i], status);
+		if (WIFEXITED(status) || WIFSIGNALED(status))
+		{
+			if (g_signal)
+			{
+				g_signal = 0;
+				j = 0;
+				while (j < node_count)
+				{
+					kill(pids[j], SIGINT);
+					j++;
+				}
+			}
+		}
+		i++;
+	}
+}
 
 void	create_cmd_path(t_shell *shell, char **cmds, char **paths, char **envp)
 {
@@ -103,7 +131,14 @@ void	start_execution(t_shell *shell)
 			if (dup2(shell->stdinput, STDIN_FILENO) == -1)
 				kill_program(shell, "Failed resetting stdin", 7);
 	}
-	while (wait(NULL) != -1)
-		continue ;
+	// i = 0;
+	// while (i < shell->input->node_count)
+	// {
+	// 	printf("pid #%d: %d\n", i, shell->input->pids[i]);
+	// 	i++;
+	// }
+	// while (wait(NULL) != -1)
+	// 	continue ;
+	wait_for_children(shell->input->pids, shell->input->node_count);
 }
 
