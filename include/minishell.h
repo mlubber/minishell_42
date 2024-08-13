@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/22 06:12:53 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/13 14:32:52 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/13 17:42:49 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,7 @@ void	ft_not_found_free(char **cmds, char **paths, char **envp);
 int		builtin_execute(t_shell *shell, t_ctable *tmp);
 pid_t	builtin_child_exec(t_shell *shell, t_ctable *tmp, int node_nr);
 int		builtin_check(t_ctable *tmp);
-void	check_heredoc(t_shell *shell);
+int		check_heredoc(t_shell *shell);
 
 
 // Builtins
@@ -172,6 +172,7 @@ void	closing_fds(t_shell *shell);
 
 // Signals
 void	init_signals(void);
+void	signal_received(t_shell *shell, pid_t *pids, int node_count, int status);
 
 
 // Error handling

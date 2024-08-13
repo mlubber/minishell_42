@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/27 09:30:02 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/13 15:00:51 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/13 16:36:05 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,9 @@ static void	reset_input_values(t_shell *shell, t_input *input)
 	input->node_count = 0;
 	shell->input->pids = NULL;
 	if (dup2(shell->stdinput, STDIN_FILENO) == -1)
-		kill_program(shell, "Failed resetting stdin", 7);
+		kill_program(shell, "Failed resetting stdin", errno);
 	if (dup2(shell->stdoutput, STDOUT_FILENO) == -1)
-		kill_program(shell, "Failed resetting stdout", 7);
+		kill_program(shell, "Failed resetting stdout", errno);
 }
 
 
@@ -109,7 +109,6 @@ void	ft_minishell_loop(t_shell *shell, int argc, char **argv)
 			create_ctable(shell, shell->input->line);
 			free (shell->input->line);
 			// check_ctable(shell); // Testing all files and cmds
-			check_heredoc(shell);
 			start_execution(shell);
 			free_cmd_list(shell->input, &shell->input->cnode);
 		}
