@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/04 12:38:42 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/12 14:59:12 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/13 14:20:32 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,17 +41,19 @@ void	create_cmd_path(t_shell *shell, char **cmds, char **paths, char **envp)
 static pid_t	exec_cmd(t_shell *shell, t_ctable *tmp, char **paths, int node_nr)
 {
 	char	**envp;
+	char	*file;
 	pid_t	pid;
 
 	if (builtin_check(tmp) == 1)
 		return (builtin_child_exec(shell, tmp, node_nr));
 	pid = fork();
+	if (pid == -1)
+		kill_program(shell, NULL, errno);
 	if (pid == 0)
 	{
-		if (handling_redirs(shell, tmp, node_nr) == false)
-			kill_program(shell, NULL, errno);
-		if (tmp->cmd_array == NULL)
-			kill_program(shell, NULL, 0);
+		file = handling_redirs(shell, tmp, node_nr);
+		if (file != NULL || tmp->cmd_array == NULL)
+			kill_program(shell, file, errno);
 		envp = ft_create_env(shell);
 		if (ft_strnstr(tmp->cmd_array[0], "/", ft_strlen(tmp->cmd_array[0])))
 		{
