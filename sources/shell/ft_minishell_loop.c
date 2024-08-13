@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/27 09:30:02 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/12 13:12:54 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/13 15:00:51 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ void	check_ctable(t_shell *shell) // TESTING PURPOSES
 	{
 		tmp_in = tmp->infiles;
 		tmp_out = tmp->outfiles;
-		printf("\n--[NODE: %d]--\n", num);
+		printf("\n--[NODE: %d]--\n", num + 1);
 		while (tmp_in != NULL)
 		{
-			printf("infile %d: %s ", o, tmp_in->str);
+			printf("infile %d: %s ", o + 1, tmp_in->str);
 			if (tmp_in->type == t_in_file)
 				printf("[< file]\n");
 			else if (tmp_in->type == t_in_heredoc)
@@ -40,7 +40,7 @@ void	check_ctable(t_shell *shell) // TESTING PURPOSES
 		o = 0;
 		while (tmp_out != NULL)
 		{
-			printf("outfile %d: %s ", o, tmp_out->str);
+			printf("outfile %d: %s ", o + 1, tmp_out->str);
 			if (tmp_out->type == t_out_trunc)
 				printf("[> trunc]\n");
 			else if (tmp_out->type == t_out_append)
@@ -52,7 +52,7 @@ void	check_ctable(t_shell *shell) // TESTING PURPOSES
 		while (tmp->cmd_array != NULL && tmp->cmd_array[o] != NULL)
 		{
 			if (tmp->cmd_array != NULL)
-				printf("Cmd %d: [%s]\n", o, tmp->cmd_array[o]);
+				printf("Cmd %d: [%s]\n", o + 1, tmp->cmd_array[o]);
 			o++;
 		}
 		o = 0;
@@ -109,6 +109,7 @@ void	ft_minishell_loop(t_shell *shell, int argc, char **argv)
 			create_ctable(shell, shell->input->line);
 			free (shell->input->line);
 			// check_ctable(shell); // Testing all files and cmds
+			check_heredoc(shell);
 			start_execution(shell);
 			free_cmd_list(shell->input, &shell->input->cnode);
 		}

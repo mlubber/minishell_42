@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/18 14:36:27 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/06 16:32:42 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/13 14:48:14 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,10 @@ t_ctable	*create_ctable_node(t_shell *shell, char *line)
 		kill_program(shell, "couldn't malloc ctable node!", 6);
 	cnode->infiles = NULL;
 	cnode->outfiles = NULL;
-	cnode->infile = 0;
-	cnode->outfile = 0;
-	cnode->hd_pipe[0] = 0;
-	cnode->hd_pipe[1] = 0;
+	cnode->infile = -1;
+	cnode->outfile = -1;
+	cnode->hd_pipe[0] = -1;
+	cnode->hd_pipe[1] = -1;
 	cnode->cmd_array = NULL;
 	parse_files(shell, cnode, line);
 	parse_cmd(shell, cnode, line);

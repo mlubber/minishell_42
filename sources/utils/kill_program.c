@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/30 14:08:00 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/12 16:04:14 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/13 15:15:56 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,12 @@ void	free_env(t_shell *shell, t_env **env_head)
 void	kill_program(t_shell *shell, char *msg, int i)
 {
 	free_env(shell, &shell->env_list);
+	closing_fds(shell);
 	rl_clear_history();
-	if (msg != NULL)
+	if (msg != NULL && i > 0)
 	{
-		ft_putendl_fd(msg, STDERR_FILENO);
+		handle_error(msg);
+		// ft_putendl_fd(msg, STDERR_FILENO);
 		exit(i);
 	}
 	exit(EXIT_SUCCESS);
