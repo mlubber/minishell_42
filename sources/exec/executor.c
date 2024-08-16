@@ -6,24 +6,24 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/04 12:38:42 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/13 17:51:46 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/16 16:49:09 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static void	remove_child_pid(t_shell *shell, pid_t pid)
-{
-	int	i;
+// static void	remove_child_pid(t_shell *shell, pid_t pid)
+// {
+// 	int	i;
 
-	i = 0;
-	while (i < shell->input->node_count)
-	{
-		if (shell->input->pids[i] == pid)
-			shell->input->pids[i] = -1;
-		i++;
-	}
-}
+// 	i = 0;
+// 	while (i < shell->input->node_count)
+// 	{
+// 		if (shell->input->pids[i] == pid)
+// 			shell->input->pids[i] = -1;
+// 		i++;
+// 	}
+// }
 
 void	signal_received(t_shell *shell, pid_t *pids, int node_count, int status)
 {
@@ -151,6 +151,7 @@ static pid_t	executing_one_cmd(t_shell *shell, t_ctable *tmp, int node_nr)
 
 	paths = ft_get_paths(shell);
 	pid = exec_cmd(shell, tmp, paths, node_nr);
+	if (pid == 0)
 	ft_free_arr(&paths);
 	return (pid);
 }
@@ -181,8 +182,6 @@ void	start_execution(t_shell *shell)
 			if (dup2(shell->stdinput, STDIN_FILENO) == -1)
 				kill_program(shell, "Failed resetting stdin", errno);
 	}
-	// while (wait(NULL) != -1)
-	// 	continue ;
 	wait_for_children(shell, shell->input->pids, shell->input->node_count);
 }
 

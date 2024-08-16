@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/26 16:36:58 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/06 13:12:04 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/16 11:26:12 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	exit_code_len(t_shell *shell)
 	char	*exit_code;
 
 	exit_code = ft_itoa(shell->exit_code);
+	if (exit_code == NULL)
+		kill_program(shell, "ft_itoa exit_code failed", errno);
 	shell->input->word_len += ft_strlen(exit_code) - 2;
 	free (exit_code);
 	return (2);
@@ -35,7 +37,7 @@ static int	get_var_val_len(t_shell *shell, char *str)
 	shell->input->word_len -= i;
 	var_name = malloc(i * sizeof(char));
 	if (var_name == NULL)
-		kill_program(shell, "Failed mallocing var name in copy_var", 6);
+		kill_program(shell, "Failed mallocing var name in copy_var", errno);
 	ft_strlcpy(var_name, str + 1, i);
 	tmp = shell->env_list;
 	while (tmp != NULL)

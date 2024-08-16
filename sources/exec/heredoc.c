@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/13 13:52:28 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/13 17:25:30 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/16 16:41:30 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,12 @@ static void	run_heredoc(t_shell *shell, t_ctable *cnode, t_file *infiles)
 	{
 		input = get_next_line(shell->stdinput);
 		if (input == NULL)
+		{
+			if (dup2(shell->stdinput, STDIN_FILENO) == -1)
+				kill_program(shell, "Failed resetting stdin", errno);
+			printf("warning: heredoc delimited by end-of-file (wanted: '%s')\n", infiles->str);
 			break ;
+		}
 		if (ft_strncmp(input, infiles->str, limiter_len) == 0
 			&& input[limiter_len] == '\n')
 		{

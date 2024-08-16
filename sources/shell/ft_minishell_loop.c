@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/27 09:30:02 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/13 16:36:05 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/16 16:27:35 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,5 +114,4 @@ void	ft_minishell_loop(t_shell *shell, int argc, char **argv)
 		}
 		printf("out of while loop\n");
 	}
-	kill_program(shell, NULL, 0);
 }

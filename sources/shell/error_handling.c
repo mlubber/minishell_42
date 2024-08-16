@@ -1,6 +1,6 @@
 #include "../../include/minishell.h"
 
-char	*ft_errorjoin(char const *s1, char const *s2)
+static char	*ft_errorjoin(char const *s1, char const *s2)
 {
 	int		i;
 	int		o;
@@ -32,6 +32,11 @@ void	handle_error(char *str)
 	if (str != NULL)
 	{
 		err_msg = ft_errorjoin(str, strerror(errno));
+		if (err_msg == NULL)
+		{
+			write(2, strerror(errno), ft_strlen(strerror(errno)));
+			exit(errno);
+		}
 		write(2, err_msg, ft_strlen(err_msg));
 		free(err_msg);
 	}

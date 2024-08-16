@@ -6,18 +6,20 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/04 09:00:37 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/07/22 09:21:27 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/16 16:18:48 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static void	ft_update_env_var(t_env *node, char *key, char *value)
+static void	ft_update_env_var(t_shell *shell, t_env *node, char *key, char *val)
 {
 	int		i;
 
 	free(node->str);
-	node->str = ft_strjoin(key, value);
+	node->str = ft_strjoin(key, val);
+	if (node->str == NULL)
+		kill_program(shell, "Failed malloc node-str in update_env_var", errno);
 	i = 0;
 	while (node->str[i] != '=')
 		i++;
@@ -33,9 +35,9 @@ static void	ft_change_path_in_env(t_shell *shell)
 	while (temp_list != NULL)
 	{
 		if (ft_strncmp(temp_list->str, "PWD=", 4) == 0)
-			ft_update_env_var(temp_list, "PWD=", shell->pwd);
+			ft_update_env_var(shell, temp_list, "PWD=", shell->pwd);
 		else if (ft_strncmp(temp_list->str, "OLDPWD=", 7) == 0)
-			ft_update_env_var(temp_list, "OLDPWD=", shell->old_pwd);
+			ft_update_env_var(shell, temp_list, "OLDPWD=", shell->old_pwd);
 		temp_list = temp_list->next;
 	}
 }
@@ -116,6 +118,6 @@ int	ft_mini_cd(t_shell *shell, char **split_input)
 	if (shell->pwd == NULL)
 		ft_check_upper_dir(shell);
 	ft_change_path_in_env(shell);
-	return (1);
+	return (0);
 }
 

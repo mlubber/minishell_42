@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/24 14:37:50 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/06 13:14:52 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/16 11:23:00 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static t_file	*make_file_node(t_shell *shell, char *line, t_type type)
 	i = 1;
 	node = malloc(sizeof(t_file));
 	if (!node)
-		kill_program(shell, "failed to malloc infile node!", 6);
+		kill_program(shell, "failed to malloc infile node!", errno);
 	node->next = NULL;
 	node->type = type;
 	while (line[i] == '<' || line[i] == '>' || check_whitespace(NULL, line[i]))

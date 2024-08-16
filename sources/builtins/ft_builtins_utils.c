@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/08 15:55:48 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/05 07:53:59 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/16 11:44:43 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ char	*path_check(t_shell *shell, char *path)
 	while (path[i] != '/')
 		i--;
 	new_pwd = malloc((i + 1) * sizeof(char));
+	if (new_pwd == NULL)
+		kill_program(shell, "Failed malloc new_pwd in path_check", errno);
 	new_pwd[i] = '\0';
 	i--;
 	while (i >= 0)
@@ -90,5 +92,5 @@ void	replace_var_value(t_shell *shell, t_env *temp, char *input, int len)
 		free(temp->str);
 	temp->str = ft_strdup(input);
 	if (temp->var_val == NULL)
-		kill_program(shell, "Failed mallocing env var value!", 6);
+		kill_program(shell, "Failed mallocing env var value!", errno);
 }
