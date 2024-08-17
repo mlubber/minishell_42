@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/13 13:52:28 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/13 14:59:30 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/16 16:41:30 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,12 @@ static void	run_heredoc(t_shell *shell, t_ctable *cnode, t_file *infiles)
 	{
 		input = get_next_line(shell->stdinput);
 		if (input == NULL)
+		{
+			// if (dup2(shell->stdinput, STDIN_FILENO) == -1)		// Not needed I think..
+			// 	kill_program(shell, "Failed resetting stdou", errno);
+			printf("warning: heredoc delimited by end-of-file (wanted: '%s')\n", infiles->str);
 			break ;
+		}
 		if (ft_strncmp(input, infiles->str, limiter_len) == 0
 			&& input[limiter_len] == '\n')
 		{
@@ -43,12 +48,12 @@ static void	run_heredoc(t_shell *shell, t_ctable *cnode, t_file *infiles)
 		free(input);
 	}
 	if ((close(cnode->hd_pipe[1]) == -1) || (close(cnode->hd_pipe[0]) == -1))
-		printf("Failed closing hd_pipe write end");
+		printf("Failed closing hd_pipe write end\n");
 }
 
-static void	set_heredoc_info(t_shell *shell, t_ctable *cnode, t_file *infiles)
+static pid_t	set_heredoc_info(t_shell *shell, t_ctable *cnode, t_file *infiles)
 {
-	int	hd_pid;
+	pid_t	hd_pid;
 
 	close_heredoc_pipes(cnode);
 	if (pipe(cnode->hd_pipe) == -1)
@@ -64,13 +69,15 @@ static void	set_heredoc_info(t_shell *shell, t_ctable *cnode, t_file *infiles)
 	if (close(cnode->hd_pipe[1]) == -1)
 		perror("cnode->hd_pipe[1]");
 	cnode->hd_pipe[1] = -1;
-	wait(NULL);	
+	return (hd_pid);
 }
 
-void	check_heredoc(t_shell *shell)
+int	check_heredoc(t_shell *shell)
 {
 	t_ctable	*cnode;
 	t_file		*infiles;
+	// pid_t		pid;
+	// int			status;
 
 	cnode = shell->input->cnode;
 	while (cnode != NULL)
@@ -79,9 +86,16 @@ void	check_heredoc(t_shell *shell)
 		while (infiles != NULL)
 		{
 			if (infiles->type == t_in_heredoc)
+			{
 				set_heredoc_info(shell, cnode, infiles);
+				wait(NULL);
+				// pid = waitpid(pid, &status, 0);
+				// if (WIFSIGNALED(status))
+				// 	return (130);
+			}
 			infiles = infiles->next;
 		}
 		cnode = cnode->next;
 	}
+	return (0);
 }

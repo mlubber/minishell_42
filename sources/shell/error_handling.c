@@ -1,6 +1,6 @@
 #include "../../include/minishell.h"
 
-char	*ft_errorjoin(char const *s1, char const *s2)
+static char	*ft_errorjoin(char const *s1, char const *s2)
 {
 	int		i;
 	int		o;
@@ -24,17 +24,22 @@ char	*ft_errorjoin(char const *s1, char const *s2)
 	return (p);
 }
 
-void	handle_error(char *str)
+void	handle_error(char *str, int exit_code)
 {
 	char	*err_msg;
 
 	err_msg = NULL;
 	if (str != NULL)
 	{
-		err_msg = ft_errorjoin(str, strerror(errno));
+		err_msg = ft_errorjoin(str, strerror(exit_code));
+		if (err_msg == NULL)
+		{
+			write(2, strerror(exit_code), ft_strlen(strerror(exit_code)));
+			exit(exit_code);
+		}
 		write(2, err_msg, ft_strlen(err_msg));
 		free(err_msg);
 	}
-	else
-		write(2, strerror(errno), ft_strlen(strerror(errno)));
+	else if (errno > 0)
+		write(2, strerror(exit_code), ft_strlen(strerror(exit_code)));
 }

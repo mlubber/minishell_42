@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/27 10:57:13 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/07/29 11:12:21 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/16 11:40:32 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ char	**ft_create_env(t_shell *shell)
 	t_env	*temp;
 
 	envp_array = malloc((shell->env_size + 1) * sizeof(char *));
+	if (envp_array == NULL)
+		kill_program(shell, "Failed mallocing envp array in mini_env", errno);
 	i = 0;
 	temp = shell->env_list;
 	while (i < shell->env_size)

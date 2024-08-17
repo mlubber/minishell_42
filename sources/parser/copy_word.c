@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/26 15:38:48 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/07/23 09:38:26 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/16 11:27:40 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static int	get_var_value(t_shell *shell, char *dst, char *src, t_copy *pos)
 		i++;
 	var_name = malloc(i * sizeof(char));
 	if (var_name == NULL)
-		kill_program(shell, "Failed mallocing var name in copy_var", 6);
+		kill_program(shell, "Failed mallocing var name in copy_var", errno);
 	ft_strlcpy(var_name, src + 1, i);
 	tmp = shell->env_list;
 	while (tmp != NULL)
@@ -59,6 +59,8 @@ static int	check_var(t_shell *shell, char *dst, char *src, t_copy *pos)
 	if (src[1] == '?')
 	{
 		exit_code = ft_itoa(shell->exit_code);
+		if (exit_code == NULL)
+			kill_program(shell, "ft_itoa exit_code failed", errno);
 		while (exit_code[i] != '\0')
 			dst[pos->dest++] = exit_code[i++];
 		free (exit_code);

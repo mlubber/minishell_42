@@ -6,11 +6,86 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/04 12:38:42 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/13 14:20:32 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/16 16:49:09 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+// static void	remove_child_pid(t_shell *shell, pid_t pid)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while (i < shell->input->node_count)
+// 	{
+// 		if (shell->input->pids[i] == pid)
+// 			shell->input->pids[i] = -1;
+// 		i++;
+// 	}
+// }
+
+void	signal_received(t_shell *shell, pid_t *pids, int node_count, int status)
+{
+	int	i;
+	
+	printf("termsig 1: %d\n", status);
+	status = WTERMSIG(status);
+	printf("termsig 2: %d\n", status);
+	if (g_signal)
+	{
+		g_signal = 0;
+		i = 0;
+		while (i < node_count)
+		{
+			if (pids[i] != -1)
+				kill(pids[i], SIGINT);
+			// printf("\nsignaled pid: %d", pids[i]);
+			i++;
+		}
+		// printf("\n");
+	}
+	shell->exit_code = status;
+}
+
+void	wait_for_children(t_shell *shell, pid_t *pids, int node_count)
+{
+	int	status;
+	int	i;
+	// int	j;
+	int	pid;
+
+	i = 0;
+	while (i < node_count)
+	{
+		// printf("status 1: %d\n", status);
+		pid = waitpid(pids[i], &status, 0);
+		printf("pid = %d\n", pid);
+		// printf("\n\n%d\n\n", WIFSIGNALED(status));
+		// remove_child_pid(shell, pid);
+		// printf("status 2: %d\n", status);
+		if (WIFEXITED(status))
+		{
+			status = WEXITSTATUS(status);
+			shell->exit_code = status;
+		}
+		else if (status == 0)
+		{
+			shell->exit_code = 0;
+		}
+		if (WIFSIGNALED(status))
+		{
+			signal_received(shell, pids, node_count, status);
+		}
+		i++;
+	}
+	// i = 0;
+	// while (i < shell->input->node_count)
+	// {
+	// 	printf("remaining pid #%d: %d\n", i, shell->input->pids[i]);
+	// 	i++;
+	// }
+}
 
 void	create_cmd_path(t_shell *shell, char **cmds, char **paths, char **envp)
 {
@@ -88,6 +163,8 @@ void	start_execution(t_shell *shell)
 
 	i = 0;
 	tmp = shell->input->cnode;
+	if (check_heredoc(shell) == 130)
+		return ;
 	while (tmp != NULL)
 	{
 		if (tmp->next != NULL)
@@ -103,9 +180,8 @@ void	start_execution(t_shell *shell)
 		tmp = tmp->next;
 		if (tmp == NULL)
 			if (dup2(shell->stdinput, STDIN_FILENO) == -1)
-				kill_program(shell, "Failed resetting stdin", 7);
+				kill_program(shell, "Failed resetting stdin", errno);
 	}
-	while (wait(NULL) != -1)
-		continue ;
+	wait_for_children(shell, shell->input->pids, shell->input->node_count);
 }
 

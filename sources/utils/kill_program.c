@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/30 14:08:00 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/13 15:15:56 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/16 11:22:27 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	free_env_node(t_env **node)
 }
 
 // Frees our malloced environment
-void	free_env(t_shell *shell, t_env **env_head)
+static void	free_env(t_shell *shell, t_env **env_head)
 {
 	t_env	*tmp;
 
@@ -54,16 +54,17 @@ void	free_env(t_shell *shell, t_env **env_head)
 }
 
 // Cleans up all malloced stuff and exits minishell
-void	kill_program(t_shell *shell, char *msg, int i)
+void	kill_program(t_shell *shell, char *msg, int exit_code)
 {
 	free_env(shell, &shell->env_list);
 	closing_fds(shell);
 	rl_clear_history();
-	if (msg != NULL && i > 0)
+	if (exit_code > 0)
 	{
-		handle_error(msg);
-		// ft_putendl_fd(msg, STDERR_FILENO);
-		exit(i);
+		handle_error(msg, exit_code);
+		exit(exit_code);
 	}
+	else if (msg != NULL && exit_code == 0)
+		write(2, msg, ft_strlen(msg));
 	exit(EXIT_SUCCESS);
 }

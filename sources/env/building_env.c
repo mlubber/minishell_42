@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/27 08:05:43 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/05 10:59:58 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/16 11:09:11 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,13 @@ static void	setting_pwd(t_shell *shell)
 		{
 			shell->pwd = ft_substr(tmp->str, 4, ft_strlen(tmp->str) - 4);
 			if (shell->pwd == NULL)
-				kill_program(shell, "Failed mallocing PWD!", 6);
+				kill_program(shell, "Failed mallocing PWD!", errno);
 		}
 		if (ft_strncmp(tmp->str, "OLDPWD=", 7) == 0)
 		{
 			shell->old_pwd = ft_substr(tmp->str, 7, ft_strlen(tmp->str) - 7);
 			if (shell->old_pwd == NULL)
-				kill_program(shell, "Failed mallocing OLD_PWD!", 6);
+				kill_program(shell, "Failed mallocing OLD_PWD!", errno);
 		}
 		tmp = tmp->next;
 	}
@@ -87,7 +87,10 @@ void	building_env(t_shell *shell, t_env **env_list, char **envp)
 		new = create_env_node(shell, envp[i]);
 		tmp->next = new;
 		if (tmp == NULL)
-			kill_program(shell, "Failed building env!", 6);
+		{
+			printf("true\n");
+			kill_program(shell, "Failed building env!", errno);
+		}
 		tmp = tmp->next;
 		i++;
 	}

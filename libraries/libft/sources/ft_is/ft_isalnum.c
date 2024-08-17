@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/10/07 13:34:21 by mlubbers      #+#    #+#                 */
-/*   Updated: 2023/10/07 13:34:35 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/16 16:04:48 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	ft_isalnum(int c)
 	if ((c >= '0' && c <= '9')
 		|| (c >= 'a' && c <= 'z')
 		|| (c >= 'A' && c <= 'Z'))
-		return (8);
+		return (1);
 	else
 		return (0);
 }

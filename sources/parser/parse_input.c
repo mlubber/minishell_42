@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/18 14:36:27 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/13 14:48:14 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/16 16:29:57 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ t_ctable	*create_ctable_node(t_shell *shell, char *line)
 	get_cmd_seg_len(shell, line);
 	cnode = malloc(sizeof(t_ctable));
 	if (cnode == NULL)
-		kill_program(shell, "couldn't malloc ctable node!", 6);
+		kill_program(shell, "couldn't malloc ctable node!", errno);
 	cnode->infiles = NULL;
 	cnode->outfiles = NULL;
 	cnode->infile = -1;
@@ -93,4 +93,6 @@ void	create_ctable(t_shell *shell, char *line)
 		shell->input->cmd_seg = 0;
 	}
 	shell->input->pids = malloc(shell->input->node_count * sizeof(pid_t));
+	if (shell->input->pids == NULL)
+		kill_program(shell, "Failed mallocing pids array", errno);
 }

@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/24 14:46:20 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/07/23 09:38:32 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/16 11:24:42 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	parse_cmd(t_shell *shell, t_ctable *cnode, char *cmdline)
 		return ;
 	cnode->cmd_array = malloc((cmd_c + 1) * sizeof(char *));
 	if (!cnode->cmd_array)
-		kill_program(shell, "cmd_array mallocing failed!", 6);
+		kill_program(shell, "cmd_array mallocing failed!", errno);
 	cnode->cmd_array[cmd_c] = NULL;
 	while (*cmdline && *cmdline != '|')
 	{

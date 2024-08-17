@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/03 14:38:18 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/05 07:30:37 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/16 11:02:12 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,16 +80,16 @@ static void	init_node(t_shell *shell, t_env *node, char *str)
 	{
 		node->var_val = set_var_value(str + i + 1);
 		if (node->var_val == NULL)
-			kill_program(shell, "Failed mallocing env var value!", 6);
+			kill_program(shell, "Failed mallocing env var value!", errno);
 	}
 	else
 		node->var_val = NULL;
 	node->var_name = set_var_name(str);
 	if (node->var_name == NULL)
-		kill_program(shell, "Failed mallocing env name in env node!", 6);
+		kill_program(shell, "Failed mallocing env name!", errno);
 	node->str = ft_strdup(str);
 	if (node->str == NULL)
-		kill_program(shell, "Failed dupping str for env node!", 6);
+		kill_program(shell, "Failed strdup for env node!", errno);
 	node->printed = false;
 	node->node_num = shell->env_size;
 }
@@ -100,7 +100,7 @@ t_env	*create_env_node(t_shell *shell, char *str)
 
 	node = malloc(sizeof(t_env));
 	if (!node)
-		kill_program(shell, "Failed mallocing env node!", 6);
+		kill_program(shell, "Failed mallocing env node!", errno);
 	node->next = NULL;
 	node->str = NULL;
 	node->var_name = NULL;
@@ -108,6 +108,6 @@ t_env	*create_env_node(t_shell *shell, char *str)
 	init_node(shell, node, str);
 	shell->env_size++;
 	if (node->var_name == NULL)
-		kill_program(shell, "Failed mallocing node!", 3);
+		kill_program(shell, "Failed mallocing node!", errno);
 	return (node);
 }

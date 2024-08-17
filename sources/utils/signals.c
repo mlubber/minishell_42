@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/09 11:12:52 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/12 10:45:36 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/13 17:44:21 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	sigint_handler(int signal)
 	if (signal == SIGINT)
 	{
 		// printf("SIGINT received!\n");
+		// signal_received(shell);
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
