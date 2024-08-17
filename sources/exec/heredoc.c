@@ -33,8 +33,8 @@ static void	run_heredoc(t_shell *shell, t_ctable *cnode, t_file *infiles)
 		input = get_next_line(shell->stdinput);
 		if (input == NULL)
 		{
-			if (dup2(shell->stdinput, STDIN_FILENO) == -1)
-				kill_program(shell, "Failed resetting stdin", errno);
+			// if (dup2(shell->stdinput, STDIN_FILENO) == -1)		// Not needed I think..
+			// 	kill_program(shell, "Failed resetting stdou", errno);
 			printf("warning: heredoc delimited by end-of-file (wanted: '%s')\n", infiles->str);
 			break ;
 		}
@@ -48,7 +48,7 @@ static void	run_heredoc(t_shell *shell, t_ctable *cnode, t_file *infiles)
 		free(input);
 	}
 	if ((close(cnode->hd_pipe[1]) == -1) || (close(cnode->hd_pipe[0]) == -1))
-		printf("Failed closing hd_pipe write end");
+		printf("Failed closing hd_pipe write end\n");
 }
 
 static pid_t	set_heredoc_info(t_shell *shell, t_ctable *cnode, t_file *infiles)

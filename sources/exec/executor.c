@@ -60,6 +60,7 @@ void	wait_for_children(t_shell *shell, pid_t *pids, int node_count)
 	{
 		// printf("status 1: %d\n", status);
 		pid = waitpid(pids[i], &status, 0);
+		printf("pid = %d\n", pid);
 		// printf("\n\n%d\n\n", WIFSIGNALED(status));
 		// remove_child_pid(shell, pid);
 		// printf("status 2: %d\n", status);
@@ -151,7 +152,6 @@ static pid_t	executing_one_cmd(t_shell *shell, t_ctable *tmp, int node_nr)
 
 	paths = ft_get_paths(shell);
 	pid = exec_cmd(shell, tmp, paths, node_nr);
-	if (pid == 0)
 	ft_free_arr(&paths);
 	return (pid);
 }

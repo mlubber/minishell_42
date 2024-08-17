@@ -70,7 +70,7 @@ char	**ft_get_paths(t_shell *shell)
 		return (NULL);
 	split_paths = ft_split(paths, ':');
 	if (split_paths == NULL)
-		kill_program(shell, "failed mallocing split_paths", 6);
+		kill_program(shell, "failed mallocing split_paths", errno);
 	return (split_paths);
 }
 

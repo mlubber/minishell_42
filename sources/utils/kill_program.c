@@ -54,17 +54,17 @@ static void	free_env(t_shell *shell, t_env **env_head)
 }
 
 // Cleans up all malloced stuff and exits minishell
-void	kill_program(t_shell *shell, char *msg, int i)
+void	kill_program(t_shell *shell, char *msg, int exit_code)
 {
 	free_env(shell, &shell->env_list);
 	closing_fds(shell);
 	rl_clear_history();
-	if (i > 0)
+	if (exit_code > 0)
 	{
-		handle_error(msg);
-		exit(i);
+		handle_error(msg, exit_code);
+		exit(exit_code);
 	}
-	else if (msg != NULL && i == 0)
+	else if (msg != NULL && exit_code == 0)
 		write(2, msg, ft_strlen(msg));
 	exit(EXIT_SUCCESS);
 }

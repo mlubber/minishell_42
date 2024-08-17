@@ -176,7 +176,7 @@ void	signal_received(t_shell *shell, pid_t *pids, int node_count, int status);
 
 
 // Error handling
-void	handle_error(char *str);
+void	handle_error(char *str, int exit_code);
 
 
 #endif
