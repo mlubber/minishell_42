@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/26 16:36:58 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/16 11:26:12 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/19 17:45:04 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static int	get_var_val_len(t_shell *shell, char *str)
 	return (i);
 }
 
-static int	check_var(t_shell *shell, char *str)
+int	check_var(t_shell *shell, char *str)
 {
 	if (str[1] == '?')
 		return (exit_code_len(shell));

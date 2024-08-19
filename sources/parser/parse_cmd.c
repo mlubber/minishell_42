@@ -6,11 +6,12 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/24 14:46:20 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/16 11:24:42 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/19 18:05:32 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
 
 int	cmd_arg_count(t_shell *shell, char *cmdline)
 {
@@ -21,6 +22,12 @@ int	cmd_arg_count(t_shell *shell, char *cmdline)
 	{
 		if (*cmdline == '<' || *cmdline == '>')
 			cmdline += skip_file_or_word(cmdline, *cmdline, 0);
+		else if (*cmdline == '$')
+		{
+			cmdline += get_wordlength(shell, cmdline);
+			if (shell->input->word_len > 0)
+				count++;
+		}
 		else
 		{
 			count++;
@@ -31,7 +38,6 @@ int	cmd_arg_count(t_shell *shell, char *cmdline)
 	return (count);
 }
 
-
 int	set_cmd(t_shell *shell, t_ctable *cnode, char *cmdline, int i)
 {
 	int	len;
@@ -39,17 +45,16 @@ int	set_cmd(t_shell *shell, t_ctable *cnode, char *cmdline, int i)
 	len = get_wordlength(shell, cmdline);
 	cnode->cmd_array[i] = malloc((shell->input->word_len + 1) * sizeof(char));
 	if (!cnode->cmd_array[i])
-		kill_program(shell, "failed mallocing cmd node 2d array", 6);
-	copy_word(cnode->cmd_array[i], cmdline, shell);
+		kill_program(shell, "failed mallocing cmd node 2d array", errno);
+	copy_word(cnode->cmd_array[i], cmdline, shell, 0);
 	return (len);
 }
 
-void	parse_cmd(t_shell *shell, t_ctable *cnode, char *cmdline)
+void	parse_cmd(t_shell *shell, t_ctable *cnode, char *cmdline, int i)
 {
-	int	i;
 	int	cmd_c;
+	int	var_len; 
 
-	i = 0;
 	cmd_c = cmd_arg_count(shell, cmdline);
 	if (cmd_c == 0)
 		return ;
@@ -61,6 +66,13 @@ void	parse_cmd(t_shell *shell, t_ctable *cnode, char *cmdline)
 	{
 		if (*cmdline == '<' || *cmdline == '>')
 			cmdline += skip_file_or_word(cmdline, *cmdline, 0);
+		else if (*cmdline == '$')
+		{
+			var_len = get_wordlength(shell, cmdline);
+			if (shell->input->word_len > 0)
+				set_cmd(shell, cnode, cmdline, i++);
+			cmdline += var_len;
+		}
 		else if (!check_whitespace(NULL, *cmdline))
 			cmdline += set_cmd(shell, cnode, cmdline, i++);
 		cmdline += check_whitespace(cmdline, 0);

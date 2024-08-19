@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/18 14:36:27 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/16 16:29:57 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/19 17:48:19 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ t_ctable	*create_ctable_node(t_shell *shell, char *line)
 	cnode->hd_pipe[1] = -1;
 	cnode->cmd_array = NULL;
 	parse_files(shell, cnode, line);
-	parse_cmd(shell, cnode, line);
+	parse_cmd(shell, cnode, line, 0);
 	cnode->next = NULL;
 	shell->input->node_count++;
 	return (cnode);

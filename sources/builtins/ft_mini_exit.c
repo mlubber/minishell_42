@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/07 11:27:19 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/16 16:41:07 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/19 16:42:40 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ int	ft_mini_exit(t_shell *shell, char **cmds)
 {
 	if (cmds[1] != NULL)
 	{
-		if (ft_isdigit(cmds[1][0]) > 0 || (cmds[1][0] == '-' && ft_isdigit(cmds[1][1])))
+		if (ft_isdigit(cmds[1][0]) > 0 || (cmds[1][0] == '-' && ft_isdigit(cmds[1][1])) || (cmds[1][0] == '+' && ft_isdigit(cmds[1][1])))
 			digit_started(shell, cmds);
 		else if (cmds[1][0] == '-')
 			dash_started(shell, cmds);
@@ -116,6 +116,6 @@ int	ft_mini_exit(t_shell *shell, char **cmds)
 	else if (shell->input->cnode->next)
 		kill_program(shell, NULL, 0);
 	else
-		kill_program(shell, "exit", 0);
+		kill_program(shell, "exit\n", 0);
 	return (1);
 }

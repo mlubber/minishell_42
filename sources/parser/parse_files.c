@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/24 14:37:50 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/16 11:23:00 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/19 19:15:49 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,21 @@ static t_file	*make_file_node(t_shell *shell, char *line, t_type type)
 	while (line[i] == '<' || line[i] == '>' || check_whitespace(NULL, line[i]))
 		i++;
 	get_wordlength(shell, line + i);
-	node->str = malloc(shell->input->word_len + 1);
-	copy_word(node->str, line + i, shell);
+	if (shell->input->word_len == 0 || (type == t_in_heredoc && line[i] == '$'))
+	{
+		get_wordlength(shell, line + i + 1);
+		node->str = malloc(++shell->input->word_len + 1 * (sizeof(char)));
+		node->str[0] = '$';
+		copy_word(node->str, line + i + 1, shell, 1);
+	}
+	else
+	{
+		node->str = malloc(shell->input->word_len + 1 * (sizeof(char)));
+		copy_word(node->str, line + i, shell, 0);
+	}
 	return (node);
 }
+
 
 void	parse_files(t_shell *shell, t_ctable *cnode, char *cmdline)
 {
