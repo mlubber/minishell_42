@@ -31,7 +31,10 @@ void	handle_error(char *str, int exit_code)
 	err_msg = NULL;
 	if (str != NULL)
 	{
-		err_msg = ft_errorjoin(str, strerror(exit_code));
+		if (str[0] == '$' && errno == 1)
+			err_msg = ft_errorjoin(str, "ambiguous redirect");
+		else
+			err_msg = ft_errorjoin(str, strerror(exit_code));
 		if (err_msg == NULL)
 		{
 			write(2, strerror(exit_code), ft_strlen(strerror(exit_code)));

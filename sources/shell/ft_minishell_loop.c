@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/27 09:30:02 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/16 16:27:35 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/19 18:32:03 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,22 +29,22 @@ void	check_ctable(t_shell *shell) // TESTING PURPOSES
 		printf("\n--[NODE: %d]--\n", num + 1);
 		while (tmp_in != NULL)
 		{
-			printf("infile %d: %s ", o + 1, tmp_in->str);
+			printf("infile %d: [%s] ", o + 1, tmp_in->str);
 			if (tmp_in->type == t_in_file)
-				printf("[< file]\n");
+				printf("< file\n");
 			else if (tmp_in->type == t_in_heredoc)
-				printf("[<< heredoc]\n");
+				printf("<< heredoc\n");
 			tmp_in = tmp_in->next;
 			o++;
 		}
 		o = 0;
 		while (tmp_out != NULL)
 		{
-			printf("outfile %d: %s ", o + 1, tmp_out->str);
+			printf("outfile %d: [%s] ", o + 1, tmp_out->str);
 			if (tmp_out->type == t_out_trunc)
-				printf("[> trunc]\n");
+				printf("> trunc\n");
 			else if (tmp_out->type == t_out_append)
-				printf("[>> append]\n");
+				printf(">> append\n");
 			tmp_out = tmp_out->next;
 			o++;
 		}

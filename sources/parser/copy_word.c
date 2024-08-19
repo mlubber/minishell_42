@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/26 15:38:48 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/16 11:27:40 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/19 18:32:15 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,12 +83,12 @@ static void	handle_quotes(t_shell *shell, char *dst, char *src, t_copy *pos)
 	pos->src++;
 }
 
-void	copy_word(char *dst, char *src, t_shell *shell)
+void	copy_word(char *dst, char *src, t_shell *shell, int i)
 {
 	t_copy	pos;
 
 	pos.src = 0;
-	pos.dest = 0;
+	pos.dest = i;
 	pos.quote = 0;
 	while (pos.dest < shell->input->word_len)
 	{

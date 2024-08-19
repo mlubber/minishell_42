@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/22 06:12:53 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/16 16:27:43 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/19 18:05:05 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <fcntl.h>
 # include <stdbool.h>
 # include <errno.h>
+# include <dirent.h>
 # include "../libraries/libft/include/libft.h"
 # include "../libraries/libft/include/get_next_line.h"
 # include <readline/readline.h>
@@ -99,6 +100,7 @@ typedef struct s_shell
 	int			exit_code;
 	int			stdinput;
 	int			stdoutput;
+	pid_t		pid;
 	t_env		*env_list;
 	t_input		*input;
 }	t_shell;
@@ -116,9 +118,9 @@ char	*set_var_value(char *str);
 int		input_checker(t_shell *shell, char *cmdline);
 void	create_ctable(t_shell *shell, char *cmdline);
 int		get_wordlength(t_shell *shell, char *str);
-void	copy_word(char *dst, char *src, t_shell *shell);
+void	copy_word(char *dst, char *src, t_shell *shell, int i);
 void	parse_files(t_shell *shell, t_ctable *cnode, char *cmdline);
-void	parse_cmd(t_shell *shell, t_ctable *cnode, char *cmdline);
+void	parse_cmd(t_shell *shell, t_ctable *cnode, char *cmdline, int i);
 
 int		char_check(char *str);
 int		skip_quotes(char *cmdline, char quote);
@@ -137,7 +139,6 @@ char	*handling_redirs(t_shell *shell, t_ctable *cnode, int node_nr);
 char	*ft_connectstring(char const *s1, char const *s2, char c);
 char	**ft_get_paths(t_shell *shell);
 void	ft_not_found_free(char **cmds, char **paths, char **envp);
-int		builtin_execute(t_shell *shell, t_ctable *tmp);
 pid_t	builtin_child_exec(t_shell *shell, t_ctable *tmp, int node_nr);
 int		builtin_check(t_ctable *tmp);
 int		check_heredoc(t_shell *shell);
