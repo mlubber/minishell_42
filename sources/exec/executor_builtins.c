@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/30 15:49:28 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/19 17:25:57 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/20 13:27:27 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ int	builtin_execute(t_shell *shell, t_ctable *tmp)
 
 pid_t	builtin_child_exec(t_shell *shell, t_ctable *tmp, int node_nr)
 {
-	int		pid;
 	char	*file;
 
 	if (shell->input->node_count == 1)
@@ -46,18 +45,21 @@ pid_t	builtin_child_exec(t_shell *shell, t_ctable *tmp, int node_nr)
 		}
 		return (builtin_execute(shell, tmp));
 	}
-	pid = fork();
-	if (pid == 0)
+	shell->pid = fork();
+	if (shell->pid == -1)
+		kill_program(shell, NULL, errno);
+	if (shell->pid == 0)
 	{
-		if (handling_redirs(shell, tmp, node_nr) == false)
-			kill_program(shell, NULL, errno);
+		file = handling_redirs(shell, tmp, node_nr);
+		if (file != NULL)
+			kill_program(shell, file, errno);
 		builtin_execute(shell, tmp);
 		kill_program(shell, NULL, EXIT_SUCCESS);
 	}
-	if (dup2(shell->input->fds[0], STDIN_FILENO) == -1)
+	if (shell->input->fds[0] != -1 && dup2(shell->input->fds[0], 0) == -1)
 		kill_program(shell, "child dup2 fds[0]", errno);
 	closing_fds(shell);
-	return (pid);
+	return (shell->pid);
 }
 
 int	builtin_check(t_ctable *tmp)

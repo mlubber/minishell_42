@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/27 09:30:02 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/19 18:32:03 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/20 10:42:52 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ void	ft_minishell_loop(t_shell *shell, int argc, char **argv)
 	{
 		while (1)
 		{
+			// printf("[exit_code: %d]\n", shell->exit_code);
 			reset_input_values(shell, shell->input);
 			shell->input->line = readline("minishell: ");
 			if (shell->input->line == NULL)

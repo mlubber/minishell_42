@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/04 12:38:42 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/19 19:03:07 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/20 12:46:58 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ static pid_t	exec_cmd(t_shell *shell, t_ctable *tmp, char **paths, int node_nr)
 		else
 			create_cmd_path(shell, tmp->cmd_array, paths, envp);
 	}
-	if (shell->input->fds[0] != -1 && dup2(shell->input->fds[0], STDIN_FILENO) == -1)
+	if (shell->input->fds[0] != -1 && dup2(shell->input->fds[0], 0) == -1)
 		kill_program(shell, "exec_cmd child dup2 fds[0]", errno);
 	closing_fds(shell);
 	return (shell->pid);

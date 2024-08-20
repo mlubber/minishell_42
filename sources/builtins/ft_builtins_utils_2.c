@@ -1,22 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_mini_pwd.c                                      :+:    :+:            */
+/*   ft_builtin_utils_2.c                               :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2024/05/27 10:57:13 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/20 10:07:48 by mlubbers      ########   odam.nl         */
+/*   Created: 2024/08/20 15:08:24 by mlubbers      #+#    #+#                 */
+/*   Updated: 2024/08/20 15:08:35 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	ft_mini_pwd(t_shell *shell)
+char	*ft_get_env_value(t_env *env_list, char *str)
 {
-	// if (cmds[1] != NULL)
-	// 	ft_putendl_fd("pwd: Too many arguments", STDERR_FILENO);
-	// else
-	ft_putendl_fd(shell->pwd, STDOUT_FILENO);
-}
+	t_env	*tmp;
+	int		i;
 
+	tmp = env_list;
+	while (tmp != NULL)
+	{
+		if (ft_strncmp(tmp->str, str, ft_strlen(str)) == 0)
+		{
+			i = 0;
+			while (tmp->str[i] != '=')
+				i++;
+			if (ft_strncmp("OLDPWD=", str, ft_strlen(str)) == 0)
+				ft_putendl_fd(tmp->str + i + 1, STDERR_FILENO);
+			return (tmp->str + i + 1);
+		}
+		tmp = tmp->next;
+	}
+	return (NULL);
+}

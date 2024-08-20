@@ -6,13 +6,13 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/07 11:27:19 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/19 16:42:40 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/20 10:39:19 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static bool		ft_checkfordigits(char *str)
+static bool	ft_checkfordigits(char *str)
 {
 	int	i;
 
@@ -65,11 +65,11 @@ static void	dash_started(t_shell *shell, char **cmds)
 	if (cmds[1][0] == '-' && cmds[1][1] == '-' && cmds[1][2] == '\0')
 		double_dash = true;
 	is_num = ft_checkfordigits(cmds[2]);
-	if (double_dash == false || (double_dash == true && cmds[2] != NULL && is_num == false))
+	if (double_dash == false
+		|| (double_dash == true && cmds[2] != NULL && is_num == false))
 	{
-		if (dup2(shell->stdoutput, STDOUT_FILENO) == -1)
-			kill_program(shell, "Dup2 failed in mini exit", errno);
-		printf("%s: numeric value required\n", cmds[1]);
+		ft_putstr_fd(cmds[1], 2);
+		ft_putstr_fd(": numeric argument required\n", 2);
 		kill_program(shell, NULL, 2);
 	}
 	else if (is_num == true)
@@ -81,35 +81,34 @@ static void	digit_started(t_shell *shell, char **cmds)
 {
 	if (ft_checkfordigits(cmds[1]) == false)
 	{
-		if (dup2(shell->stdoutput, STDOUT_FILENO) == -1)
-			kill_program(shell, "Dup2 failed in mini exit", errno);
-		printf("%s: numeric value required\n", cmds[1]);
+		ft_putstr_fd(cmds[1], 2);
+		ft_putstr_fd(": numeric argument required\n", 2);
 		kill_program(shell, NULL, 2);
 	}
 	if (cmds[2] != NULL)
 	{
-		if (dup2(shell->stdoutput, STDOUT_FILENO) == -1)
-			kill_program(shell, "Dup2 failed in mini exit", errno);
-		printf("exit: too many arguments\n");
-		return ;	
+		ft_putstr_fd("exit: too many arguments\n", 2);
+		shell->exit_code = 1;
+		return ;
 	}
 	else
 		kill_program(shell, NULL, ft_atoll(cmds[1]));
 }
 
-int	ft_mini_exit(t_shell *shell, char **cmds)
+void	ft_mini_exit(t_shell *shell, char **cmds)
 {
 	if (cmds[1] != NULL)
 	{
-		if (ft_isdigit(cmds[1][0]) > 0 || (cmds[1][0] == '-' && ft_isdigit(cmds[1][1])) || (cmds[1][0] == '+' && ft_isdigit(cmds[1][1])))
+		if (ft_isdigit(cmds[1][0]) > 0
+			|| (cmds[1][0] == '-' && ft_isdigit(cmds[1][1]))
+			|| (cmds[1][0] == '+' && ft_isdigit(cmds[1][1])))
 			digit_started(shell, cmds);
 		else if (cmds[1][0] == '-')
 			dash_started(shell, cmds);
 		else
 		{
-			if (dup2(shell->stdoutput, STDOUT_FILENO) == -1)
-				kill_program(shell, "Dup2 failed in mini exit", errno);
-			printf("%s: numeric value required\n", cmds[1]);
+			ft_putstr_fd(cmds[1], 2);
+			ft_putstr_fd(": numeric argument required\n", 2);
 			kill_program(shell, NULL, 2);
 		}
 	}
@@ -117,5 +116,4 @@ int	ft_mini_exit(t_shell *shell, char **cmds)
 		kill_program(shell, NULL, 0);
 	else
 		kill_program(shell, "exit\n", 0);
-	return (1);
 }

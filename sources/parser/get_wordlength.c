@@ -6,7 +6,11 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/26 16:36:58 by wsonepou      #+#    #+#                 */
+<<<<<<< HEAD
 /*   Updated: 2024/08/20 13:22:36 by wsonepou      ########   odam.nl         */
+=======
+/*   Updated: 2024/08/20 16:14:30 by mlubbers      ########   odam.nl         */
+>>>>>>> main
 /*                                                                            */
 /* ************************************************************************** */
 
