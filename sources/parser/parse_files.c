@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/24 14:37:50 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/19 19:15:49 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/20 16:16:07 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static t_file	*make_file_node(t_shell *shell, char *line, t_type type)
 	while (line[i] == '<' || line[i] == '>' || check_whitespace(NULL, line[i]))
 		i++;
 	get_wordlength(shell, line + i);
-	if (shell->input->word_len == 0 || (type == t_in_heredoc && line[i] == '$'))
+	if (shell->input->word_len == 0 || (type == t_in_heredoc && check_var(line + i)))
 	{
 		get_wordlength(shell, line + i + 1);
 		node->str = malloc(++shell->input->word_len + 1 * (sizeof(char)));

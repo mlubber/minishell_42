@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/21 09:23:10 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/19 16:37:39 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/20 10:16:29 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ static void	init_shell(t_shell *shell)
 	shell->input->fds[0] = -1;
 	shell->input->fds[1] = -1;
 	init_signals();
-
 }
 
 

@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/16 13:28:31 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/19 16:41:29 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/20 11:08:50 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,17 +23,25 @@ void	ft_cmd_not_found(char **cmd)
 void	ft_not_found_free(char **cmds, char **paths, char **envp)
 {
 	DIR	*dir;
-	
+
 	ft_free_arr(&paths);
 	ft_free_arr(&envp);
 	dir = opendir(cmds[0]);
-	if (dir)
+	if (dir && ft_strnstr(cmds[0], "/", ft_strlen(cmds[0])))
 	{
 		write(2, cmds[0], ft_strlen(cmds[0]));
 		ft_putstr_fd(": Is a directory\n", 2);
 		ft_free_arr(&cmds);
 		closedir(dir);
 		exit(126);
+	}
+	else if (dir == NULL && ft_strnstr(cmds[0], "/", ft_strlen(cmds[0])))
+	{
+		write(2, cmds[0], ft_strlen(cmds[0]));
+		ft_putstr_fd(": No such file or directory\n", 2);
+		ft_free_arr(&cmds);
+		closedir(dir);
+		exit(127);
 	}
 	else
 		ft_cmd_not_found(cmds);

@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/03 11:01:03 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/07/30 14:06:56 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/20 10:46:28 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ void	add_export_node(t_shell *shell, char *split_input)
 		ft_putstr_fd("export: \'", STDERR_FILENO);
 		ft_putstr_fd(split_input, STDERR_FILENO);
 		ft_putstr_fd("\': not a valid identifier\n", STDERR_FILENO);
+		shell->exit_code = 1;
 		return ;
 	}
 	if (check_duplicate_var(shell, split_input) == 1)
@@ -117,7 +118,7 @@ void	add_export_node(t_shell *shell, char *split_input)
 	}
 }
 
-int	ft_mini_export(t_shell *shell, char **split_input)
+void	ft_mini_export(t_shell *shell, char **split_input)
 {
 	int		i;
 	char	**export_list;
@@ -136,5 +137,4 @@ int	ft_mini_export(t_shell *shell, char **split_input)
 			printf("declare -x %s\n", export_list[i++]);
 		ft_free_arr(&export_list);
 	}
-	return (true);
 }

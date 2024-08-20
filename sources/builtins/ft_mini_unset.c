@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/07 12:10:52 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/07/09 10:47:17 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/20 10:14:19 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static int	search_and_delete_var(t_env **head, char *str)
 	return (true);
 }
 
-int	ft_mini_unset(t_shell *shell, char **split_input)
+void	ft_mini_unset(t_shell *shell, char **split_input)
 {
 	int		i;
 	t_env	*tmp;
@@ -46,7 +46,7 @@ int	ft_mini_unset(t_shell *shell, char **split_input)
 	i = 0;
 	tmp = shell->env_list;
 	if (split_input[1] == NULL)
-		return (1);
+		return ;
 	while (split_input[i] != NULL)
 	{
 		if (search_and_delete_var(&tmp, split_input[i]) != 0)
@@ -62,5 +62,4 @@ int	ft_mini_unset(t_shell *shell, char **split_input)
 		}
 		i++;
 	}
-	return (1);
 }

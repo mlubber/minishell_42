@@ -6,12 +6,11 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/24 14:46:20 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/19 18:05:32 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/20 16:15:31 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
 
 int	cmd_arg_count(t_shell *shell, char *cmdline)
 {
@@ -53,7 +52,7 @@ int	set_cmd(t_shell *shell, t_ctable *cnode, char *cmdline, int i)
 void	parse_cmd(t_shell *shell, t_ctable *cnode, char *cmdline, int i)
 {
 	int	cmd_c;
-	int	var_len; 
+	int	var_len;
 
 	cmd_c = cmd_arg_count(shell, cmdline);
 	if (cmd_c == 0)
@@ -66,7 +65,7 @@ void	parse_cmd(t_shell *shell, t_ctable *cnode, char *cmdline, int i)
 	{
 		if (*cmdline == '<' || *cmdline == '>')
 			cmdline += skip_file_or_word(cmdline, *cmdline, 0);
-		else if (*cmdline == '$')
+		else if (*cmdline == '$' && check_var(cmdline))
 		{
 			var_len = get_wordlength(shell, cmdline);
 			if (shell->input->word_len > 0)

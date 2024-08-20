@@ -6,11 +6,24 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/26 16:58:48 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/07/16 16:05:23 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/20 16:08:21 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+bool	check_var(char *str)
+{
+	if (str[0] != '$')
+		return (false);
+	if (str[1] == '_')
+		return (true);
+	else if (str[1] == '?')
+		return (true);
+	else if (ft_isalnum(str[1]))
+		return (true);
+	return (false);
+}
 
 int	skip_quotes(char *cmdline, char quote)
 {

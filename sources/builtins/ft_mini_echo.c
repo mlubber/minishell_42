@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/07 12:11:12 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/05 13:25:20 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/20 08:53:42 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	ft_check_flag(char *str)
 	return (true);
 }
 
-int	ft_mini_echo(t_shell *shell, char **split_input)
+void	ft_mini_echo(t_shell *shell, char **split_input)
 {
 	int		i;
 	int		j;
@@ -38,7 +38,7 @@ int	ft_mini_echo(t_shell *shell, char **split_input)
 	i = 1;
 	newline = true;
 	if (shell->env_list == NULL)
-		return (0);
+		return ;
 	if (split_input[1] != NULL && ft_check_flag(split_input[1]) != 0)
 	{
 		j = 2;
@@ -55,5 +55,5 @@ int	ft_mini_echo(t_shell *shell, char **split_input)
 	}
 	if (newline)
 		ft_putchar_fd('\n', STDOUT_FILENO);
-	return (1);
+	shell->exit_code = 0;
 }

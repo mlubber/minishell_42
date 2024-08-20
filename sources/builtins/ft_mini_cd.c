@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/04 09:00:37 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/16 16:18:48 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/20 15:14:46 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,66 +42,57 @@ static void	ft_change_path_in_env(t_shell *shell)
 	}
 }
 
-char	*ft_get_env_value(t_env *env_list, char *str)
+int	squigly_wiggly(t_shell *shell, char **input, char *home_value)
 {
-	t_env	*tmp;
-	int		i;
+	int	ret;
 
-	tmp = env_list;
-	while (tmp != NULL)
-	{
-		if (ft_strncmp(tmp->str, str, ft_strlen(str)) == 0)
-		{
-			i = 0;
-			while (tmp->str[i] != '=')
-				i++;
-			if (ft_strncmp("OLDPWD=", str, ft_strlen(str)) == 0)
-				ft_putendl_fd(tmp->str + i + 1, STDERR_FILENO);
-			return (tmp->str + i + 1);
-		}
-		tmp = tmp->next;
-	}
-	return (NULL);
-}
-
-int	ft_change_directory(t_shell *shell, char **split_input)
-{
-	int		ret;
-	char	*home_value;
-	char	*home_joined;
-
-	home_value = ft_get_env_value(shell->env_list, "HOME=");
-	if (split_input[1] != NULL && split_input[1][0] == '~')
-		if (home_value == NULL)
-			return (-2);
-	if (split_input[1] == NULL
-		|| (split_input[1][0] == '~' && split_input[1][1] == '\0'))
-		ret = chdir(home_value);
-	else if (split_input[1][0] == '-' && split_input[1][1] == '-'
-		&& split_input[1][2] == '\0')
-		ret = chdir(home_value);
-	else if (split_input[1][0] == '-' && split_input[1][1] == '\0')
-		ret = chdir(ft_get_env_value(shell->env_list, "OLDPWD="));
-	else if (split_input[1][0] == '~' && split_input[1][1] != '\0')
-	{
-		home_joined = ft_strjoin(home_value, split_input[1] + 1);
-		ret = chdir(home_joined);
-		free(home_joined);
-	}
+	if (home_value != NULL)
+		home_value = ft_strjoin(home_value, input[1] + 1);
 	else
-		ret = chdir(split_input[1]);
+		home_value = ft_strjoin(shell->home, input[1] + 1);
+	ret = chdir(home_value);
+	free(home_value);
 	return (ret);
 }
 
+int	ft_change_directory(t_shell *shell, char **input)
+{
+	char	*home_value;
+
+	home_value = ft_get_env_value(shell->env_list, "HOME=");
+	if (input[1] != NULL && input[1][0] == '~'
+		&& input[1][1] == '\0' && home_value == NULL)
+		return (chdir(shell->home));
+	else if (input[1] != NULL && input[1][0] == '~'
+		&& input[1][1] == '\0' && home_value != NULL)
+		return (chdir(home_value));
+	if (input[1] == NULL || (input[1][0] == '-'
+		&& input[1][1] == '-' && input[1][2] == '\0'))
+		if (home_value == NULL)
+			return (-2);
+	if (input[1] == NULL && home_value != NULL)
+		return (chdir(home_value));
+	else if (input[1] != NULL && input[1][0] == '-' && input[1][1] == '-'
+		&& input[1][2] == '\0')
+		return (chdir(home_value));
+	else if (input[1] != NULL && input[1][0] == '-' && input[1][1] == '\0')
+		return (chdir(ft_get_env_value(shell->env_list, "OLDPWD=")));
+	else if (input[1] != NULL && input[1][0] == '~' && input[1][1] != '\0')
+		return (squigly_wiggly(shell, input, home_value));
+	else
+		return (chdir(input[1]));
+}
+
 // Works like the 'cd' function. Using 'cd' or 'cd sources' work, for example
-int	ft_mini_cd(t_shell *shell, char **split_input)
+void	ft_mini_cd(t_shell *shell, char **split_input)
 {
 	int	ret;
 
 	if (split_input[1] != NULL && split_input[2] != NULL)
 	{
-		ft_putendl_fd("cd: Too many arguments", STDERR_FILENO);
-		return (1);
+		ft_putendl_fd("cd: too many arguments", STDERR_FILENO);
+		shell->exit_code = 1;
+		return ;
 	}
 	ret = ft_change_directory(shell, split_input);
 	if (ret == -1 || ret == -2)
@@ -110,7 +101,8 @@ int	ft_mini_cd(t_shell *shell, char **split_input)
 			ft_putendl_fd("Error: No such file or directory", STDERR_FILENO);
 		if (ret == -2)
 			ft_putendl_fd("Error: HOME not set", STDERR_FILENO);
-		return (1);
+		shell->exit_code = 1;
+		return ;
 	}
 	free (shell->old_pwd);
 	shell->old_pwd = shell->pwd;
@@ -118,6 +110,6 @@ int	ft_mini_cd(t_shell *shell, char **split_input)
 	if (shell->pwd == NULL)
 		ft_check_upper_dir(shell);
 	ft_change_path_in_env(shell);
-	return (0);
+	shell->exit_code = 0;
 }
 

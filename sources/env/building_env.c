@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/27 08:05:43 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/16 11:09:11 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/20 09:12:30 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,12 @@ static void	setting_pwd(t_shell *shell)
 			shell->old_pwd = ft_substr(tmp->str, 7, ft_strlen(tmp->str) - 7);
 			if (shell->old_pwd == NULL)
 				kill_program(shell, "Failed mallocing OLD_PWD!", errno);
+		}
+		if (ft_strncmp(tmp->str, "HOME=", 5) == 0)
+		{
+			shell->home = ft_substr(tmp->str, 5, ft_strlen(tmp->str) - 5);
+			if (shell->home == NULL)
+				kill_program(shell, "Failed mallocing HOME!", errno);
 		}
 		tmp = tmp->next;
 	}

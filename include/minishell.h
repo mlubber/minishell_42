@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/22 06:12:53 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/19 18:05:05 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/20 16:09:01 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ typedef struct s_shell
 {
 	char		*pwd;
 	char		*old_pwd;
+	char		*home;
 	int			env_size;
 	int			exit_code;
 	int			stdinput;
@@ -122,6 +123,7 @@ void	copy_word(char *dst, char *src, t_shell *shell, int i);
 void	parse_files(t_shell *shell, t_ctable *cnode, char *cmdline);
 void	parse_cmd(t_shell *shell, t_ctable *cnode, char *cmdline, int i);
 
+bool	check_var(char *str);
 int		char_check(char *str);
 int		skip_quotes(char *cmdline, char quote);
 int		skip_file_or_word(char *cmdline, char c, int i);
@@ -145,13 +147,13 @@ int		check_heredoc(t_shell *shell);
 
 
 // Builtins
-int		ft_mini_echo(t_shell *shell, char **cmds);
-int		ft_mini_cd(t_shell *shell, char **cmds);
-int		ft_mini_pwd(t_shell *shell);
-int		ft_mini_export(t_shell *shell, char **cmds);
-int		ft_mini_unset(t_shell *shell, char **cmds);
-int		ft_mini_env(t_shell *shell, char **cmds);
-int		ft_mini_exit(t_shell *shell, char **cmds);
+void	ft_mini_echo(t_shell *shell, char **cmds);
+void	ft_mini_cd(t_shell *shell, char **cmds);
+void	ft_mini_pwd(t_shell *shell);
+void	ft_mini_export(t_shell *shell, char **cmds);
+void	ft_mini_unset(t_shell *shell, char **cmds);
+void	ft_mini_env(t_shell *shell, char **cmds);
+void	ft_mini_exit(t_shell *shell, char **cmds);
 
 void	ft_free_arr(char ***arr);
 int		check_alpha_num(char *str);
@@ -161,6 +163,7 @@ void	replace_var_value(t_shell *shell, t_env *temp, char *input, int len);
 char	**ft_create_export_list(t_shell *shell, t_env *tmp, int i);
 char	**ft_create_env(t_shell *shell);
 void	add_export_node(t_shell *shell, char *split_input);
+char	*ft_get_env_value(t_env *env_list, char *str);
 
 
 // Kill program

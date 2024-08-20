@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/27 10:57:13 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/16 11:40:32 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/20 13:12:44 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,16 @@ char	**ft_create_env(t_shell *shell)
 }
 
 // Prints the environment
-int	ft_mini_env(t_shell *shell, char **split_input)
+void	ft_mini_env(t_shell *shell, char **split_input)
 {
 	t_env	*tmp;
 
 	tmp = shell->env_list;
 	if (split_input[1] != NULL)
+	{
 		ft_putendl_fd("env: Too many arguments", STDERR_FILENO);
+		shell->exit_code = 1;
+	}
 	else
 	{
 		while (tmp != NULL)
@@ -49,6 +52,6 @@ int	ft_mini_env(t_shell *shell, char **split_input)
 				ft_putendl_fd(tmp->str, STDOUT_FILENO);
 			tmp = tmp->next;
 		}
+		shell->exit_code = 0;
 	}
-	return (1);
 }
