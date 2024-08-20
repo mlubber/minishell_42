@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   error_handling.c                                   :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2024/08/20 17:08:37 by wsonepou      #+#    #+#                 */
+/*   Updated: 2024/08/20 17:08:39 by wsonepou      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
 static char	*ft_errorjoin(char const *s1, char const *s2)

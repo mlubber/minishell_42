@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/26 15:38:48 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/20 16:59:29 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/20 17:20:54 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ static int	set_var(t_shell *shell, char *dst, char *src, t_copy *pos)
 		free (exit_code);
 		return (2);
 	}
+	else if (ft_isdigit(src[1]))
+		return (2);
 	else
 		return (get_var_value(shell, dst, src, pos));
 }

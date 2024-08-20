@@ -6,11 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/26 16:36:58 by wsonepou      #+#    #+#                 */
-<<<<<<< HEAD
-/*   Updated: 2024/08/20 13:22:36 by wsonepou      ########   odam.nl         */
-=======
-/*   Updated: 2024/08/20 16:14:30 by mlubbers      ########   odam.nl         */
->>>>>>> main
+/*   Updated: 2024/08/20 17:19:46 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +25,11 @@ int	exit_code_len(t_shell *shell)
 }
 
 
-static int	get_var_val_len(t_shell *shell, char *str)
+static int	get_var_val_len(t_shell *shell, char *str, int i)
 {
-	int		i;
 	t_env	*tmp;
 	char	*var_name;
 
-	i = 1;
 	while (ft_isalnum(str[i]) || str[i] == '_')
 		i++;
 	shell->input->word_len -= i;
@@ -62,8 +56,13 @@ static int	lookup_var(t_shell *shell, char *str)
 {
 	if (str[1] == '?')
 		return (exit_code_len(shell));
+	else if (ft_isdigit(str[1]))
+	{
+		shell->input->word_len -= 2;
+		return (2);
+	}
 	else
-		return (get_var_val_len(shell, str));
+		return (get_var_val_len(shell, str, 1));
 }
 
 static int	handle_quotes(t_shell *shell, char *str, char quote)
