@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/24 14:46:20 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/19 18:05:32 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/20 13:22:41 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	parse_cmd(t_shell *shell, t_ctable *cnode, char *cmdline, int i)
 	{
 		if (*cmdline == '<' || *cmdline == '>')
 			cmdline += skip_file_or_word(cmdline, *cmdline, 0);
-		else if (*cmdline == '$')
+		else if (*cmdline == '$' && check_var(cmdline))
 		{
 			var_len = get_wordlength(shell, cmdline);
 			if (shell->input->word_len > 0)

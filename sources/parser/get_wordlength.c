@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/26 16:36:58 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/19 17:45:04 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/20 13:22:36 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static int	get_var_val_len(t_shell *shell, char *str)
 	return (i);
 }
 
-int	check_var(t_shell *shell, char *str)
+static int	lookup_var(t_shell *shell, char *str)
 {
 	if (str[1] == '?')
 		return (exit_code_len(shell));
@@ -69,8 +69,8 @@ static int	handle_quotes(t_shell *shell, char *str, char quote)
 	i = 1;
 	while (str[i] != quote)
 	{
-		if (quote == '"' && str[i] == '$')
-			i += check_var(shell, str + i);
+		if (quote == '"' && check_var(str + i))
+			i += lookup_var(shell, str + i);
 		else
 			i++;
 	}
@@ -91,8 +91,8 @@ int	get_wordlength(t_shell *shell, char *str)
 			i += handle_quotes(shell, str + i, '\'');
 		else if (str[i] == '"')
 			i += handle_quotes(shell, str + i, '"');
-		else if (str[i] == '$')
-			i += check_var(shell, str + i);
+		else if (check_var(str + i))
+			i += lookup_var(shell, str + i);
 		else
 			i++;
 	}

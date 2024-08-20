@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/22 06:12:53 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/19 18:05:05 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/20 13:23:50 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,7 @@ void	parse_files(t_shell *shell, t_ctable *cnode, char *cmdline);
 void	parse_cmd(t_shell *shell, t_ctable *cnode, char *cmdline, int i);
 
 int		char_check(char *str);
+bool	check_var(char *str);
 int		skip_quotes(char *cmdline, char quote);
 int		skip_file_or_word(char *cmdline, char c, int i);
 int		check_whitespace(char *str, char c);

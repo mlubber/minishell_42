@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/04 14:35:10 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/19 19:07:57 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/20 13:58:18 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static char	*open_infiles(t_shell *shell, t_ctable *cnode, t_file *infile)
 	{
 		if (infile->type == t_in_file)
 		{
-			if (infile->str[0] == '$')
+			if (infile->str[0] == '$' && (infile->str[1] == '_' || ft_isalnum(infile->str[1])))
 				return (ambiguous_redirect(infile->str));
 			cnode->infile = open(infile->str, O_RDONLY);
 			if (cnode->infile == -1)
@@ -50,7 +50,7 @@ static char	*open_outfiles(t_shell *shell, t_ctable *cnode, t_file *outfile)
 {
 	while (outfile != NULL)
 	{
-		if (outfile->str[0] == '$')
+		if (outfile->str[0] == '$' && (outfile->str[1] == '_' || ft_isalnum(outfile->str[1])))
 			return (ambiguous_redirect(outfile->str));
 		if (outfile->type == t_out_trunc)
 			cnode->outfile = open(outfile->str, O_CREAT | O_TRUNC | O_WRONLY, 0777);

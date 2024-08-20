@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/26 15:38:48 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/19 18:32:15 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/20 13:20:34 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static int	get_var_value(t_shell *shell, char *dst, char *src, t_copy *pos)
 	return (i);
 }
 
-static int	check_var(t_shell *shell, char *dst, char *src, t_copy *pos)
+static int	set_var(t_shell *shell, char *dst, char *src, t_copy *pos)
 {
 	int		i;
 	char	*exit_code;
@@ -75,8 +75,8 @@ static void	handle_quotes(t_shell *shell, char *dst, char *src, t_copy *pos)
 	pos->src++;
 	while (src[pos->src] != pos->quote)
 	{
-		if (pos->quote == '"' && src[pos->src] == '$')
-			pos->src += check_var(shell, dst, src + pos->src, pos);
+		if (pos->quote == '"' && check_var(src + pos->src))
+			pos->src += set_var(shell, dst, src + pos->src, pos);
 		else
 			dst[pos->dest++] = src[pos->src++];
 	}
@@ -102,8 +102,8 @@ void	copy_word(char *dst, char *src, t_shell *shell, int i)
 			pos.quote = '"';
 			handle_quotes(shell, dst, src, &pos);
 		}
-		else if (src[pos.src] == '$')
-			pos.src += check_var(shell, dst, src + pos.src, &pos);
+		else if (check_var(src + pos.src))
+			pos.src += set_var(shell, dst, src + pos.src, &pos);
 		else
 			dst[pos.dest++] = src[pos.src++];
 	}
