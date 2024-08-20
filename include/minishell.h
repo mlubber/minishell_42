@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/22 06:12:53 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/16 16:27:43 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/19 15:03:32 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <fcntl.h>
 # include <stdbool.h>
 # include <errno.h>
+# include <dirent.h>
 # include "../libraries/libft/include/libft.h"
 # include "../libraries/libft/include/get_next_line.h"
 # include <readline/readline.h>
@@ -99,6 +100,7 @@ typedef struct s_shell
 	int			exit_code;
 	int			stdinput;
 	int			stdoutput;
+	pid_t		pid;
 	t_env		*env_list;
 	t_input		*input;
 }	t_shell;

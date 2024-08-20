@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/16 13:28:31 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/07/30 15:51:01 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/19 16:39:58 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,21 @@ void	ft_cmd_not_found(char **cmd)
 
 void	ft_not_found_free(char **cmds, char **paths, char **envp)
 {
+	DIR	*dir;
+
 	ft_free_arr(&paths);
 	ft_free_arr(&envp);
-	ft_cmd_not_found(cmds);
+	dir = opendir(cmds[0]);
+	if (dir)
+	{
+		write(2, cmds[0], ft_strlen(cmds[0]));
+		ft_putstr_fd(": Is a directory\n", 2);
+		ft_free_arr(&cmds);
+		closedir(dir);
+		exit(126);
+	}
+	else
+		ft_cmd_not_found(cmds);
 }
 
 char	*ft_connectstring(char const *s1, char const *s2, char c)
@@ -74,54 +86,3 @@ char	**ft_get_paths(t_shell *shell)
 	return (split_paths);
 }
 
-// int	builtin_check(t_shell *shell, t_ctable *tmp)
-// {
-// 	int	x;
-
-// 	x = 0;
-// 	if (tmp->cmd_array == NULL)
-// 		return (0);
-// 	if (ft_strncmp(tmp->cmd_array[0], "echo", 5) == 0)
-// 		x = ft_mini_echo(shell, tmp->cmd_array);
-// 	else if (ft_strncmp(tmp->cmd_array[0], "cd", 3) == 0)
-// 		x = ft_mini_cd(shell, tmp->cmd_array);
-// 	else if (ft_strncmp(tmp->cmd_array[0], "pwd", 4) == 0)
-// 		x = ft_mini_pwd(shell);
-// 	else if (ft_strncmp(tmp->cmd_array[0], "export", 7) == 0)
-// 		x = ft_mini_export(shell, tmp->cmd_array);
-// 	else if (ft_strncmp(tmp->cmd_array[0], "unset", 6) == 0)
-// 		x = ft_mini_unset(shell, tmp->cmd_array);
-// 	else if (ft_strncmp(tmp->cmd_array[0], "env", 4) == 0)
-// 		x = ft_mini_env(shell, tmp->cmd_array);
-// 	else if (ft_strncmp(tmp->cmd_array[0], "exit", 5) == 0)
-// 		x = ft_mini_exit(shell, tmp->cmd_array);
-// 	if (x == 1)
-// 		return (1);
-// 	return (0);
-// }
-
-// int	builtin_check(t_shell *shell)
-// {
-// 	int	x;
-
-// 	x = 0;
-// 	if (shell->input->cnode->cmd_array == NULL)
-// 		return (0);
-// 	if (ft_strncmp(shell->input->cnode->cmd_array[0], "echo", 5) == 0)
-// 		x = ft_mini_echo(shell, shell->input->cnode->cmd_array);
-// 	else if (ft_strncmp(shell->input->cnode->cmd_array[0], "cd", 3) == 0)
-// 		x = ft_mini_cd(shell, shell->input->cnode->cmd_array);
-// 	else if (ft_strncmp(shell->input->cnode->cmd_array[0], "pwd", 4) == 0)
-// 		x = ft_mini_pwd(shell);
-// 	else if (ft_strncmp(shell->input->cnode->cmd_array[0], "export", 7) == 0)
-// 		x = ft_mini_export(shell, shell->input->cnode->cmd_array);
-// 	else if (ft_strncmp(shell->input->cnode->cmd_array[0], "unset", 6) == 0)
-// 		x = ft_mini_unset(shell, shell->input->cnode->cmd_array);
-// 	else if (ft_strncmp(shell->input->cnode->cmd_array[0], "env", 4) == 0)
-// 		x = ft_mini_env(shell, shell->input->cnode->cmd_array);
-// 	else if (ft_strncmp(shell->input->cnode->cmd_array[0], "exit", 5) == 0)
-// 		x = ft_mini_exit(shell, shell->input->cnode->cmd_array);
-// 	if (x == 1)
-// 		return (1);
-// 	return (0);
-// }

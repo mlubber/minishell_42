@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/04 09:00:37 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/16 16:18:48 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/19 16:21:25 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,10 @@ int	ft_mini_cd(t_shell *shell, char **split_input)
 
 	if (split_input[1] != NULL && split_input[2] != NULL)
 	{
-		ft_putendl_fd("cd: Too many arguments", STDERR_FILENO);
+		ft_putendl_fd("cd: too many arguments", STDERR_FILENO);
+		shell->exit_code = 1;
+		if (shell->pid == 0)
+			kill_program(shell, NULL, 1);
 		return (1);
 	}
 	ret = ft_change_directory(shell, split_input);

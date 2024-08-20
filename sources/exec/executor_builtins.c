@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/30 15:49:28 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/16 16:30:21 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/19 14:53:55 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,17 @@ pid_t	builtin_child_exec(t_shell *shell, t_ctable *tmp, int node_nr)
 
 	if (shell->input->node_count == 1)
 	{
+		if (handling_redirs(shell, tmp, node_nr) != NULL)
+		{
+			kill_program(shell, NULL, errno); /// ALSO NEEDS WORK
+		}
 		builtin_execute(shell, tmp);
 		return (-1);
 	}
 	pid = fork();
 	if (pid == 0)
 	{
-		if (handling_redirs(shell, tmp, node_nr) == false)
+		if (handling_redirs(shell, tmp, node_nr) != NULL)
 			kill_program(shell, NULL, errno);
 		builtin_execute(shell, tmp);
 		kill_program(shell, NULL, EXIT_SUCCESS);

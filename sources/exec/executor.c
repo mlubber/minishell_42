@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/04 12:38:42 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/16 16:49:09 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/19 16:51:44 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,9 @@ void	signal_received(t_shell *shell, pid_t *pids, int node_count, int status)
 {
 	int	i;
 	
-	printf("termsig 1: %d\n", status);
+	// printf("termsig 1: %d\n", status);
 	status = WTERMSIG(status);
-	printf("termsig 2: %d\n", status);
+	// printf("termsig 2: %d\n", status);
 	if (g_signal)
 	{
 		g_signal = 0;
@@ -60,7 +60,7 @@ void	wait_for_children(t_shell *shell, pid_t *pids, int node_count)
 	{
 		// printf("status 1: %d\n", status);
 		pid = waitpid(pids[i], &status, 0);
-		printf("pid = %d\n", pid);
+		// printf("pid = %d\n", pid);
 		// printf("\n\n%d\n\n", WIFSIGNALED(status));
 		// remove_child_pid(shell, pid);
 		// printf("status 2: %d\n", status);
@@ -105,7 +105,7 @@ void	create_cmd_path(t_shell *shell, char **cmds, char **paths, char **envp)
 	{
 		free(cmd_path);
 		ft_not_found_free(cmds, paths, envp);
-		kill_program(shell, NULL, 127);
+		kill_program(shell, NULL, 126);
 	}
 	else
 		execve(cmd_path, cmds, envp);
@@ -117,14 +117,14 @@ static pid_t	exec_cmd(t_shell *shell, t_ctable *tmp, char **paths, int node_nr)
 {
 	char	**envp;
 	char	*file;
-	pid_t	pid;
+	// pid_t	pid;
 
 	if (builtin_check(tmp) == 1)
 		return (builtin_child_exec(shell, tmp, node_nr));
-	pid = fork();
-	if (pid == -1)
+	shell->pid = fork();
+	if (shell->pid == -1)
 		kill_program(shell, NULL, errno);
-	if (pid == 0)
+	if (shell->pid == 0)
 	{
 		file = handling_redirs(shell, tmp, node_nr);
 		if (file != NULL || tmp->cmd_array == NULL)
@@ -142,7 +142,7 @@ static pid_t	exec_cmd(t_shell *shell, t_ctable *tmp, char **paths, int node_nr)
 	if (shell->input->fds[0] != -1 && dup2(shell->input->fds[0], STDIN_FILENO) == -1)
 		kill_program(shell, "exec_cmd child dup2 fds[0]", errno);
 	closing_fds(shell);
-	return (pid);
+	return (shell->pid);
 }
 
 static pid_t	executing_one_cmd(t_shell *shell, t_ctable *tmp, int node_nr)
@@ -182,6 +182,7 @@ void	start_execution(t_shell *shell)
 			if (dup2(shell->stdinput, STDIN_FILENO) == -1)
 				kill_program(shell, "Failed resetting stdin", errno);
 	}
-	wait_for_children(shell, shell->input->pids, shell->input->node_count);
+	if (shell->input->pids[i - 1] != -1) // NOT THE SOLUTION FOR A SINGLE BUILTIN
+		wait_for_children(shell, shell->input->pids, shell->input->node_count);
 }
 

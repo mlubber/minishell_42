@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/21 09:23:10 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/16 10:49:37 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/19 16:33:54 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ static void	init_shell(t_shell *shell)
 	shell->env_size = 0;
 	shell->env_list = NULL;
 	shell->exit_code = 0;
+	shell->pid = 1;
 	shell->stdinput = dup(STDIN_FILENO);
 	if (shell->stdinput == -1)
 		kill_program(shell, "Failed to dup STDIN", errno);
@@ -31,7 +32,6 @@ static void	init_shell(t_shell *shell)
 	shell->input->fds[0] = -1;
 	shell->input->fds[1] = -1;
 	init_signals();
-
 }
 
 
