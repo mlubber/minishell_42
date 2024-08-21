@@ -6,12 +6,11 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/27 09:30:02 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/20 10:42:52 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/21 20:16:02 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
 
 void	check_ctable(t_shell *shell) // TESTING PURPOSES
 {
@@ -19,8 +18,8 @@ void	check_ctable(t_shell *shell) // TESTING PURPOSES
 	t_file		*tmp_in;
 	t_file		*tmp_out;
 
-	int o = 0;
-	int num = 0;
+	int	o = 0;
+	int	num = 0;
 	tmp = shell->input->cnode;
 	while (tmp != NULL)
 	{
@@ -69,29 +68,26 @@ static void	reset_input_values(t_shell *shell, t_input *input)
 	input->word_len = 0;
 	input->cmd_seg = 0;
 	input->node_count = 0;
-	shell->input->pids = NULL;
 	if (dup2(shell->stdinput, STDIN_FILENO) == -1)
 		kill_program(shell, "Failed resetting stdin", errno);
 	if (dup2(shell->stdoutput, STDOUT_FILENO) == -1)
 		kill_program(shell, "Failed resetting stdout", errno);
 }
 
-
-// The minishell loop that keeps minishell running. We check if input is correct,
-// then add the input to readline history, then split the input into a 2d array
+// The minishell loop that keeps minishell running.
+// then add the input to readline history, split the input into a 2d array
 void	ft_minishell_loop(t_shell *shell, int argc, char **argv)
 {
 	if (argc > 1 && ft_strncmp(argv[1], "-c", 2) == 0 && argv[2] != NULL)
 	{
 		create_ctable(shell, argv[2]);
-		start_execution(shell);
-		free_cmd_list(shell->input, &shell->input->cnode);
+		start_execution(shell, 0);
+		free_cmd_list(&shell->input->cnode);
 	}
 	else
 	{
 		while (1)
 		{
-			// printf("[exit_code: %d]\n", shell->exit_code);
 			reset_input_values(shell, shell->input);
 			shell->input->line = readline("minishell: ");
 			if (shell->input->line == NULL)
@@ -103,15 +99,12 @@ void	ft_minishell_loop(t_shell *shell, int argc, char **argv)
 			}
 			add_history(shell->input->line);
 			if (input_checker(shell, shell->input->line) > 0)
-			{
-				// printf("we continue\n");
 				continue ;
-			}
 			create_ctable(shell, shell->input->line);
 			free (shell->input->line);
 			// check_ctable(shell); // Testing all files and cmds
-			start_execution(shell);
-			free_cmd_list(shell->input, &shell->input->cnode);
+			start_execution(shell, 0);
+			free_cmd_list(&shell->input->cnode);
 		}
 		printf("out of while loop\n");
 	}

@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/22 06:12:53 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/20 16:59:14 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/21 20:01:43 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,16 @@
 # include <sys/wait.h>
 # include <signal.h>
 
-extern volatile sig_atomic_t g_signal;
+extern int	g_signal;
 
-typedef enum { 		// Dit zijn, denk ik, de verschillende cmd types die we moeten bijhouden
-	t_cmd,			// Dit is gewoon de cmd + flags of arguments, bijv. 'ls -la'
-	t_pipe,			// '|'
-	t_in_file,		// '<'
-	t_in_heredoc,	// '<<'
-	t_out_trunc,	// '>'
-	t_out_append,	// '>>' 
+typedef enum s_type
+{
+	t_cmd,
+	t_pipe,
+	t_in_file,
+	t_in_heredoc,
+	t_out_trunc,
+	t_out_append,
 }	t_type;
 
 typedef struct s_copy
@@ -66,9 +67,9 @@ typedef struct s_file
 }	t_file;
 
 /* Command table linked list node */
-typedef struct s_ctable		// ctable = command table
+typedef struct s_ctable
 {
-	char			**cmd_array;	// Double array voor de cmd + flags of arguments
+	char			**cmd_array;
 	t_file			*infiles;
 	t_file			*outfiles;
 	int				infile;
@@ -77,18 +78,27 @@ typedef struct s_ctable		// ctable = command table
 	struct s_ctable	*next;
 }	t_ctable;
 
-/* Input struct */
+/* Input struct 
+	*line; Input str from user
+	*cnode; head of the cmds linked list
+	*var_val; pointer to the value of the found env variable
+	var_len; length of the variable name
+	var_val_len; length of the variable value
+	word_len; length of the word, excl var_len & quotes, incl var_val_len
+	cmd_seg; Length of the segment until a pipe or \0,
+	node_count; Amount of cmds
+	fds[2]; Filedescriptor array in case pipes are used
+	*/
 typedef struct s_input
 {
-	char		*line; // Input str from user
-	t_ctable	*cnode; // head of the cmds linked list
-	char		*var_val; // pointer to the value of the found env variable
-	int			var_len; // length of the variable name
-	int			var_val_len; // length of the variable value
-	int			word_len; // length of the word, excluding var_len & quotes, including var_val_len
-	int			cmd_seg; // Length of the segment until a pipe or \0, including infiles, outfiles, command and arguments
-	int			node_count; // Amount of cmds
-	pid_t		*pids; // pid_t array to keep track of child process IDs
+	char		*line;
+	t_ctable	*cnode;
+	char		*var_val;
+	int			var_len;
+	int			var_val_len;
+	int			word_len;
+	int			cmd_seg;
+	int			node_count;
 	int			fds[2];
 }	t_input;
 
@@ -106,14 +116,10 @@ typedef struct s_shell
 	t_input		*input;
 }	t_shell;
 
-// Main
-
-
 // Environment
 t_env	*create_env_node(t_shell *shell, char *str);
 void	building_env(t_shell *shell, t_env **env_list, char **envp);
 char	*set_var_value(char *str);
-
 
 // Parser
 int		input_checker(t_shell *shell, char *cmdline);
@@ -131,13 +137,11 @@ int		skip_file_or_word(char *cmdline, char c, int i);
 int		check_whitespace(char *str, char c);
 int		finish_line(t_shell *shell);
 
-
 // Bash shell
 void	ft_minishell_loop(t_shell *shell, int argc, char **argv);
 
-
 // Executor
-void	start_execution(t_shell *shell);
+void	start_execution(t_shell *shell, int i);
 char	*handling_redirs(t_shell *shell, t_ctable *cnode, int node_nr);
 char	*ft_connectstring(char const *s1, char const *s2, char c);
 char	**ft_get_paths(t_shell *shell);
@@ -145,7 +149,6 @@ void	ft_not_found_free(char **cmds, char **paths, char **envp);
 pid_t	builtin_child_exec(t_shell *shell, t_ctable *tmp, int node_nr);
 int		builtin_check(t_ctable *tmp);
 int		check_heredoc(t_shell *shell);
-
 
 // Builtins
 void	ft_mini_echo(t_shell *shell, char **cmds);
@@ -166,22 +169,17 @@ char	**ft_create_env(t_shell *shell);
 void	add_export_node(t_shell *shell, char *split_input);
 char	*ft_get_env_value(t_env *env_list, char *str);
 
-
 // Kill program
 void	kill_program(t_shell *shell, char *msg, int i);
 void	free_env_node(t_env **node);
 
-void	free_cmd_list(t_input *input, t_ctable **head);
+void	free_cmd_list(t_ctable **head);
 void	closing_fds(t_shell *shell);
 
-
 // Signals
-void	init_signals(void);
-void	signal_received(t_shell *shell, pid_t *pids, int node_count, int status);
-
+void	init_signals(t_shell *shell, int i);
 
 // Error handling
 void	handle_error(char *str, int exit_code);
-
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/08 15:55:48 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/16 11:44:43 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/21 19:06:56 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ char	*path_check(t_shell *shell, char *path)
 
 void	ft_check_upper_dir(t_shell *shell)
 {
-
 	shell->pwd = path_check(shell, shell->old_pwd);
 	while (access(shell->pwd, F_OK) == -1)
 		shell->pwd = path_check(shell, shell->pwd);

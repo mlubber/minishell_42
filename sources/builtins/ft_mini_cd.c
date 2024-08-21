@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/04 09:00:37 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/20 15:14:46 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/21 13:14:06 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void	ft_change_path_in_env(t_shell *shell)
 	}
 }
 
-int	squigly_wiggly(t_shell *shell, char **input, char *home_value)
+static int	tilde(t_shell *shell, char **input, char *home_value)
 {
 	int	ret;
 
@@ -55,7 +55,7 @@ int	squigly_wiggly(t_shell *shell, char **input, char *home_value)
 	return (ret);
 }
 
-int	ft_change_directory(t_shell *shell, char **input)
+static int	ft_change_directory(t_shell *shell, char **input)
 {
 	char	*home_value;
 
@@ -78,12 +78,11 @@ int	ft_change_directory(t_shell *shell, char **input)
 	else if (input[1] != NULL && input[1][0] == '-' && input[1][1] == '\0')
 		return (chdir(ft_get_env_value(shell->env_list, "OLDPWD=")));
 	else if (input[1] != NULL && input[1][0] == '~' && input[1][1] != '\0')
-		return (squigly_wiggly(shell, input, home_value));
+		return (tilde(shell, input, home_value));
 	else
 		return (chdir(input[1]));
 }
 
-// Works like the 'cd' function. Using 'cd' or 'cd sources' work, for example
 void	ft_mini_cd(t_shell *shell, char **split_input)
 {
 	int	ret;
@@ -112,4 +111,3 @@ void	ft_mini_cd(t_shell *shell, char **split_input)
 	ft_change_path_in_env(shell);
 	shell->exit_code = 0;
 }
-

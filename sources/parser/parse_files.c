@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/24 14:37:50 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/20 17:00:51 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/21 18:57:23 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,11 @@ static void	lstadd_back(t_ctable *cnode, t_file *new, char c)
 	}
 }
 
-static t_file	*make_file_node(t_shell *shell, char *line, t_type type)
+static t_file	*make_file_node(t_shell *shell, char *line,
+		t_type type, int i)
 {
 	t_file	*node;
-	int		i;
 
-	i = 1;
 	node = malloc(sizeof(t_file));
 	if (!node)
 		kill_program(shell, "failed to malloc infile node!", errno);
@@ -53,7 +52,8 @@ static t_file	*make_file_node(t_shell *shell, char *line, t_type type)
 	while (line[i] == '<' || line[i] == '>' || check_whitespace(NULL, line[i]))
 		i++;
 	get_wordlength(shell, line + i);
-	if (shell->input->word_len == 0 || (type == t_in_heredoc && check_var(line + i)))
+	if (shell->input->word_len == 0
+		|| (type == t_in_heredoc && check_var(line + i)))
 	{
 		get_wordlength(shell, line + i + 1);
 		node->str = malloc(++shell->input->word_len + 1 * (sizeof(char)));
@@ -68,7 +68,6 @@ static t_file	*make_file_node(t_shell *shell, char *line, t_type type)
 	return (node);
 }
 
-
 void	parse_files(t_shell *shell, t_ctable *cnode, char *cmdline)
 {
 	t_file	*new;
@@ -81,13 +80,13 @@ void	parse_files(t_shell *shell, t_ctable *cnode, char *cmdline)
 		if (cmdline[i] == '\'' || cmdline[i] == '"')
 			i += skip_quotes(cmdline + i, cmdline[i]);
 		if (cmdline[i] == '<' && cmdline[i + 1] == '<')
-			new = make_file_node(shell, cmdline + i, t_in_heredoc);
+			new = make_file_node(shell, cmdline + i, t_in_heredoc, 0);
 		else if (cmdline[i] == '<')
-			new = make_file_node(shell, cmdline + i, t_in_file);
+			new = make_file_node(shell, cmdline + i, t_in_file, 0);
 		else if (cmdline[i] == '>' && cmdline[i + 1] == '>')
-			new = make_file_node(shell, cmdline + i, t_out_append);
+			new = make_file_node(shell, cmdline + i, t_out_append, 0);
 		else if (cmdline[i] == '>')
-			new = make_file_node(shell, cmdline + i, t_out_trunc);
+			new = make_file_node(shell, cmdline + i, t_out_trunc, 0);
 		if (new != NULL && (cmdline[i] == '<' || cmdline[i] == '>'))
 			lstadd_back(cnode, new, cmdline[i]);
 		if (new != NULL)

@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/27 10:57:13 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/20 13:12:44 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/21 13:15:04 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ char	**ft_create_env(t_shell *shell)
 	return (envp_array);
 }
 
-// Prints the environment
 void	ft_mini_env(t_shell *shell, char **split_input)
 {
 	t_env	*tmp;

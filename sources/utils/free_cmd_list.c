@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/15 12:10:51 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/13 14:47:30 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/21 19:37:07 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,18 +50,16 @@ static void	close_fds(t_ctable *cnode)
 		printf("Failed closing infile fd %d\n", cnode->hd_pipe[0]);
 	if (cnode->outfile != -1 && close(cnode->outfile) == -1)
 		printf("Failed closing outfile fd %d\n", cnode->hd_pipe[0]);
-	cnode->hd_pipe[0] = -1; // Niet zeker of deze declaraties nodig zijn
+	cnode->hd_pipe[0] = -1;
 	cnode->hd_pipe[1] = -1;
 	cnode->infile = -1;
 	cnode->outfile = -1;
 }
 
-void	free_cmd_list(t_input *input, t_ctable **head)
+void	free_cmd_list(t_ctable **head)
 {
 	t_ctable	*tmp;
 
-	if (input->pids != NULL)
-		free(input->pids);
 	if (*head == NULL)
 		return ;
 	tmp = *head;

@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/07 16:35:52 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/07/29 13:25:18 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/21 11:49:10 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,8 @@ int	input_checker(t_shell *shell, char *cmdline)
 	i += check_whitespace(cmdline, 0);
 	if (cmdline[i] == '\0')
 		x = 1;
-	else if (check_quotes(cmdline + i) == 2 || check_redirs(cmdline + i) == 2 || check_pipes(shell, cmdline + i) == 2)
+	else if (check_quotes(cmdline + i) == 2 || check_redirs(cmdline + i) == 2
+		|| check_pipes(shell, cmdline + i) == 2)
 		x = 2;
 	if (x > 0)
 	{

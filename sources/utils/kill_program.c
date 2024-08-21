@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/30 14:08:00 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/20 10:58:00 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/21 13:06:00 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,16 +40,16 @@ static void	free_env(t_shell *shell, t_env **env_head)
 	t_env	*tmp;
 
 	tmp = *env_head;
-	while (env_head != NULL && tmp != NULL) // Freeing ENV linked list
+	while (env_head != NULL && tmp != NULL)
 	{
 		tmp = tmp->next;
 		if (*env_head != NULL)
 			free_env_node(env_head);
 		*env_head = tmp;
 	}
-	if (shell->pwd != NULL) // Freeing PWD   ------ Wijzen env PWD en shell->pwd naar zelfde malloc of verschillende?
+	if (shell->pwd != NULL)
 		free (shell->pwd);
-	if (shell->old_pwd != NULL) // Freeing OLD_PWD     ------ Wijzen env OLD_PWD en shell->old_pwd naar zelfde malloc of verschillende?
+	if (shell->old_pwd != NULL)
 		free (shell->old_pwd);
 }
 

@@ -6,17 +6,18 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/21 09:23:10 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/20 10:16:29 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/21 19:42:57 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-volatile sig_atomic_t	g_signal = 0;
+int	g_signal = 0;
 
 // Initializing shell struct
 static void	init_shell(t_shell *shell)
 {
+	init_signals(shell, 1);
 	shell->pwd = NULL;
 	shell->old_pwd = NULL;
 	shell->env_size = 0;
@@ -31,9 +32,7 @@ static void	init_shell(t_shell *shell)
 		kill_program(shell, "Failed to dup STDOUT", errno);
 	shell->input->fds[0] = -1;
 	shell->input->fds[1] = -1;
-	init_signals();
 }
-
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -49,4 +48,3 @@ int	main(int argc, char **argv, char **envp)
 	kill_program(&shell, NULL, EXIT_SUCCESS);
 	return (0);
 }
-

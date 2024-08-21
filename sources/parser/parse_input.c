@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/18 14:36:27 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/19 17:48:19 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/21 19:35:50 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,4 @@ void	create_ctable(t_shell *shell, char *line)
 		line += shell->input->cmd_seg;
 		shell->input->cmd_seg = 0;
 	}
-	shell->input->pids = malloc(shell->input->node_count * sizeof(pid_t));
-	if (shell->input->pids == NULL)
-		kill_program(shell, "Failed mallocing pids array", errno);
 }

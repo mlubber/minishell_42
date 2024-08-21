@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/09 11:12:52 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/13 17:44:21 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/21 20:10:23 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,40 +14,31 @@
 
 void	sigint_handler(int signal)
 {
+	printf("signal %d\n", signal);
 	if (signal == SIGINT)
 	{
-		// printf("SIGINT received!\n");
-		// signal_received(shell);
+		ft_putchar_fd('\n', STDOUT_FILENO);
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
-		ft_putchar_fd('\n', STDOUT_FILENO);
-		ft_putstr_fd("minishell: ", STDOUT_FILENO);
 	}
 }
 
-void	sigquit_handler(int signal)
-{
-	if (signal == SIGQUIT)
-	{
-		// printf("SIGQUIT received!\n");
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-		ft_putchar_fd('\n', STDOUT_FILENO);
-		ft_putstr_fd("minishell: ", STDOUT_FILENO);
-	}
-}
-
-void	init_signals(void)
+void	init_signals(t_shell *shell, int i)
 {
 	struct sigaction	si;
-	struct sigaction	sq;
 
-	si.sa_handler = &sigint_handler;
-	sq.sa_handler = &sigquit_handler;
-	sigaction(SIGINT, &si, NULL);
-	sigaction(SIGQUIT, &sq, NULL);
-	// signal(SIGINT, sig_handler);
-	// signal(SIGQUIT, sig_handler);
+	printf("init_signals\n");
+	if (i == 1)
+	{
+		si.sa_handler = &sigint_handler;
+		if (sigaction(SIGINT, &si, NULL) == -1)
+			kill_program(shell, "setting SIGINT failed", errno);
+	}
+	else
+	{
+		si.sa_handler = SIG_DFL;
+		if (sigaction(SIGINT, &si, NULL) == -1)
+			kill_program(shell, "setting SIGINT to default failed", errno);
+	}
 }

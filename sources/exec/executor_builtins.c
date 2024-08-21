@@ -6,13 +6,13 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/30 15:49:28 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/20 13:27:27 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/21 20:19:50 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int	builtin_execute(t_shell *shell, t_ctable *tmp)
+int	builtin_execute(t_shell *shell, t_ctable *tmp, bool child)
 {
 	if (ft_strncmp(tmp->cmd_array[0], "echo", 5) == 0)
 		ft_mini_echo(shell, tmp->cmd_array);
@@ -28,6 +28,8 @@ int	builtin_execute(t_shell *shell, t_ctable *tmp)
 		ft_mini_env(shell, tmp->cmd_array);
 	else if (ft_strncmp(tmp->cmd_array[0], "exit", 5) == 0)
 		ft_mini_exit(shell, tmp->cmd_array);
+	if (child == true)
+		kill_program(shell, NULL, EXIT_SUCCESS);
 	return (-1);
 }
 
@@ -43,7 +45,7 @@ pid_t	builtin_child_exec(t_shell *shell, t_ctable *tmp, int node_nr)
 			handle_error(file, errno);
 			return (-1);
 		}
-		return (builtin_execute(shell, tmp));
+		return (builtin_execute(shell, tmp, false));
 	}
 	shell->pid = fork();
 	if (shell->pid == -1)
@@ -53,12 +55,10 @@ pid_t	builtin_child_exec(t_shell *shell, t_ctable *tmp, int node_nr)
 		file = handling_redirs(shell, tmp, node_nr);
 		if (file != NULL)
 			kill_program(shell, file, errno);
-		builtin_execute(shell, tmp);
-		kill_program(shell, NULL, EXIT_SUCCESS);
+		builtin_execute(shell, tmp, true);
 	}
 	if (shell->input->fds[0] != -1 && dup2(shell->input->fds[0], 0) == -1)
 		kill_program(shell, "child dup2 fds[0]", errno);
-	closing_fds(shell);
 	return (shell->pid);
 }
 
