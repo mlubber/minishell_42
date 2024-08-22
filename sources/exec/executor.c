@@ -6,38 +6,34 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/04 12:38:42 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/21 20:18:11 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/22 11:20:43 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	wait_for_children(t_shell *shell, pid_t pid, int node_count)
+void	wait_for_children(t_shell *shell, pid_t pid)
 {
 	int		status;
-	int		i;
 	pid_t	wpid;
 
-	i = 0;
-	while (i < node_count)
+	wpid = waitpid(pid, &status, 0);
+	while (wait(NULL) != -1)
+		continue ;
+	if (WIFSIGNALED(status))
 	{
-		wpid = waitpid(pid, &status, 0);
-		while (wait(NULL) != -1)
-			continue ;
-		if (WIFEXITED(status))
-		{
-			status = WEXITSTATUS(status);
+		if (g_signal == 2)
+			shell->exit_code = 130;
+		else
 			shell->exit_code = status;
-		}
-		else if (WIFSIGNALED(status))
-		{
-			shell->exit_code = status;
-			printf("Signal gotten and status: %d\n", status);
-		}
-		else if (status == 0)
-			shell->exit_code = 0;
-		i++;
 	}
+	else if (WIFEXITED(status))
+	{
+		status = WEXITSTATUS(status);
+		shell->exit_code = status;
+	}
+	else if (status == 0)
+		shell->exit_code = 0;
 }
 
 void	create_cmd_path(t_shell *shell, char **cmds, char **paths, char **envp)
@@ -138,5 +134,5 @@ void	start_execution(t_shell *shell, int i)
 				kill_program(shell, "Failed resetting stdin", errno);
 	}
 	if (pid != -1)
-		wait_for_children(shell, pid, shell->input->node_count);
+		wait_for_children(shell, pid);
 }

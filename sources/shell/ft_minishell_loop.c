@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/27 09:30:02 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/21 20:16:02 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/22 10:46:34 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ static void	reset_input_values(t_shell *shell, t_input *input)
 		kill_program(shell, "Failed resetting stdin", errno);
 	if (dup2(shell->stdoutput, STDOUT_FILENO) == -1)
 		kill_program(shell, "Failed resetting stdout", errno);
+	g_signal = 0;
 }
 
 // The minishell loop that keeps minishell running.
@@ -90,9 +91,11 @@ void	ft_minishell_loop(t_shell *shell, int argc, char **argv)
 		{
 			reset_input_values(shell, shell->input);
 			shell->input->line = readline("minishell: ");
+			if (g_signal == 2)
+				shell->exit_code = 130;
 			if (shell->input->line == NULL)
-				break ;
-			else if (shell->input->line[0] == '\0' )
+				kill_program(shell, NULL, shell->exit_code);
+			else if (shell->input->line[0] == '\0')
 			{
 				free (shell->input->line);
 				continue ;
@@ -106,6 +109,5 @@ void	ft_minishell_loop(t_shell *shell, int argc, char **argv)
 			start_execution(shell, 0);
 			free_cmd_list(&shell->input->cnode);
 		}
-		printf("out of while loop\n");
 	}
 }

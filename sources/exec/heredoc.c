@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/13 13:52:28 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/21 20:14:58 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/22 12:22:53 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static pid_t	set_heredoc(t_shell *shell, t_ctable *cnode, t_file *infiles)
 		kill_program(shell, NULL, errno);
 	if (hd_pid == 0)
 	{
-		init_signals(shell, 2);
+		init_signals(shell, 3);
 		run_heredoc(shell, cnode, infiles);
 		kill_program(shell, NULL, 0);
 	}
@@ -96,8 +96,10 @@ int	check_heredoc(t_shell *shell)
 			{
 				pid = set_heredoc(shell, cnode, infiles);
 				waitpid(pid, &status, 0);
-				if (WIFSIGNALED(status))
-					return (130);
+				// if (WIFSIGNALED(status))
+				// 	return (130);
+				// else
+				// 	shell->exit_code = 0;
 			}
 			infiles = infiles->next;
 		}
