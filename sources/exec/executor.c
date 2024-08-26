@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/04 12:38:42 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/26 16:35:47 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/26 19:34:50 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,62 +53,54 @@ void	create_cmd_path(t_shell *shell, char **cmds, char **paths, char **envp)
 	if (cmd_path == NULL && access(cmds[0], F_OK | X_OK) == -1)
 	{
 		free(cmd_path);
-		ft_not_found_free(shell, cmds, paths, envp);
-		kill_program(shell, NULL, 127);
+		cmd_not_found(shell, cmds, paths, envp);
 	}
 	else
 	{
 		init_signals(shell, 2);
-		printf("cmd_path: %s\n", cmd_path);
 		execve(cmd_path, cmds, envp);
 	}
-	ft_not_found_free(shell, cmds, paths, envp);
-	kill_program(shell, NULL, errno);
+	cmd_not_found(shell, cmds, paths, envp);
 }
 
-static pid_t	exec_cmd(t_shell *shell, t_ctable *tmp,
-	char **paths, int node_nr)
+static void	run_child(t_shell *shell, t_ctable *tmp, char **paths, int node_nr)
 {
 	char	**envp;
 	char	*file;
 
+	file = handling_redirs(shell, tmp, node_nr);
+	if (file != NULL || tmp->cmd_array == NULL)
+		kill_program(shell, file, errno);
+	envp = ft_create_env(shell);
+	if (ft_strnstr(tmp->cmd_array[0], "/", ft_strlen(tmp->cmd_array[0])))
+	{
+		init_signals(shell, 2);
+		execve(tmp->cmd_array[0], tmp->cmd_array, envp);
+		check_if_dir(shell, tmp->cmd_array, paths, envp);
+		kill_program(shell, NULL, errno);
+	}
+	else
+		create_cmd_path(shell, tmp->cmd_array, paths, envp);
+}
+
+static pid_t	checking_cmd(t_shell *shell, t_ctable *cnode, int node_nr)
+{
+	char	**paths;
+
+	paths = NULL;
+	if (builtin_check(cnode) == 1)
+		return (builtin_child_exec(shell, cnode, node_nr));
+	g_signal = -1;
+	paths = ft_get_paths(shell);
 	shell->pid = fork();
 	if (shell->pid == -1)
 		kill_program(shell, NULL, errno);
 	if (shell->pid == 0)
-	{
-		file = handling_redirs(shell, tmp, node_nr);
-		if (file != NULL || tmp->cmd_array == NULL)
-			kill_program(shell, file, errno);
-		envp = ft_create_env(shell);
-		if (ft_strnstr(tmp->cmd_array[0], "/", ft_strlen(tmp->cmd_array[0])))
-		{
-			init_signals(shell, 2);
-			execve(tmp->cmd_array[0], tmp->cmd_array, envp);
-			ft_not_found_free(shell, tmp->cmd_array, paths, envp);
-			kill_program(shell, NULL, errno);
-		}
-		else
-			create_cmd_path(shell, tmp->cmd_array, paths, envp);
-	}
+		run_child(shell, cnode, paths, node_nr);
 	if (shell->input->fds[0] != -1 && dup2(shell->input->fds[0], 0) == -1)
 		kill_program(shell, "exec_cmd child dup2 fds[0]", errno);
-	return (shell->pid);
-}
-
-static pid_t	executing_one_cmd(t_shell *shell, t_ctable *tmp, int node_nr)
-{
-	char	**paths;
-	pid_t	pid;
-
-	paths = NULL;
-	if (builtin_check(tmp) == 1)
-		return (builtin_child_exec(shell, tmp, node_nr));
-	g_signal = -1;
-	paths = ft_get_paths(shell);
-	pid = exec_cmd(shell, tmp, paths, node_nr);
 	ft_free_arr(&paths);
-	return (pid);
+	return (shell->pid);
 }
 
 void	start_execution(t_shell *shell, int i)
@@ -127,7 +119,7 @@ void	start_execution(t_shell *shell, int i)
 		if (tmp->next != NULL)
 			if (pipe(shell->input->fds) == -1)
 				kill_program(shell, "Failed pipe multiple cmds", errno);
-		pid = executing_one_cmd(shell, tmp, i);
+		pid = checking_cmd(shell, tmp, i);
 		closing_fds(shell);
 		i++;
 		tmp = tmp->next;

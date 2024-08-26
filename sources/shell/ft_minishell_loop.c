@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/27 09:30:02 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/26 12:30:47 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/26 17:51:03 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,6 @@ static void	reset_input_values(t_shell *shell, t_input *input)
 	g_signal = 0;
 }
 
-// The minishell loop that keeps minishell running.
-// then add the input to readline history, split the input into a 2d array
 void	ft_minishell_loop(t_shell *shell, int argc, char **argv)
 {
 	if (argc > 1 && ft_strncmp(argv[1], "-c", 2) == 0 && argv[2] != NULL)

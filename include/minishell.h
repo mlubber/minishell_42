@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/22 06:12:53 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/26 15:49:04 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/26 19:34:33 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,10 +145,11 @@ void	start_execution(t_shell *shell, int i);
 char	*handling_redirs(t_shell *shell, t_ctable *cnode, int node_nr);
 char	*ft_connectstring(char const *s1, char const *s2, char c);
 char	**ft_get_paths(t_shell *shell);
-void	ft_not_found_free(t_shell *shell, char **cmds, char **paths, char **envp);
+void	check_if_dir(t_shell *shell, char **cmds, char **paths, char **envp);
 pid_t	builtin_child_exec(t_shell *shell, t_ctable *tmp, int node_nr);
 int		builtin_check(t_ctable *tmp);
 int		check_heredoc(t_shell *shell);
+void	cmd_not_found(t_shell *shell, char **cmd, char **paths, char **envp);
 
 // Builtins
 void	ft_mini_echo(t_shell *shell, char **cmds);

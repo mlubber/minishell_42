@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/20 17:08:37 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/20 17:08:39 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/26 18:38:17 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,6 @@ void	handle_error(char *str, int exit_code)
 		write(2, err_msg, ft_strlen(err_msg));
 		free(err_msg);
 	}
-	else if (errno > 0)
+	else if (errno > 0 && exit_code != 127 && exit_code != 126)
 		write(2, strerror(exit_code), ft_strlen(strerror(exit_code)));
 }

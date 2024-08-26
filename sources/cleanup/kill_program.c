@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/30 14:08:00 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/26 15:48:57 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/26 17:41:10 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,8 @@ static void	free_env(t_shell *shell, t_env **env_head)
 void	kill_program(t_shell *shell, char *msg, int exit_code)
 {
 	free_env(shell, &shell->env_list);
-	free_cmd_list(&shell->input->cnode);
+	if (shell->input->cnode != NULL)
+		free_cmd_list(&shell->input->cnode);
 	if (close(shell->stdinput) == -1)
 		printf("Failed closing stdinput: %d\n", shell->stdinput);
 	if (close(shell->stdoutput) == -1)

@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/09 11:12:52 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/26 11:25:11 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/26 18:46:11 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	sigint_handler(int signal)
 {
-	// printf("\nglobal handler: %d\n", g_signal);
 	if (g_signal == -1)
 		ft_putchar_fd('\n', STDOUT_FILENO);
 	if (signal == SIGINT && g_signal != -1)
@@ -53,20 +52,3 @@ void	init_signals(t_shell *shell, int i)
 		if (sigaction(SIGQUIT, &sq, NULL) == -1)
 			kill_program(shell, "setting SIGQUIT failed", errno);
 }
-
-// void	init_signals(t_shell *shell, int i)
-// {
-// 	if (i == 1)
-// 	{
-// 		if (signal(SIGINT, &sigint_handler) == SIG_ERR)
-// 			kill_program(shell, "setting SIGINT failed", errno);
-// 		if (signal(SIGQUIT, SIG_IGN) == SIG_ERR)
-// 			kill_program(shell, "setting SIGQUIT failed", errno);
-// 	}
-// 	if (i != 1)
-// 		if (signal(SIGINT, SIG_DFL) == SIG_ERR)
-// 			kill_program(shell, "setting SIGINT failed", errno);
-// 	if (i == 2)
-// 		if (signal(SIGQUIT, SIG_DFL) == SIG_ERR)
-// 			kill_program(shell, "setting SIGQUIT failed", errno);
-// }

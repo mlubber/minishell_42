@@ -20,7 +20,8 @@ ENV_DIR				=	$(SRC_DIR)env/building_env.c \
 						$(SRC_DIR)env/create_env_node.c
 
 SHELL_DIR			=	$(SRC_DIR)shell/ft_minishell_loop.c \
-						$(SRC_DIR)shell/error_handling.c
+						$(SRC_DIR)shell/error_handling.c \
+						$(SRC_DIR)shell/signals.c
 
 PARSER_DIR			=	$(SRC_DIR)parser/input_checker.c \
 						$(SRC_DIR)parser/finish_line.c \
@@ -48,12 +49,11 @@ BUILTINS_DIR		=	$(SRC_DIR)builtins/ft_mini_echo.c \
 						$(SRC_DIR)builtins/ft_builtins_utils.c \
 						$(SRC_DIR)builtins/ft_builtins_utils_2.c
 
-UTILS_DIR			=	$(SRC_DIR)utils/kill_program.c \
-						$(SRC_DIR)utils/free_cmd_list.c \
-						$(SRC_DIR)utils/signals.c
+CLEANUP_DIR			=	$(SRC_DIR)cleanup/kill_program.c \
+						$(SRC_DIR)cleanup/free_cmd_list.c \
 
 # Concatenate all source files
-SRCS 				= $(MAIN_DIR) $(ENV_DIR) $(SHELL_DIR) $(PARSER_DIR) $(EXEC_DIR) $(BUILTINS_DIR) $(UTILS_DIR) 
+SRCS 				= $(MAIN_DIR) $(ENV_DIR) $(SHELL_DIR) $(PARSER_DIR) $(EXEC_DIR) $(BUILTINS_DIR) $(CLEANUP_DIR) 
 
 # Apply the pattern substitution to each source file in SRC and produce a corresponding list of object files in the OBJ_DIR
 OBJ 				= $(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRCS))

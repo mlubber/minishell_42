@@ -6,13 +6,13 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/16 13:28:31 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/26 16:37:56 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/26 19:35:02 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	ft_cmd_not_found(t_shell *shell, char **cmd, char **paths, char **envp)
+void	cmd_not_found(t_shell *shell, char **cmd, char **paths, char **envp)
 {
 	char	*cmd_path;
 
@@ -24,11 +24,10 @@ void	ft_cmd_not_found(t_shell *shell, char **cmd, char **paths, char **envp)
 	write(2, cmd[0], ft_strlen(cmd[0]));
 	ft_putstr_fd(": command not found\n", 2);
 	ft_free_arr(&paths);
-	ft_free_arr(&envp);
 	kill_program(shell, NULL, 127);
 }
 
-void	ft_not_found_free(t_shell *shell, char **cmds, char **paths, char **envp)
+void	check_if_dir(t_shell *shell, char **cmds, char **paths, char **envp)
 {
 	DIR	*dir;
 
@@ -37,24 +36,20 @@ void	ft_not_found_free(t_shell *shell, char **cmds, char **paths, char **envp)
 	{
 		write(2, cmds[0], ft_strlen(cmds[0]));
 		ft_putstr_fd(": Is a directory\n", 2);
-		ft_free_arr(&cmds);
-		closedir(dir);
+		closedir(dir); // closedir error check
 		ft_free_arr(&paths);
-		ft_free_arr(&envp);
 		kill_program(shell, NULL, 126);
 	}
 	else if (dir == NULL && ft_strnstr(cmds[0], "/", ft_strlen(cmds[0])))
 	{
 		write(2, cmds[0], ft_strlen(cmds[0]));
 		ft_putstr_fd(": No such file or directory\n", 2);
-		ft_free_arr(&cmds);
-		closedir(dir);
+		closedir(dir); // dir = NULL, dus moet dit nog geclosed worden?
 		ft_free_arr(&paths);
-		ft_free_arr(&envp);
 		kill_program(shell, NULL, 127);
 	}
 	else
-		ft_cmd_not_found(shell, cmds, paths, envp);
+		cmd_not_found(shell, cmds, paths, envp);
 }
 
 char	*ft_connectstring(char const *s1, char const *s2, char c)
