@@ -6,26 +6,32 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/16 13:28:31 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/21 15:35:45 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/26 16:37:56 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	ft_cmd_not_found(char **cmd)
+void	ft_cmd_not_found(t_shell *shell, char **cmd, char **paths, char **envp)
 {
+	char	*cmd_path;
+
+	cmd_path = ft_connectstring(shell->pwd, cmd[0], '/');
+	if (paths == NULL && access(cmd_path, F_OK | X_OK) != -1)
+		execve(cmd_path, cmd, envp);
+	errno = 0;
+	free(cmd_path);
 	write(2, cmd[0], ft_strlen(cmd[0]));
 	ft_putstr_fd(": command not found\n", 2);
-	ft_free_arr(&cmd);
-	exit(127);
+	ft_free_arr(&paths);
+	ft_free_arr(&envp);
+	kill_program(shell, NULL, 127);
 }
 
-void	ft_not_found_free(char **cmds, char **paths, char **envp)
+void	ft_not_found_free(t_shell *shell, char **cmds, char **paths, char **envp)
 {
 	DIR	*dir;
 
-	ft_free_arr(&paths);
-	ft_free_arr(&envp);
 	dir = opendir(cmds[0]);
 	if (dir && ft_strnstr(cmds[0], "/", ft_strlen(cmds[0])))
 	{
@@ -33,7 +39,9 @@ void	ft_not_found_free(char **cmds, char **paths, char **envp)
 		ft_putstr_fd(": Is a directory\n", 2);
 		ft_free_arr(&cmds);
 		closedir(dir);
-		exit(126);
+		ft_free_arr(&paths);
+		ft_free_arr(&envp);
+		kill_program(shell, NULL, 126);
 	}
 	else if (dir == NULL && ft_strnstr(cmds[0], "/", ft_strlen(cmds[0])))
 	{
@@ -41,10 +49,12 @@ void	ft_not_found_free(char **cmds, char **paths, char **envp)
 		ft_putstr_fd(": No such file or directory\n", 2);
 		ft_free_arr(&cmds);
 		closedir(dir);
-		exit(127);
+		ft_free_arr(&paths);
+		ft_free_arr(&envp);
+		kill_program(shell, NULL, 127);
 	}
 	else
-		ft_cmd_not_found(cmds);
+		ft_cmd_not_found(shell, cmds, paths, envp);
 }
 
 char	*ft_connectstring(char const *s1, char const *s2, char c)

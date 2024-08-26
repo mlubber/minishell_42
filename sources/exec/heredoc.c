@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/13 13:52:28 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/22 12:22:53 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/26 10:34:18 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ static pid_t	set_heredoc(t_shell *shell, t_ctable *cnode, t_file *infiles)
 	close_heredoc_pipes(cnode);
 	if (pipe(cnode->hd_pipe) == -1)
 		kill_program(shell, "Failed creating pipe", errno);
+	g_signal = -1;
 	hd_pid = fork();
 	if (hd_pid == -1)
 		kill_program(shell, NULL, errno);

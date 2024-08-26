@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/07 12:10:52 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/20 10:14:19 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/26 15:46:20 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	ft_mini_unset(t_shell *shell, char **split_input)
 	int		i;
 	t_env	*tmp;
 
-	i = 0;
+	i = 1;
 	tmp = shell->env_list;
 	if (split_input[1] == NULL)
 		return ;
@@ -58,7 +58,7 @@ void	ft_mini_unset(t_shell *shell, char **split_input)
 				tmp = tmp->next;
 			}
 			shell->env_size--;
-			break ;
+			tmp = shell->env_list;
 		}
 		i++;
 	}

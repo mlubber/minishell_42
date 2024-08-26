@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/30 14:08:00 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/21 13:06:00 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/26 15:48:57 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,19 @@ static void	free_env(t_shell *shell, t_env **env_head)
 		free (shell->pwd);
 	if (shell->old_pwd != NULL)
 		free (shell->old_pwd);
+	if (shell->home != NULL)
+		free (shell->home);
 }
 
 // Cleans up all malloced stuff and exits minishell
 void	kill_program(t_shell *shell, char *msg, int exit_code)
 {
 	free_env(shell, &shell->env_list);
+	free_cmd_list(&shell->input->cnode);
+	if (close(shell->stdinput) == -1)
+		printf("Failed closing stdinput: %d\n", shell->stdinput);
+	if (close(shell->stdoutput) == -1)
+		printf("Failed closing stdoutput: %d\n", shell->stdoutput);
 	closing_fds(shell);
 	rl_clear_history();
 	if (exit_code > 0)

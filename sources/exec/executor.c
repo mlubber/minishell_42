@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/04 12:38:42 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/22 11:20:43 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/26 16:35:47 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,15 +53,16 @@ void	create_cmd_path(t_shell *shell, char **cmds, char **paths, char **envp)
 	if (cmd_path == NULL && access(cmds[0], F_OK | X_OK) == -1)
 	{
 		free(cmd_path);
-		ft_not_found_free(cmds, paths, envp);
+		ft_not_found_free(shell, cmds, paths, envp);
 		kill_program(shell, NULL, 127);
 	}
 	else
 	{
 		init_signals(shell, 2);
+		printf("cmd_path: %s\n", cmd_path);
 		execve(cmd_path, cmds, envp);
 	}
-	ft_not_found_free(cmds, paths, envp);
+	ft_not_found_free(shell, cmds, paths, envp);
 	kill_program(shell, NULL, errno);
 }
 
@@ -84,7 +85,7 @@ static pid_t	exec_cmd(t_shell *shell, t_ctable *tmp,
 		{
 			init_signals(shell, 2);
 			execve(tmp->cmd_array[0], tmp->cmd_array, envp);
-			ft_not_found_free(tmp->cmd_array, paths, envp);
+			ft_not_found_free(shell, tmp->cmd_array, paths, envp);
 			kill_program(shell, NULL, errno);
 		}
 		else
@@ -103,6 +104,7 @@ static pid_t	executing_one_cmd(t_shell *shell, t_ctable *tmp, int node_nr)
 	paths = NULL;
 	if (builtin_check(tmp) == 1)
 		return (builtin_child_exec(shell, tmp, node_nr));
+	g_signal = -1;
 	paths = ft_get_paths(shell);
 	pid = exec_cmd(shell, tmp, paths, node_nr);
 	ft_free_arr(&paths);
