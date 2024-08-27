@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/30 14:08:00 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/26 17:41:10 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/27 13:51:18 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,9 @@ void	kill_program(t_shell *shell, char *msg, int exit_code)
 	if (shell->input->cnode != NULL)
 		free_cmd_list(&shell->input->cnode);
 	if (close(shell->stdinput) == -1)
-		printf("Failed closing stdinput: %d\n", shell->stdinput);
+		perror("Failed closing shell->stdinput");
 	if (close(shell->stdoutput) == -1)
-		printf("Failed closing stdoutput: %d\n", shell->stdoutput);
+		perror("Failed closing shell->stdoutput");
 	closing_fds(shell);
 	rl_clear_history();
 	if (exit_code > 0)

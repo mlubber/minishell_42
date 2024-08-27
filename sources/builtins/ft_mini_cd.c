@@ -6,40 +6,46 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/04 09:00:37 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/21 13:14:06 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/27 17:06:39 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static void	ft_update_env_var(t_shell *shell, t_env *node, char *key, char *val)
+static void	cd_error(t_shell *shell, int error)
 {
-	int		i;
-
-	free(node->str);
-	node->str = ft_strjoin(key, val);
-	if (node->str == NULL)
-		kill_program(shell, "Failed malloc node-str in update_env_var", errno);
-	i = 0;
-	while (node->str[i] != '=')
-		i++;
-	free(node->var_val);
-	node->var_val = set_var_value(node->str + i + 1);
+	if (error == -1)
+		ft_putendl_fd("Error: No such file or directory", STDERR_FILENO);
+	if (error == -2)
+		ft_putendl_fd("Error: HOME not set", STDERR_FILENO);
+	if (error == -3)
+		ft_putendl_fd("Error: OLDPWD not set", STDERR_FILENO);
+	if (error == -4)
+		ft_putendl_fd("Error: CD does not take flags", STDERR_FILENO);
+	shell->exit_code = 1;
 }
 
-static void	ft_change_path_in_env(t_shell *shell)
+static int	dash(t_shell *shell, char **input, char *home_value)
 {
-	t_env	*temp_list;
-
-	temp_list = shell->env_list;
-	while (temp_list != NULL)
+	if (input[1][0] == '-' && input[1][1] == '-' && input[1][2] == '\0')
 	{
-		if (ft_strncmp(temp_list->str, "PWD=", 4) == 0)
-			ft_update_env_var(shell, temp_list, "PWD=", shell->pwd);
-		else if (ft_strncmp(temp_list->str, "OLDPWD=", 7) == 0)
-			ft_update_env_var(shell, temp_list, "OLDPWD=", shell->old_pwd);
-		temp_list = temp_list->next;
+		if (home_value == NULL)
+			return (-2);
+		else
+			return (chdir(home_value));
 	}
+	else if (input[1] != NULL && input[1][0] == '-' && input[1][1] == '\0')
+	{
+		if (shell->old_pwd == NULL)
+			return (-3);
+		else
+		{
+			ft_putendl_fd(shell->old_pwd, STDOUT_FILENO);
+			return (chdir(shell->old_pwd));
+		}
+	}
+	else
+		return (-4);
 }
 
 static int	tilde(t_shell *shell, char **input, char *home_value)
@@ -60,23 +66,18 @@ static int	ft_change_directory(t_shell *shell, char **input)
 	char	*home_value;
 
 	home_value = ft_get_env_value(shell->env_list, "HOME=");
+	if (input[1] == NULL && home_value != NULL)
+		return (chdir(home_value));
+	else if (input[1] == NULL && home_value == NULL)
+		return (-2);
 	if (input[1] != NULL && input[1][0] == '~'
 		&& input[1][1] == '\0' && home_value == NULL)
 		return (chdir(shell->home));
 	else if (input[1] != NULL && input[1][0] == '~'
 		&& input[1][1] == '\0' && home_value != NULL)
 		return (chdir(home_value));
-	if (input[1] == NULL || (input[1][0] == '-'
-		&& input[1][1] == '-' && input[1][2] == '\0'))
-		if (home_value == NULL)
-			return (-2);
-	if (input[1] == NULL && home_value != NULL)
-		return (chdir(home_value));
-	else if (input[1] != NULL && input[1][0] == '-' && input[1][1] == '-'
-		&& input[1][2] == '\0')
-		return (chdir(home_value));
-	else if (input[1] != NULL && input[1][0] == '-' && input[1][1] == '\0')
-		return (chdir(ft_get_env_value(shell->env_list, "OLDPWD=")));
+	if (input[1] != NULL && input[1][0] == '-')
+		return (dash(shell, input, home_value));
 	else if (input[1] != NULL && input[1][0] == '~' && input[1][1] != '\0')
 		return (tilde(shell, input, home_value));
 	else
@@ -94,13 +95,9 @@ void	ft_mini_cd(t_shell *shell, char **split_input)
 		return ;
 	}
 	ret = ft_change_directory(shell, split_input);
-	if (ret == -1 || ret == -2)
+	if (ret < 0)
 	{
-		if (ret == -1)
-			ft_putendl_fd("Error: No such file or directory", STDERR_FILENO);
-		if (ret == -2)
-			ft_putendl_fd("Error: HOME not set", STDERR_FILENO);
-		shell->exit_code = 1;
+		cd_error(shell, ret);
 		return ;
 	}
 	free (shell->old_pwd);

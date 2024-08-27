@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/08 15:55:48 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/21 19:06:56 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/27 13:40:58 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	check_alpha_num(char *str)
 	return (false);
 }
 
-char	*path_check(t_shell *shell, char *path)
+static char	*path_check(t_shell *shell, char *path)
 {
 	int		i;
 	char	*new_pwd;

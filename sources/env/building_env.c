@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/27 08:05:43 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/26 12:14:51 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/27 13:25:28 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,10 +93,7 @@ void	building_env(t_shell *shell, t_env **env_list, char **envp)
 		new = create_env_node(shell, envp[i]);
 		tmp->next = new;
 		if (tmp == NULL)
-		{
-			printf("true\n");
 			kill_program(shell, "Failed building env!", errno);
-		}
 		tmp = tmp->next;
 		i++;
 	}

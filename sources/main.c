@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/21 09:23:10 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/26 09:28:30 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/27 13:48:01 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,12 @@ int	main(int argc, char **argv, char **envp)
 	t_shell	shell;
 	t_input	input;
 
+	if (argc != 1 || argv[1])
+		exit(1);
 	shell.input = &input;
 	init_shell(&shell);
 	building_env(&shell, &shell.env_list, envp);
-	// if (argc != 1 || argv[1])
-	// 	kill_program(&shell, "Program does not take arguments >:(\n", 1);
-	ft_minishell_loop(&shell, argc, argv);
+	ft_minishell_loop(&shell);
 	kill_program(&shell, NULL, EXIT_SUCCESS);
 	return (0);
 }

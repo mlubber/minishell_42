@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/04 12:38:42 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/26 19:34:50 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/27 14:59:21 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,17 +50,19 @@ void	create_cmd_path(t_shell *shell, char **cmds, char **paths, char **envp)
 		free(cmd_path);
 		cmd_path = ft_connectstring(paths[i++], cmds[0], '/');
 	}
+	init_signals(shell, 2);
 	if (cmd_path == NULL && access(cmds[0], F_OK | X_OK) == -1)
 	{
 		free(cmd_path);
-		cmd_not_found(shell, cmds, paths, envp);
+		cmd_not_found(shell, cmds);
 	}
-	else
-	{
-		init_signals(shell, 2);
-		execve(cmd_path, cmds, envp);
-	}
-	cmd_not_found(shell, cmds, paths, envp);
+	else if (paths == NULL)
+		execute_cmd(shell, cmds[0], cmds, envp);
+	else if (cmd_path != NULL)
+		execute_cmd(shell, cmd_path, cmds, envp);
+	ft_free_arr(&paths);
+	free(envp);
+	cmd_not_found(shell, cmds);
 }
 
 static void	run_child(t_shell *shell, t_ctable *tmp, char **paths, int node_nr)
@@ -74,10 +76,10 @@ static void	run_child(t_shell *shell, t_ctable *tmp, char **paths, int node_nr)
 	envp = ft_create_env(shell);
 	if (ft_strnstr(tmp->cmd_array[0], "/", ft_strlen(tmp->cmd_array[0])))
 	{
-		init_signals(shell, 2);
-		execve(tmp->cmd_array[0], tmp->cmd_array, envp);
-		check_if_dir(shell, tmp->cmd_array, paths, envp);
-		kill_program(shell, NULL, errno);
+		execute_cmd(shell, tmp->cmd_array[0], tmp->cmd_array, envp);
+		ft_free_arr(&paths);
+		free(envp);
+		check_if_dir(shell, tmp->cmd_array);
 	}
 	else
 		create_cmd_path(shell, tmp->cmd_array, paths, envp);
@@ -109,11 +111,6 @@ void	start_execution(t_shell *shell, int i)
 	t_ctable	*tmp;
 
 	tmp = shell->input->cnode;
-	if (check_heredoc(shell) == 130)
-	{
-		shell->exit_code = 130;
-		return ;
-	}
 	while (tmp != NULL)
 	{
 		if (tmp->next != NULL)

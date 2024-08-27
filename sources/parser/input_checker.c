@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/07 16:35:52 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/21 11:49:10 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/27 13:30:34 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ int	input_checker(t_shell *shell, char *cmdline)
 			free (shell->input->line);
 			shell->input->line = NULL;
 		}
+		shell->exit_code = 1;
 		return (x);
 	}
 	return (0);

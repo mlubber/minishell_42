@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/04 14:35:10 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/21 20:00:11 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/27 14:06:54 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,13 @@ static char	*open_infiles(t_shell *shell, t_ctable *cnode, t_file *infile)
 			if (dup2(cnode->infile, STDIN_FILENO) == -1)
 				kill_program(shell, "dup2 infile", errno);
 			if (close(cnode->infile) == -1)
-				printf("Failed closing infile: %s\n", infile->str);
-			cnode->infile = 0;
+				perror("Failed closing infile");
+			cnode->infile = -1;
 		}
 		else if (infile->type == t_in_heredoc && infile->next == NULL)
 		{
 			if (dup2(cnode->hd_pipe[0], STDIN_FILENO) == -1)
 				kill_program(shell, "dup2 infile", errno);
-			cnode->infile = cnode->hd_pipe[0];
 		}
 		infile = infile->next;
 	}
@@ -65,8 +64,8 @@ static char	*open_outfiles(t_shell *shell, t_ctable *cnode, t_file *outfile)
 		if (dup2(cnode->outfile, STDOUT_FILENO) == -1)
 			kill_program(shell, "dup2 outfile", errno);
 		if (close(cnode->outfile) == -1)
-			printf("Failed closing outfile: %s\n", outfile->str);
-		cnode->outfile = 0;
+			perror("Failed closing outfile");
+		cnode->outfile = -1;
 		outfile = outfile->next;
 	}
 	return (NULL);

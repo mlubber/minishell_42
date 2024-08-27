@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/07 12:10:52 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/26 15:46:20 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/27 16:55:07 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,25 @@ static int	search_and_delete_var(t_env **head, char *str)
 	return (true);
 }
 
+static void	check_if_oldpwd(t_shell *shell, char *str)
+{
+	int		i;
+	char	*oldpwd;
+
+	i = 0;
+	oldpwd = "OLDPWD";
+	while (str[i])
+	{
+		if (str[i] != oldpwd[i])
+			return ;
+		i++;
+	}
+	if (str[i] != oldpwd[i])
+		return ;
+	free(shell->old_pwd);
+	shell->old_pwd = NULL;
+}
+
 void	ft_mini_unset(t_shell *shell, char **split_input)
 {
 	int		i;
@@ -49,6 +68,7 @@ void	ft_mini_unset(t_shell *shell, char **split_input)
 		return ;
 	while (split_input[i] != NULL)
 	{
+		check_if_oldpwd(shell, split_input[1]);
 		if (search_and_delete_var(&tmp, split_input[i]) != 0)
 		{
 			while (tmp->next != NULL)

@@ -6,59 +6,35 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/27 09:30:02 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/26 17:51:03 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/27 14:58:45 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	check_ctable(t_shell *shell) // TESTING PURPOSES
+static int	pre_exec_check(t_shell *shell, int i)
 {
-	t_ctable	*tmp;
-	t_file		*tmp_in;
-	t_file		*tmp_out;
+	char	*file;
 
-	int	o = 0;
-	int	num = 0;
-	tmp = shell->input->cnode;
-	while (tmp != NULL)
+	if (check_heredoc(shell) == 130)
 	{
-		tmp_in = tmp->infiles;
-		tmp_out = tmp->outfiles;
-		printf("\n--[NODE: %d]--\n", num + 1);
-		while (tmp_in != NULL)
-		{
-			printf("infile %d: [%s] ", o + 1, tmp_in->str);
-			if (tmp_in->type == t_in_file)
-				printf("< file\n");
-			else if (tmp_in->type == t_in_heredoc)
-				printf("<< heredoc\n");
-			tmp_in = tmp_in->next;
-			o++;
-		}
-		o = 0;
-		while (tmp_out != NULL)
-		{
-			printf("outfile %d: [%s] ", o + 1, tmp_out->str);
-			if (tmp_out->type == t_out_trunc)
-				printf("> trunc\n");
-			else if (tmp_out->type == t_out_append)
-				printf(">> append\n");
-			tmp_out = tmp_out->next;
-			o++;
-		}
-		o = 0;
-		while (tmp->cmd_array != NULL && tmp->cmd_array[o] != NULL)
-		{
-			if (tmp->cmd_array != NULL)
-				printf("Cmd %d: [%s]\n", o + 1, tmp->cmd_array[o]);
-			o++;
-		}
-		o = 0;
-		tmp = tmp->next;
-		num++;
+		shell->exit_code = 130;
+		return (0);
 	}
-	printf("\n");
+	if (shell->input->cnode->cmd_array == NULL)
+	{
+		file = handling_redirs(shell, shell->input->cnode, i);
+		if (file != NULL)
+		{
+			handle_error(file, errno);
+			if (errno == 21)
+				shell->exit_code = 1;
+			else
+				shell->exit_code = errno;
+		}
+		return (0);
+	}
+	return (1);
 }
 
 static void	reset_input_values(t_shell *shell, t_input *input)
@@ -68,6 +44,7 @@ static void	reset_input_values(t_shell *shell, t_input *input)
 	input->word_len = 0;
 	input->cmd_seg = 0;
 	input->node_count = 0;
+	input->cnode = NULL;
 	if (dup2(shell->stdinput, STDIN_FILENO) == -1)
 		kill_program(shell, "Failed resetting stdin", errno);
 	if (dup2(shell->stdoutput, STDOUT_FILENO) == -1)
@@ -75,37 +52,28 @@ static void	reset_input_values(t_shell *shell, t_input *input)
 	g_signal = 0;
 }
 
-void	ft_minishell_loop(t_shell *shell, int argc, char **argv)
+void	ft_minishell_loop(t_shell *shell)
 {
-	if (argc > 1 && ft_strncmp(argv[1], "-c", 2) == 0 && argv[2] != NULL)
+	while (1)
 	{
-		create_ctable(shell, argv[2]);
-		start_execution(shell, 0);
-		free_cmd_list(&shell->input->cnode);
-	}
-	else
-	{
-		while (1)
+		reset_input_values(shell, shell->input);
+		shell->input->line = readline("minishell: ");
+		if (g_signal == 2)
+			shell->exit_code = 130;
+		if (shell->input->line == NULL)
+			kill_program(shell, NULL, shell->exit_code);
+		else if (shell->input->line[0] == '\0')
 		{
-			reset_input_values(shell, shell->input);
-			shell->input->line = readline("minishell: ");
-			if (g_signal == 2)
-				shell->exit_code = 130;
-			if (shell->input->line == NULL)
-				kill_program(shell, NULL, shell->exit_code);
-			else if (shell->input->line[0] == '\0')
-			{
-				free (shell->input->line);
-				continue ;
-			}
-			add_history(shell->input->line);
-			if (input_checker(shell, shell->input->line) > 0)
-				continue ;
-			create_ctable(shell, shell->input->line);
 			free (shell->input->line);
-			// check_ctable(shell); // Testing all files and cmds
-			start_execution(shell, 0);
-			free_cmd_list(&shell->input->cnode);
+			continue ;
 		}
+		add_history(shell->input->line);
+		if (input_checker(shell, shell->input->line) > 0)
+			continue ;
+		create_ctable(shell, shell->input->line);
+		free (shell->input->line);
+		if (pre_exec_check(shell, 0) == 1)
+			start_execution(shell, 0);
+		free_cmd_list(&shell->input->cnode);
 	}
 }

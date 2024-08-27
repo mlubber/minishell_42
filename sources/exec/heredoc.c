@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/13 13:52:28 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/26 10:34:18 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/27 14:04:16 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,7 @@ static void	run_heredoc(t_shell *shell, t_ctable *cnode, t_file *infiles)
 		free(input);
 	}
 	shell->pid = 1;
-	if ((close(cnode->hd_pipe[1]) == -1) || (close(cnode->hd_pipe[0]) == -1))
-		printf("Failed closing hd_pipe write end\n");
+	close_heredoc_pipes(cnode);
 }
 
 static pid_t	set_heredoc(t_shell *shell, t_ctable *cnode, t_file *infiles)
@@ -97,10 +96,10 @@ int	check_heredoc(t_shell *shell)
 			{
 				pid = set_heredoc(shell, cnode, infiles);
 				waitpid(pid, &status, 0);
-				// if (WIFSIGNALED(status))
-				// 	return (130);
-				// else
-				// 	shell->exit_code = 0;
+				if (WIFSIGNALED(status))
+					return (130);
+				else
+					shell->exit_code = 0;
 			}
 			infiles = infiles->next;
 		}

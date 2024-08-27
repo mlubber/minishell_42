@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/22 06:12:53 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/26 19:34:33 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/27 15:18:43 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,25 +131,25 @@ void	parse_cmd(t_shell *shell, t_ctable *cnode, char *cmdline, int i);
 
 bool	check_var(char *str);
 int		char_check(char *str);
-bool	check_var(char *str);
 int		skip_quotes(char *cmdline, char quote);
 int		skip_file_or_word(char *cmdline, char c, int i);
 int		check_whitespace(char *str, char c);
 int		finish_line(t_shell *shell);
 
 // Bash shell
-void	ft_minishell_loop(t_shell *shell, int argc, char **argv);
+void	ft_minishell_loop(t_shell *shell);
 
 // Executor
 void	start_execution(t_shell *shell, int i);
 char	*handling_redirs(t_shell *shell, t_ctable *cnode, int node_nr);
 char	*ft_connectstring(char const *s1, char const *s2, char c);
 char	**ft_get_paths(t_shell *shell);
-void	check_if_dir(t_shell *shell, char **cmds, char **paths, char **envp);
+void	check_if_dir(t_shell *shell, char **cmds);
 pid_t	builtin_child_exec(t_shell *shell, t_ctable *tmp, int node_nr);
 int		builtin_check(t_ctable *tmp);
 int		check_heredoc(t_shell *shell);
-void	cmd_not_found(t_shell *shell, char **cmd, char **paths, char **envp);
+void	cmd_not_found(t_shell *shell, char **cmd);
+void	execute_cmd(t_shell *shell, char *cmd, char **cmd_array, char **envp);
 
 // Builtins
 void	ft_mini_echo(t_shell *shell, char **cmds);
@@ -162,13 +162,12 @@ void	ft_mini_exit(t_shell *shell, char **cmds);
 
 void	ft_free_arr(char ***arr);
 int		check_alpha_num(char *str);
-char	*path_check(t_shell *shell, char *path);
 void	ft_check_upper_dir(t_shell *shell);
 void	replace_var_value(t_shell *shell, t_env *temp, char *input, int len);
-char	**ft_create_export_list(t_shell *shell, t_env *tmp, int i);
 char	**ft_create_env(t_shell *shell);
 void	add_export_node(t_shell *shell, char *split_input);
 char	*ft_get_env_value(t_env *env_list, char *str);
+void	ft_change_path_in_env(t_shell *shell);
 
 // Kill program
 void	kill_program(t_shell *shell, char *msg, int i);

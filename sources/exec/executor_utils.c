@@ -6,50 +6,49 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/16 13:28:31 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/26 19:35:02 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/27 14:27:31 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	cmd_not_found(t_shell *shell, char **cmd, char **paths, char **envp)
+void	execute_cmd(t_shell *shell, char *cmd, char **cmd_array, char **envp)
 {
-	char	*cmd_path;
+	if (close(shell->stdinput) == -1)
+		perror("shell->stdinput");
+	if (close(shell->stdoutput) == -1)
+		perror("shell->stdoutput");
+	init_signals(shell, 2);
+	execve(cmd, cmd_array, envp);
+}
 
-	cmd_path = ft_connectstring(shell->pwd, cmd[0], '/');
-	if (paths == NULL && access(cmd_path, F_OK | X_OK) != -1)
-		execve(cmd_path, cmd, envp);
+void	cmd_not_found(t_shell *shell, char **cmd)
+{
 	errno = 0;
-	free(cmd_path);
 	write(2, cmd[0], ft_strlen(cmd[0]));
 	ft_putstr_fd(": command not found\n", 2);
-	ft_free_arr(&paths);
 	kill_program(shell, NULL, 127);
 }
 
-void	check_if_dir(t_shell *shell, char **cmds, char **paths, char **envp)
+void	check_if_dir(t_shell *shell, char **cmds)
 {
 	DIR	*dir;
 
 	dir = opendir(cmds[0]);
-	if (dir && ft_strnstr(cmds[0], "/", ft_strlen(cmds[0])))
+	if (dir)
 	{
 		write(2, cmds[0], ft_strlen(cmds[0]));
 		ft_putstr_fd(": Is a directory\n", 2);
-		closedir(dir); // closedir error check
-		ft_free_arr(&paths);
+		if (closedir(dir) == -1)
+			ft_putstr_fd("Failed closing dir\n", 2);
 		kill_program(shell, NULL, 126);
 	}
-	else if (dir == NULL && ft_strnstr(cmds[0], "/", ft_strlen(cmds[0])))
+	else if (dir == NULL)
 	{
 		write(2, cmds[0], ft_strlen(cmds[0]));
 		ft_putstr_fd(": No such file or directory\n", 2);
-		closedir(dir); // dir = NULL, dus moet dit nog geclosed worden?
-		ft_free_arr(&paths);
 		kill_program(shell, NULL, 127);
 	}
-	else
-		cmd_not_found(shell, cmds, paths, envp);
 }
 
 char	*ft_connectstring(char const *s1, char const *s2, char c)

@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/03 11:01:03 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/20 10:46:28 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/27 13:42:04 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	ft_sort_env_lines(char **envp, int count)
 	}
 }
 
-char	**ft_create_export_list(t_shell *shell, t_env *tmp, int i)
+static char	**ft_create_export_list(t_shell *shell, t_env *tmp, int i)
 {
 	char	**export_list;
 

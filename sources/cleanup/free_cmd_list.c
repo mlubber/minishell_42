@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/15 12:10:51 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/21 19:37:07 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/27 13:31:23 by mlubbers      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,13 @@ void	free_file_list(t_file **infiles, t_file **outfiles)
 static void	close_fds(t_ctable *cnode)
 {
 	if (cnode->hd_pipe[0] != -1 && close(cnode->hd_pipe[0]) == -1)
-		printf("Failed closing read-end hd_pipe fd %d\n", cnode->hd_pipe[0]);
+		perror("Failed closing read-end hd_pipe fd");
 	if (cnode->hd_pipe[1] != -1 && close(cnode->hd_pipe[1]) == -1)
-		printf("Failed closing write-end hd_pipe fd %d\n", cnode->hd_pipe[0]);
+		perror("Failed closing write-end hd_pipe fd");
 	if (cnode->infile != -1 && close(cnode->infile) == -1)
-		printf("Failed closing infile fd %d\n", cnode->hd_pipe[0]);
+		perror("Failed closing infile fd");
 	if (cnode->outfile != -1 && close(cnode->outfile) == -1)
-		printf("Failed closing outfile fd %d\n", cnode->hd_pipe[0]);
+		perror("Failed closing outfile fd");
 	cnode->hd_pipe[0] = -1;
 	cnode->hd_pipe[1] = -1;
 	cnode->infile = -1;

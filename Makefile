@@ -41,13 +41,13 @@ EXEC_DIR			=	$(SRC_DIR)exec/executor_builtins.c \
 
 BUILTINS_DIR		=	$(SRC_DIR)builtins/ft_mini_echo.c \
 						$(SRC_DIR)builtins/ft_mini_cd.c \
+						$(SRC_DIR)builtins/ft_mini_cd_utils.c \
 						$(SRC_DIR)builtins/ft_mini_pwd.c \
 						$(SRC_DIR)builtins/ft_mini_export.c \
 						$(SRC_DIR)builtins/ft_mini_unset.c \
 						$(SRC_DIR)builtins/ft_mini_env.c \
 						$(SRC_DIR)builtins/ft_mini_exit.c \
-						$(SRC_DIR)builtins/ft_builtins_utils.c \
-						$(SRC_DIR)builtins/ft_builtins_utils_2.c
+						$(SRC_DIR)builtins/ft_builtins_utils.c
 
 CLEANUP_DIR			=	$(SRC_DIR)cleanup/kill_program.c \
 						$(SRC_DIR)cleanup/free_cmd_list.c \
