@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/22 06:12:53 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/27 15:18:43 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/29 17:10:28 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,15 +141,15 @@ void	ft_minishell_loop(t_shell *shell);
 
 // Executor
 void	start_execution(t_shell *shell, int i);
-char	*handling_redirs(t_shell *shell, t_ctable *cnode, int node_nr);
+char	*handling_redirs(t_shell *shell, t_ctable *cnode, int node_nr, int x);
 char	*ft_connectstring(char const *s1, char const *s2, char c);
 char	**ft_get_paths(t_shell *shell);
 void	check_if_dir(t_shell *shell, char **cmds);
 pid_t	builtin_child_exec(t_shell *shell, t_ctable *tmp, int node_nr);
 int		builtin_check(t_ctable *tmp);
 int		check_heredoc(t_shell *shell);
-void	cmd_not_found(t_shell *shell, char **cmd);
-void	execute_cmd(t_shell *shell, char *cmd, char **cmd_array, char **envp);
+void	cmd_not_found(t_shell *shell, char **cmd, char **paths, char ***envp);
+void	execute_cmd(t_shell *shell, char *cmd, char **cmd_array, char ***envp);
 
 // Builtins
 void	ft_mini_echo(t_shell *shell, char **cmds);
@@ -181,5 +181,6 @@ void	init_signals(t_shell *shell, int i);
 
 // Error handling
 void	handle_error(char *str, int exit_code);
+void	write_heredoc_error(char *str);
 
 #endif

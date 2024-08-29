@@ -6,17 +6,29 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/13 13:52:28 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/27 14:04:16 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/29 17:26:18 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static void	write_heredoc_error(char *str)
+char	*add_newline(t_shell *shell, char *input)
 {
-	ft_putstr_fd("warning: heredoc delimited by end-of-file (wanted: '", 2);
-	ft_putstr_fd(str, 2);
-	ft_putstr_fd("')\n", 2);
+	int		i;
+	char	*new;
+
+	i = 0;
+	new = malloc((ft_strlen(input) + 2) * sizeof(char));
+	if (new == NULL)
+		kill_program(shell, "Failed mallocing add_newline", errno);
+	while (input[i])
+	{
+		new[i] = input[i];
+		i++;
+	}
+	new[i++] = '\n';
+	new[i] = '\0';
+	return (new);
 }
 
 static void	close_heredoc_pipes(t_ctable *cnode)
@@ -34,6 +46,7 @@ static void	run_heredoc(t_shell *shell, t_ctable *cnode, t_file *infiles)
 	char	*input;
 	int		limiter_len;
 
+	rl_clear_history();
 	limiter_len = ft_strlen(infiles->str);
 	while (1)
 	{
@@ -49,6 +62,7 @@ static void	run_heredoc(t_shell *shell, t_ctable *cnode, t_file *infiles)
 			free(input);
 			break ;
 		}
+		input = add_newline(shell, input);
 		write(cnode->hd_pipe[1], input, ft_strlen(input));
 		free(input);
 	}

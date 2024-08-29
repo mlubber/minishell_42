@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/30 14:08:00 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/27 13:51:18 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/29 14:50:42 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,20 +59,22 @@ static void	free_env(t_shell *shell, t_env **env_head)
 void	kill_program(t_shell *shell, char *msg, int exit_code)
 {
 	free_env(shell, &shell->env_list);
-	if (shell->input->cnode != NULL)
-		free_cmd_list(&shell->input->cnode);
-	if (close(shell->stdinput) == -1)
+	if (shell->stdinput != -1 && close(shell->stdinput) == -1)
 		perror("Failed closing shell->stdinput");
-	if (close(shell->stdoutput) == -1)
+	if (shell->stdoutput != -1 && close(shell->stdoutput) == -1)
 		perror("Failed closing shell->stdoutput");
 	closing_fds(shell);
 	rl_clear_history();
 	if (exit_code > 0)
 	{
 		handle_error(msg, exit_code);
+		if (shell->input->cnode != NULL)
+			free_cmd_list(&shell->input->cnode);
 		exit(exit_code);
 	}
 	else if (msg != NULL && exit_code == 0)
 		write(2, msg, ft_strlen(msg));
+	if (shell->input->cnode != NULL)
+		free_cmd_list(&shell->input->cnode);
 	exit(EXIT_SUCCESS);
 }

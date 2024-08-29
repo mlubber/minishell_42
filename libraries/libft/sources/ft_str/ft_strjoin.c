@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/10/16 10:20:17 by mlubbers      #+#    #+#                 */
-/*   Updated: 2023/10/16 11:50:34 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/29 14:11:22 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,29 @@
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
-	size_t	totlen;
-	char	*newstr;
+	int		i;
+	int		o;
+	char	*p;
 
-	totlen = ((ft_strlen(s1) + 1) + ft_strlen(s2));
-	newstr = (char *)malloc(totlen * sizeof(char));
-	if (!newstr)
+	if (s1 == NULL || s2 == NULL)
+		return (NULL);
+	i = 0;
+	o = ft_strlen(s1) + ft_strlen(s2);
+	p = malloc((o + 1) * sizeof(char));
+	if (p == 0)
 		return (0);
-	ft_strlcpy(newstr, s1, (ft_strlen(s1) + 1));
-	ft_strlcat(newstr, s2, totlen);
-	return (newstr);
+	while (s1 != NULL && *s1)
+	{
+		p[i] = *s1;
+		i++;
+		s1++;
+	}
+	while (*s2)
+	{
+		p[i] = *s2;
+		i++;
+		s2++;
+	}
+	p[i] = '\0';
+	return (p);
 }

@@ -6,11 +6,18 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/08/20 17:08:37 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/27 14:33:04 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/29 14:16:51 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+void	write_heredoc_error(char *str)
+{
+	ft_putstr_fd("warning: heredoc delimited by end-of-file (wanted: '", 2);
+	ft_putstr_fd(str, 2);
+	ft_putstr_fd("')\n", 2);
+}
 
 static char	*ft_errorjoin(char const *s1, char const *s2)
 {

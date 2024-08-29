@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/07 11:27:19 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/20 10:39:19 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/29 14:59:58 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static bool	ft_checkfordigits(char *str)
 		i++;
 	while (str[i])
 	{
-		if (str[i] < '0' && str[i] > '9')
+		if (str[i] < '0' || str[i] > '9')
 			return (false);
 		i++;
 	}

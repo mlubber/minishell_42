@@ -6,28 +6,32 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/16 13:28:31 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/27 14:27:31 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/29 13:01:22 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	execute_cmd(t_shell *shell, char *cmd, char **cmd_array, char **envp)
+void	cmd_not_found(t_shell *shell, char **cmd, char **paths, char ***envp)
+{
+	ft_free_arr(&paths);
+	free (*envp);
+	errno = 0;
+	write(2, cmd[0], ft_strlen(cmd[0]));
+	ft_putstr_fd(": command not found\n", 2);
+	kill_program(shell, NULL, 127);
+}
+
+void	execute_cmd(t_shell *shell, char *cmd, char **cmd_array, char ***envp)
 {
 	if (close(shell->stdinput) == -1)
 		perror("shell->stdinput");
 	if (close(shell->stdoutput) == -1)
 		perror("shell->stdoutput");
+	shell->stdinput = -1;
+	shell->stdoutput = -1;
 	init_signals(shell, 2);
-	execve(cmd, cmd_array, envp);
-}
-
-void	cmd_not_found(t_shell *shell, char **cmd)
-{
-	errno = 0;
-	write(2, cmd[0], ft_strlen(cmd[0]));
-	ft_putstr_fd(": command not found\n", 2);
-	kill_program(shell, NULL, 127);
+	execve(cmd, cmd_array, *envp);
 }
 
 void	check_if_dir(t_shell *shell, char **cmds)

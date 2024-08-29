@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/04 14:35:10 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/27 14:06:54 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/29 17:09:36 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,15 @@ char	*ambiguous_redirect(char *file)
 	return (file);
 }
 
+static void	set_heredoc_in(t_shell *shell, t_ctable *cnode)
+{
+	if (dup2(cnode->hd_pipe[0], STDIN_FILENO) == -1)
+		kill_program(shell, "dup2 infile", errno);
+	if (close(cnode->hd_pipe[0]) == -1)
+		perror("Failed closing heredoc pipe[0]");	
+	cnode->hd_pipe[0] = -1;
+}
+
 static char	*open_infiles(t_shell *shell, t_ctable *cnode, t_file *infile)
 {
 	while (infile != NULL)
@@ -27,6 +36,9 @@ static char	*open_infiles(t_shell *shell, t_ctable *cnode, t_file *infile)
 			if (infile->str[0] == '$' && (infile->str[1] == '_'
 					|| ft_isalnum(infile->str[1])))
 				return (ambiguous_redirect(infile->str));
+			if (access(infile->str, F_OK | R_OK) == -1)
+				if (errno == 13)
+					return (infile->str);
 			cnode->infile = open(infile->str, O_RDONLY);
 			if (cnode->infile == -1)
 				return (infile->str);
@@ -37,10 +49,7 @@ static char	*open_infiles(t_shell *shell, t_ctable *cnode, t_file *infile)
 			cnode->infile = -1;
 		}
 		else if (infile->type == t_in_heredoc && infile->next == NULL)
-		{
-			if (dup2(cnode->hd_pipe[0], STDIN_FILENO) == -1)
-				kill_program(shell, "dup2 infile", errno);
-		}
+			set_heredoc_in(shell, cnode);
 		infile = infile->next;
 	}
 	return (NULL);
@@ -71,11 +80,11 @@ static char	*open_outfiles(t_shell *shell, t_ctable *cnode, t_file *outfile)
 	return (NULL);
 }
 
-char	*handling_redirs(t_shell *shell, t_ctable *cnode, int node_nr)
+char	*handling_redirs(t_shell *shell, t_ctable *cnode, int node_nr, int x)
 {
 	char	*file;
 
-	if (node_nr != shell->input->node_count - 1)
+	if (node_nr != shell->input->node_count - 1 && x != 0)
 		if (dup2(shell->input->fds[1], STDOUT_FILENO) == -1)
 			kill_program(shell, "Child stdout dup fail", errno);
 	closing_fds(shell);

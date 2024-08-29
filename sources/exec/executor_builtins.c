@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/30 15:49:28 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/21 20:19:50 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/29 17:11:28 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ pid_t	builtin_child_exec(t_shell *shell, t_ctable *tmp, int node_nr)
 
 	if (shell->input->node_count == 1)
 	{
-		file = handling_redirs(shell, tmp, node_nr);
+		file = handling_redirs(shell, tmp, node_nr, 1);
 		if (file != NULL)
 		{
 			handle_error(file, errno);
@@ -52,7 +52,7 @@ pid_t	builtin_child_exec(t_shell *shell, t_ctable *tmp, int node_nr)
 		kill_program(shell, NULL, errno);
 	if (shell->pid == 0)
 	{
-		file = handling_redirs(shell, tmp, node_nr);
+		file = handling_redirs(shell, tmp, node_nr, 1);
 		if (file != NULL)
 			kill_program(shell, file, errno);
 		builtin_execute(shell, tmp, true);
@@ -68,7 +68,9 @@ int	builtin_check(t_ctable *tmp)
 
 	x = 0;
 	if (tmp->cmd_array == NULL)
+	{
 		return (0);
+	}
 	if (ft_strncmp(tmp->cmd_array[0], "echo", 5) == 0)
 		return (1);
 	else if (ft_strncmp(tmp->cmd_array[0], "cd", 3) == 0)

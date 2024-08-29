@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/21 09:23:10 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/27 13:48:01 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/29 17:17:48 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ int	g_signal = 0;
 // Initializing shell struct
 static void	init_shell(t_shell *shell)
 {
-	init_signals(shell, 1);
 	shell->pwd = NULL;
 	shell->old_pwd = NULL;
 	shell->env_size = 0;

@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/27 09:30:02 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/27 14:58:45 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/08/29 17:17:55 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int	pre_exec_check(t_shell *shell, int i)
 	}
 	if (shell->input->cnode->cmd_array == NULL)
 	{
-		file = handling_redirs(shell, shell->input->cnode, i);
+		file = handling_redirs(shell, shell->input->cnode, i, 0);
 		if (file != NULL)
 		{
 			handle_error(file, errno);
@@ -39,6 +39,7 @@ static int	pre_exec_check(t_shell *shell, int i)
 
 static void	reset_input_values(t_shell *shell, t_input *input)
 {
+	init_signals(shell, 1);
 	input->var_len = 0;
 	input->var_val_len = 0;
 	input->word_len = 0;

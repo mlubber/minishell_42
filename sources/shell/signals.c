@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/09 11:12:52 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/26 18:46:11 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/08/29 17:17:24 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,11 @@ void	init_signals(t_shell *shell, int i)
 		sq.sa_handler = SIG_IGN;
 	}
 	if (i > 1)
-	{
 		si.sa_handler = SIG_DFL;
-		if (i == 2)
-			sq.sa_handler = SIG_DFL;
-	}
+	if (i == 2)
+		sq.sa_handler = SIG_DFL;
+	if (i == 4)
+		si.sa_handler = SIG_IGN;
 	if (sigaction(SIGINT, &si, NULL) == -1)
 		kill_program(shell, "setting SIGINT failed", errno);
 	if (i != 3)
