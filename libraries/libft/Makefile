@@ -82,7 +82,7 @@ $(NAME): 		$(OBJ)
 $(OBJ_DIR)%.o:	$(SRC_DIR)%.c
 				@echo "Compiling ${notdir $<}"
 				@mkdir -p $(@D)
-				@$(CC) $(CFLAGS) $(INC) -c $< -o $@
+				$(CC) $(CFLAGS) $(INC) -c $< -o $@
 
 # Cleanups
 clean:
