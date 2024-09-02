@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/22 06:12:53 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/29 17:10:28 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/09/02 13:38:08 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ typedef struct s_env
 	char			*var_name;
 	char			*var_val;
 	bool			printed;
-	int				node_num;
 	struct s_env	*next;
 }	t_env;
 

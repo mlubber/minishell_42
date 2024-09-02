@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/03 14:38:18 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/29 14:36:01 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/09/02 13:38:05 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,6 @@ static void	init_node(t_shell *shell, t_env *node, char *str)
 	if (node->str == NULL || node->str[0] == '\0')
 		kill_program(shell, "Failed strdup for env node!", errno);
 	node->printed = false;
-	node->node_num = shell->env_size;
 }
 
 t_env	*create_env_node(t_shell *shell, char *str)

@@ -6,24 +6,26 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/07 12:10:52 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/27 16:55:07 by mlubbers      ########   odam.nl         */
+/*   Updated: 2024/09/02 13:43:08 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static int	search_and_delete_var(t_env **head, char *str)
+static int	search_and_delete_var(t_shell *shell, char *str)
 {
 	t_env	*temp;
 	t_env	*prev;
 
-	temp = *head;
+	temp = shell->env_list;
 	prev = NULL;
 	if (temp != NULL
 		&& ft_strncmp(temp->var_name, str, ft_strlen(str) + 1) == 0)
 	{
-		*head = temp->next;
-		free(temp);
+		shell->env_list = temp->next;
+		free_env_node(&temp);
+		temp = NULL;
+		return (true);
 	}
 	while (temp != NULL
 		&& ft_strncmp(temp->var_name, str, ft_strlen(str) + 1) != 0)
@@ -68,15 +70,9 @@ void	ft_mini_unset(t_shell *shell, char **split_input)
 		return ;
 	while (split_input[i] != NULL)
 	{
-		check_if_oldpwd(shell, split_input[1]);
-		if (search_and_delete_var(&tmp, split_input[i]) != 0)
+		check_if_oldpwd(shell, split_input[i]);
+		if (search_and_delete_var(shell, split_input[i]) != 0)
 		{
-			while (tmp->next != NULL)
-			{
-				if (tmp->next->node_num - tmp->node_num > 1)
-					tmp->next->node_num = tmp->node_num + 1;
-				tmp = tmp->next;
-			}
 			shell->env_size--;
 			tmp = shell->env_list;
 		}
