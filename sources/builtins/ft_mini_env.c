@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/27 10:57:13 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/09/02 13:34:32 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/09/02 13:59:40 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ void	ft_mini_env(t_shell *shell, char **split_input)
 	t_env	*tmp;
 
 	tmp = shell->env_list;
-	printf("\n\n\ntmp->str = %s\n\n\n", tmp->str);
 	if (split_input[1] != NULL)
 	{
 		ft_putendl_fd("env: Too many arguments", STDERR_FILENO);
