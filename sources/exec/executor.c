@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/04 12:38:42 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/29 17:45:11 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/09/02 11:58:09 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ void	wait_for_children(t_shell *shell, pid_t pid)
 	wpid = waitpid(pid, &status, 0);
 	while (wait(NULL) != -1)
 		continue ;
-		
 	if (WIFSIGNALED(status))
 	{
 		if (g_signal == 2)
@@ -96,8 +95,9 @@ static pid_t	checking_cmd(t_shell *shell, t_ctable *cnode, int node_nr)
 		return (builtin_child_exec(shell, cnode, node_nr));
 	g_signal = -1;
 	paths = ft_get_paths(shell);
-	// if (ft_strncmp(cnode->cmd_array[0], "minishell", 10))
-	// 	init_signals(shell, 4);
+	if (ft_strncmp(cnode->cmd_array[0], "minishell", 10)
+		|| ft_strncmp(cnode->cmd_array[0], "./minishell", 12))
+		init_signals(shell, 4);
 	shell->pid = fork();
 	if (shell->pid == -1)
 		kill_program(shell, NULL, errno);

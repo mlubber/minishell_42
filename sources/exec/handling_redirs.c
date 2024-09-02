@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/04 14:35:10 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/29 17:09:36 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/09/02 11:41:20 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void	set_heredoc_in(t_shell *shell, t_ctable *cnode)
 	if (dup2(cnode->hd_pipe[0], STDIN_FILENO) == -1)
 		kill_program(shell, "dup2 infile", errno);
 	if (close(cnode->hd_pipe[0]) == -1)
-		perror("Failed closing heredoc pipe[0]");	
+		perror("Failed closing heredoc pipe[0]");
 	cnode->hd_pipe[0] = -1;
 }
 
