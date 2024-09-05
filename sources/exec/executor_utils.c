@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/16 13:28:31 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/09/05 11:44:05 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/09/05 13:35:26 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ void	execute_cmd(t_shell *shell, char *cmd, char **cmd_array, char ***envp)
 		perror("shell->stdoutput");
 	shell->stdinput = -1;
 	shell->stdoutput = -1;
+	if (access(cmd, F_OK | X_OK) == -1)
+		kill_program(shell, cmd, errno);
 	init_signals(shell, 2);
 	execve(cmd, cmd_array, *envp);
 }
