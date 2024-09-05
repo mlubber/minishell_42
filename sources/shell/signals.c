@@ -6,7 +6,7 @@
 /*   By: mlubbers <mlubbers@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/07/09 11:12:52 by mlubbers      #+#    #+#                 */
-/*   Updated: 2024/08/29 17:17:24 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/09/05 12:05:44 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,16 +31,18 @@ void	init_signals(t_shell *shell, int i)
 	struct sigaction	si;
 	struct sigaction	sq;
 
-	ft_memset(&si, 0, sizeof(si));
-	ft_memset(&sq, 0, sizeof(sq));
-	si.sa_flags = SA_RESTART;
-	sigemptyset(&si.sa_mask);
 	if (i == 1)
 	{
-		si.sa_handler = &sigint_handler;
-		sq.sa_handler = SIG_IGN;
+		ft_memset(&si, 0, sizeof(si));
+		ft_memset(&sq, 0, sizeof(sq));
+		si.sa_flags = SA_RESTART;
+		sigemptyset(&si.sa_mask);
 	}
-	if (i > 1)
+	if (i == 1)
+		si.sa_handler = &sigint_handler;
+	if (i == 1)
+		sq.sa_handler = SIG_IGN;
+	if (i > 1 && i != 4)
 		si.sa_handler = SIG_DFL;
 	if (i == 2)
 		sq.sa_handler = SIG_DFL;

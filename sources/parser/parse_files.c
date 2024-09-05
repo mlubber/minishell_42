@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/24 14:37:50 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/21 18:57:23 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/09/05 11:05:45 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static t_file	*make_file_node(t_shell *shell, char *line,
 	return (node);
 }
 
-void	parse_files(t_shell *shell, t_ctable *cnode, char *cmdline)
+void	parse_files(t_shell *shell, t_ctable *cnode, char *cmd)
 {
 	t_file	*new;
 	int		i;
@@ -77,21 +77,21 @@ void	parse_files(t_shell *shell, t_ctable *cnode, char *cmdline)
 	while (i < shell->input->cmd_seg)
 	{
 		new = NULL;
-		if (cmdline[i] == '\'' || cmdline[i] == '"')
-			i += skip_quotes(cmdline + i, cmdline[i]);
-		if (cmdline[i] == '<' && cmdline[i + 1] == '<')
-			new = make_file_node(shell, cmdline + i, t_in_heredoc, 0);
-		else if (cmdline[i] == '<')
-			new = make_file_node(shell, cmdline + i, t_in_file, 0);
-		else if (cmdline[i] == '>' && cmdline[i + 1] == '>')
-			new = make_file_node(shell, cmdline + i, t_out_append, 0);
-		else if (cmdline[i] == '>')
-			new = make_file_node(shell, cmdline + i, t_out_trunc, 0);
-		if (new != NULL && (cmdline[i] == '<' || cmdline[i] == '>'))
-			lstadd_back(cnode, new, cmdline[i]);
+		if (cmd[i] == '\'' || cmd[i] == '"')
+			i += skip_quotes(cmd + i, cmd[i]);
+		if (cmd[i] == '<' && cmd[i + 1] == '<')
+			new = make_file_node(shell, cmd + i, t_in_heredoc, 0);
+		else if (cmd[i] == '<')
+			new = make_file_node(shell, cmd + i, t_in_file, 0);
+		else if (cmd[i] == '>' && cmd[i + 1] == '>')
+			new = make_file_node(shell, cmd + i, t_out_append, 0);
+		else if (cmd[i] == '>')
+			new = make_file_node(shell, cmd + i, t_out_trunc, 0);
+		if (new != NULL && (cmd[i] == '<' || cmd[i] == '>'))
+			lstadd_back(cnode, new, cmd[i]);
 		if (new != NULL)
-			i += skip_file_or_word(cmdline + i, cmdline[i], 0);
-		if (shell->input->word_len == 0)
+			i += skip_file_or_word(cmd + i, cmd[i], 0);
+		if (cmd[i] != '"' && cmd[i] != '\'' && shell->input->word_len == 0)
 			i++;
 		shell->input->word_len = 0;
 	}

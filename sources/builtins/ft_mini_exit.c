@@ -6,7 +6,7 @@
 /*   By: wsonepou <wsonepou@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/07 11:27:19 by wsonepou      #+#    #+#                 */
-/*   Updated: 2024/08/29 14:59:58 by wsonepou      ########   odam.nl         */
+/*   Updated: 2024/09/05 11:07:01 by wsonepou      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static bool	ft_checkfordigits(char *str)
 	i = 0;
 	if (str == NULL)
 		return (false);
-	if (str[0] == '-')
+	if (str[0] == '-' || str[0] == '+')
 		i++;
 	while (str[i])
 	{
